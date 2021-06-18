@@ -1,26 +1,25 @@
 import './App.css';
-import { ThemeProvider, withStyles } from '@material-ui/styles';
+import { MuiThemeProvider, withStyles } from '@material-ui/core/styles';
 import theme from './themes/themes';
 
 const GlobalStyles = withStyles({
   "@global": {
     "html, body": {
       margin: 0,
-      padding: 0
-    },
-    ".App": {
+      padding: 0,
       fontFamily: theme.typography.fontFamily,
-    }
+    },
   }
 })(() => null);
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <div className="App">
-        <GlobalStyles />
-      </div>
-    </ThemeProvider>
+    <MuiThemeProvider theme={theme}>
+      <GlobalStyles />
+      {/*Poner aquí la vista con la que están trabajando para probar,
+        cuando esté lista y van a hacer commit, 
+        dejan este espacio vacío para poner las rutas*/}
+    </MuiThemeProvider>
   );
 }
 
