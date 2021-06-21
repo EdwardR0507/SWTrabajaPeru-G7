@@ -22,8 +22,8 @@ const StyledPrimaryButton = withStyles({
   },
 })(Button);
 
-const PrimaryButton = ({ name }) => {
-  return <StyledPrimaryButton fullWidth>{name}</StyledPrimaryButton>;
+const PrimaryButton = ({ name, onClick }) => {
+  return <StyledPrimaryButton fullWidth onClick={onClick}>{name}</StyledPrimaryButton>;
 };
 
 export default PrimaryButton;

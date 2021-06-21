@@ -1,4 +1,6 @@
-import React from "react";
+import React  from "react";
+import { useInput } from "../../hooks/useInput";
+import axios from 'axios';
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
@@ -10,6 +12,7 @@ import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import SecondaryButton from "../../components/Buttons/SecondaryButton";
 import NavBar from "../../layouts/NavBar";
 import Input from "../../components/TextFields/Input";
+
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -39,8 +42,31 @@ const StyledTypography = withStyles({
   },
 })(Typography);
 
-export default function SignUp() {
+const SignUp = () => {
   const classes = useStyles();
+
+  const { value: name, bind: bindName, reset: resetName } = useInput('a')
+  const { value: email, bind: bindEmail, reset: resetEmail } = useInput('')
+  const { value: phoneNumber, bind: bindPhoneNumber, reset: resetPhoneNumber } = useInput('')
+  const { value: password, bind: bindPassword, reset: resetPassword } = useInput('')
+
+  const handleSubmit = async (evt) => {
+      evt.preventDefault();
+      await axios.post('localhost:4000/user',{
+        command: 'REGISTER_USER',
+        transaction: {
+          name: name,
+          email: email,
+          phoneNumber: phoneNumber,
+          password: password
+        }
+      })
+      .then(res => {return res});
+      
+      //resetName();
+      //resetEmail();
+      //resetPhoneNumber();
+  }
 
   return (
     <>
@@ -49,7 +75,8 @@ export default function SignUp() {
         <CssBaseline />
         <div className={classes.paper}>
           <StyledTypography>Registro</StyledTypography>
-          <form className={classes.form} noValidate>
+          <form className={classes.form}
+                 noValidate>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <Input
@@ -58,6 +85,7 @@ export default function SignUp() {
                   type="text"
                   id="username"
                   label="Nombre de Usuario"
+                  bind={bindName}
                 />
               </Grid>
 
@@ -69,6 +97,7 @@ export default function SignUp() {
                   label="Correo Electrónico"
                   name="email"
                   type="email"
+                  bind={bindEmail}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -78,6 +107,7 @@ export default function SignUp() {
                   id="phoneNumber"
                   label="Teléfono"
                   name="phoneNumber"
+                  bind={bindPhoneNumber}
                 />
               </Grid>
 
@@ -89,6 +119,7 @@ export default function SignUp() {
                   label="Contraseña"
                   type="password"
                   id="password"
+                  bind={bindPassword}
                 />
               </Grid>
 
@@ -105,7 +136,6 @@ export default function SignUp() {
 
               <Grid item xs={6} sm={6}>
                 <SecondaryButton
-                  type="submit"
                   fullWidth
                   variant="contained"
                   color="primary"
@@ -121,10 +151,8 @@ export default function SignUp() {
                   color="primary"
                   className={classes.submit}
                   name="REGISTRAR"
-                ></PrimaryButton>
+                  onClick={handleSubmit}></PrimaryButton>
               </Grid>
-
-             
 
               <Grid item xs={6} sm={6} align="center" fontWeight="bold">
                 ¿YA TIENES UNA CUENTA?
@@ -141,3 +169,5 @@ export default function SignUp() {
     </>
   );
 }
+
+export default SignUp;

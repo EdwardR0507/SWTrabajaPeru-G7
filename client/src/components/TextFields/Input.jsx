@@ -8,7 +8,7 @@ const StyledInput = withStyles({
   })(TextField);
 
 const Input = (props) => {
-    return <StyledInput variant="filled" fullWidth label={props.label} type={props.type}/>;
+    return <StyledInput variant="filled" fullWidth label={props.label} type={props.type} {...props.bind}/>;
 };
 
 export default Input;

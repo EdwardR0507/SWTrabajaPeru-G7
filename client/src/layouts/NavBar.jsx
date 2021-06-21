@@ -1,5 +1,6 @@
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
+import { Link as RouterLink } from 'react-router-dom';
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -42,15 +43,30 @@ const NavBar = () => {
       <Toolbar>
         <Logo />
         {/*Espacio vacío para el logo*/}
-        <Link href="#">
-          <StyledTypography variant="h5">Inicio</StyledTypography>
+        <Link 
+          component={RouterLink}
+          to="/">
+          <StyledTypography 
+            variant="h5">
+            Inicio
+          </StyledTypography>
         </Link>
         <SearchField placeholder="Buscar Cliente o Servicio" />
-        <Link href="#">
-          <StyledTypography variant="h5">Registrarse</StyledTypography>
+        <Link 
+          component={RouterLink} 
+          to="/signup">
+          <StyledTypography 
+            variant="h5">
+            Registrarse
+          </StyledTypography>
         </Link>
-        <Link href="#">
-          <StyledTypography variant="h5">Iniciar Sesión</StyledTypography>
+        <Link 
+          component={RouterLink}
+          to="/signin">
+          <StyledTypography 
+            variant="h5">
+            Iniciar Sesión
+          </StyledTypography>
         </Link>
       </Toolbar>
     </StyledNavBar>

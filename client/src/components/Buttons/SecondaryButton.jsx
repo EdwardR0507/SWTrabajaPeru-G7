@@ -22,9 +22,9 @@ const StyledSecondaryButton = withStyles({
     },
 })(Button)
 
-const SecondaryButton = ({name}) => {
+const SecondaryButton = ({name, onClick}) => {
     return(
-        <StyledSecondaryButton>
+        <StyledSecondaryButton onClick={onClick}>
             {name}
         </StyledSecondaryButton>
     )
