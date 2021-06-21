@@ -11,6 +11,7 @@ import theme from "../themes/themes";
 const StyledNavBar = withStyles({
   root: {
     background: theme.palette.primary.main,
+    position: 'sticky', 
     height: "14.5%",
     lineHeight: "24px",
     letterSpacing: "0.18px",
