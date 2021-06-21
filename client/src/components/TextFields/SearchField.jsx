@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 import theme from '../../themes/themes';
+//importé useState de React y Axios
+import Axios from 'axios';
 
 const StyledSearchField = withStyles({
     root:{
@@ -33,13 +35,27 @@ const StyledInputBase = withStyles({
 })(InputBase)
 
 const SearchField = (props) => {
+
+    // PRUEBA DEL BACK, DAN
+
+    const [busqueda,buscarUsuario] = useState(''); 
+
+    const buscar = async()=>{
+        const respuesta = await Axios.post('http://localhost:4000/', busqueda);
+        console.log(respuesta.mensaje)
+    }
+ 
+    //FIN DE PRUEBA BACK
+
     return(
         <StyledSearchField>
-            <IconButton>
+            <IconButton onClick = {buscar}>
                 <SearchIcon />
             </IconButton>
             <StyledInputBase 
-                placeholder={props.placeholder} />
+                placeholder={props.placeholder}
+                onChange={e=>buscarUsuario(e.target.value)} 
+                />
         </StyledSearchField>
     )
 };

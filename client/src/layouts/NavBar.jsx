@@ -45,7 +45,7 @@ const NavBar = () => {
         <Link href="#">
           <StyledTypography variant="h5">Inicio</StyledTypography>
         </Link>
-        <SearchField placeholder="Buscar Cliente o Servicio" />
+        <SearchField required placeholder="Buscar Cliente o Servicio" />
         <Link href="#">
           <StyledTypography variant="h5">Registrarse</StyledTypography>
         </Link>
