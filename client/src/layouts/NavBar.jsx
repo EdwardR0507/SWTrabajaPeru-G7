@@ -12,6 +12,7 @@ const StyledNavBar = withStyles({
   root: {
     position: "relative",
     background: theme.palette.primary.main,
+    position: 'sticky', 
     height: "14.5%",
     lineHeight: "24px",
     letterSpacing: "0.18px",
