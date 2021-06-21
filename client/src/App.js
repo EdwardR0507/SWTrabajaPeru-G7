@@ -1,7 +1,8 @@
 import "./App.css";
 import { MuiThemeProvider, withStyles } from "@material-ui/core/styles";
 import theme from "./themes/themes";
-
+import ManageServices from "./pages/services/index";
+import SignUp from "./pages/registro/index";
 const GlobalStyles = withStyles({
   "@global": {
     "html, body": {
@@ -15,10 +16,7 @@ const GlobalStyles = withStyles({
 function App() {
   return (
     <MuiThemeProvider theme={theme}>
-      <GlobalStyles />
-      {/*Poner aquí la vista con la que están trabajando para probar,
-        cuando esté lista y van a hacer commit, 
-        dejan este espacio vacío para poner las rutas*/}
+      <GlobalStyles></GlobalStyles>
     </MuiThemeProvider>
   );
 }
