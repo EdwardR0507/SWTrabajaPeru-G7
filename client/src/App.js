@@ -1,6 +1,6 @@
-import './App.css';
-import { MuiThemeProvider, withStyles } from '@material-ui/core/styles';
-import theme from './themes/themes';
+import "./App.css";
+import { MuiThemeProvider, withStyles } from "@material-ui/core/styles";
+import theme from "./themes/themes";
 
 const GlobalStyles = withStyles({
   "@global": {
@@ -9,7 +9,7 @@ const GlobalStyles = withStyles({
       padding: 0,
       fontFamily: theme.typography.fontFamily,
     },
-  }
+  },
 })(() => null);
 
 function App() {
