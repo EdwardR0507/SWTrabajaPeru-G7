@@ -89,7 +89,7 @@ export default function SignIn() {
                   className={classes.submit}
                 ></PrimaryButton>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={6} fontWeight="bold">
                 ¿NO TIENES CUENTA?
               </Grid>
               <Grid item xs={6}>

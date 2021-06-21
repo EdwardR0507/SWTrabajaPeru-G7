@@ -15,7 +15,6 @@ const StyledPrimaryButton = withStyles({
     lineHeight: "16px",
     letterSpacing: "1.25px",
     textTransform: "uppercase",
-    width: "171px",
     height: "48px",
     "&:hover": {
       background: theme.palette.primary.main,
@@ -24,7 +23,7 @@ const StyledPrimaryButton = withStyles({
 })(Button);
 
 const PrimaryButton = ({ name }) => {
-  return <StyledPrimaryButton>{name}</StyledPrimaryButton>;
+  return <StyledPrimaryButton fullWidth>{name}</StyledPrimaryButton>;
 };
 
 export default PrimaryButton;
