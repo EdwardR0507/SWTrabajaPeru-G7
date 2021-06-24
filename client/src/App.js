@@ -4,6 +4,7 @@ import theme from "./themes/themes";
 import Home from "./pages/Home";
 import SignIn from "./pages/login";
 import SignUp from "./pages/registro";
+import EditProfile from "./pages/editProfile";
 
 const GlobalStyles = withStyles({
   "@global": {

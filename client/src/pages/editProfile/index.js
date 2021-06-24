@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function EditProfile() {
   const classes = useStyles();
-  const [state, setState] = React.useState({
+  /*const [state, setState] = React.useState({
     age: '',
     name: 'hai',
   });
@@ -61,7 +61,7 @@ export default function EditProfile() {
       ...state,
       [name]: event.target.value,
     });
-  };
+  };*/
 
   return (
     <>
@@ -85,11 +85,11 @@ export default function EditProfile() {
               <InputLabel id="imput2" htmlFor="filled-age-native-simple">Departamento</InputLabel>
               <Select
                 native
-                value={state.age}
-                onChange={handleChange}
+                /*value={state.age}
+                onChange={handleChange}*/
                 inputProps={{
-                  name: 'age',
-                  id: 'filled-age-native-simple',
+                  name: 'departamento',
+                  id: 'filled-departamento-native-simple',
                 }}
               >
                 <option aria-label="None" value="" />
@@ -109,11 +109,11 @@ export default function EditProfile() {
               <InputLabel id="imput4" htmlFor="filled-age-native-simple">Provincia</InputLabel>
               <Select
                 native
-                value={state.age}
-                onChange={handleChange}
+                /*value={state.age}
+                onChange={handleChange}*/
                 inputProps={{
-                  name: 'age',
-                  id: 'filled-age-native-simple',
+                  name: 'provincia',
+                  id: 'filled-provincia-native-simple',
                 }}
               >
                 <option aria-label="None" value="" />
@@ -133,11 +133,11 @@ export default function EditProfile() {
               <InputLabel id="imput6" htmlFor="filled-age-native-simple">Distrito</InputLabel>
               <Select
                 native
-                value={state.age}
-                onChange={handleChange}
+                /*value={state.age}
+                onChange={handleChange}*/
                 inputProps={{
-                  name: 'age',
-                  id: 'filled-age-native-simple',
+                  name: 'distrito',
+                  id: 'filled-distrito-native-simple',
                 }}
               >
                 <option aria-label="None" value="" />
