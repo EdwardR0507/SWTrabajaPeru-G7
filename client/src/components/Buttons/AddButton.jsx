@@ -9,7 +9,7 @@ const StyledAddButton = withStyles({
     width: "8em",
     height: "2.3em",
     borderRadius: "4px",
-    color: "#FFFFFF",
+    color: theme.colorLetter.primary.main,
     fontWeight: "500",
     fontSize: "0.9em",
     lineHeight: "16px",
