@@ -66,7 +66,7 @@ export default function SignIn() {
       userName: userName,
       password: password
     }
-    await axios.get('https://localhost:4000/user',{
+    await axios.post('https://localhost:4000/user',{
       command: "LOGIN",
       transaction: getUser
     })
