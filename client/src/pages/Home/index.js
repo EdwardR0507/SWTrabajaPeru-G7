@@ -1,6 +1,6 @@
 import React from "react";
+import axios from "axios";
 import { withStyles } from "@material-ui/styles";
-import theme from "../../themes/themes";
 import Container from "@material-ui/core/Container";
 import Link from "@material-ui/core/Link";
 import Typography from "@material-ui/core/Typography";
@@ -10,6 +10,7 @@ import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import NavBar from "../../layouts/NavBar";
 import ServiceCard from "../../components/Cards/ServiceCard";
 import WorkerCard from "../../components/Cards/WorkerCard";
+import theme from "../../themes/themes";
 
 const StyledContentContainer = withStyles({
   root: {
@@ -54,6 +55,28 @@ const StyledLink = withStyles({
 })(Link);
 
 export default function Home() {
+  let servicesHome;
+  let workersHome;
+
+  async function getServices() {
+    await axios
+      .get("https://localhost:4000/homeServices", {
+        command: "GET_SERVICES",
+      })
+      .then((res) => (servicesHome = res));
+  }
+
+  async function getWorkers() {
+    await axios
+      .get("https://localhost:4000/homeWorkers", {
+        command: "GET_WORKERS",
+      })
+      .then((res) => (workersHome = res));
+  }
+
+  getServices();
+  getWorkers();
+
   return (
     <>
       <NavBar />
