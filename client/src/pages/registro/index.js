@@ -1,4 +1,5 @@
 import React from "react";
+import { Link as RouterLink } from 'react-router-dom';
 import { useInput } from "../../hooks/useInput";
 import axios from 'axios';
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -77,7 +78,7 @@ const SignUp = () => {
       provincia: provincia,
       distrito: distrito,
     }
-    await axios.post('localhost:4000/user', {
+    await axios.post('https://localhost:4000/user', {
       command: 'REGISTER_USER',
       transaction: user
     })
@@ -237,7 +238,9 @@ const SignUp = () => {
                 ¿YA TIENES UNA CUENTA?
               </Grid>
               <Grid item xs={6} sm={6}>
-                <Link href="#" variant="body2">
+                <Link  variant="body2" 
+                      component={RouterLink}
+                      to="/signin">
                   INICIA SESIÓN
                 </Link>
               </Grid>

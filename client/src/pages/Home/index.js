@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import { withStyles } from '@material-ui/styles';
 import Container from '@material-ui/core/Container';
 import Link from "@material-ui/core/Link";
@@ -53,6 +54,26 @@ const StyledLink = withStyles({
 })(Link);
 
 export default function Home() {
+    const servicesHome = null;
+    const workersHome = null;
+
+    async function getServices(){
+        await axios.get('https://localhost:4000/homeServices',{
+            command:'GET_SERVICES'
+        })
+        .then(res => servicesHome = res);
+    }
+
+    async function getWorkers(){
+        await axios.get('https://localhost:4000/homeWorkers',{
+            command:'GET_WORKERS'
+        })
+        .then(res => workersHome = res);
+    }
+
+    getServices();
+    getWorkers();
+
     return(
         <>
             <NavBar />
