@@ -58,14 +58,14 @@ export default function SignIn() {
   const { value: userName, bind: bindUserName } = useInput('');
   const { value: password, bind: bindPassword } = useInput('');
 
-  const user = null;
+  let user;
 
   const handleSubmit = async (evt) => {
     evt.preventDefault();
     let getUser = {
       userName: userName,
       password: password
-    }
+    };
     await axios.post('https://localhost:4000/user',{
       command: "LOGIN",
       transaction: getUser

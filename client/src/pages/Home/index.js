@@ -54,8 +54,8 @@ const StyledLink = withStyles({
 })(Link);
 
 export default function Home() {
-    const servicesHome = null;
-    const workersHome = null;
+    let servicesHome;
+    let workersHome;
 
     async function getServices(){
         await axios.get('https://localhost:4000/homeServices',{
