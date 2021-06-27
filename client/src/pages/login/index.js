@@ -62,15 +62,19 @@ export default function SignIn() {
   const handleSubmit = async (evt) => {
     evt.preventDefault();
     let getUser = {
-      userName: userName,
-      password: password,
+      us_correo: userName,
+      us_contrasena: password,
     };
     await axios
-      .post("https://localhost:4000/user", {
-        command: "LOGIN",
+      .post("http://localhost:4000/user", {
+        command: "LOGIN_USER",
         transaction: getUser,
       })
-      .then((res) => (user = res));
+      .then((res) => {
+        user = res;
+        console.log(user.data.transaction);
+        });
+      
   };
 
   return (

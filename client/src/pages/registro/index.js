@@ -69,20 +69,21 @@ const SignUp = () => {
   const handleSubmit = async (evt) => {
     evt.preventDefault();
     let user = {
-      name: name,
-      email: email,
-      phoneNumber: phoneNumber,
-      password: password,
-      departamento: departamento,
-      provincia: provincia,
-      distrito: distrito,
+      us_nombres: name,
+      us_correo: email,
+      us_celular: phoneNumber,
+      us_contrasena: password,
+      us_departamento: departamento,
+      us_provincia: provincia,
+      us_distrito: distrito,
     };
     await axios
-      .post("https://localhost:4000/user", {
+      .post("http://localhost:4000/user", {
         command: "REGISTER_USER",
         transaction: user,
       })
       .then((res) => {
+        console.log(res);
         return res;
       });
   };
