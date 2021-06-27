@@ -1,14 +1,16 @@
 import React from "react";
+import { Link as RouterLink } from "react-router-dom";
+import axios from "axios";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { withStyles } from "@material-ui/core/styles";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import NavBar from "../../layouts/NavBar";
 import Input from "../../components/TextFields/Input";
+import { useInput } from "../../hooks/useInput";
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -52,6 +54,25 @@ export default function SignIn() {
     console.log(this.state.form)
   }
   */
+  const { value: userName, bind: bindUserName } = useInput("");
+  const { value: password, bind: bindPassword } = useInput("");
+
+  let user;
+
+  const handleSubmit = async (evt) => {
+    evt.preventDefault();
+    let getUser = {
+      userName: userName,
+      password: password,
+    };
+    await axios
+      .post("https://localhost:4000/user", {
+        command: "LOGIN",
+        transaction: getUser,
+      })
+      .then((res) => (user = res));
+  };
+
   return (
     <>
       <NavBar></NavBar>
@@ -69,6 +90,7 @@ export default function SignIn() {
                   label="Nombre de usuario"
                   type="text"
                   autoComplete="username"
+                  bind={bindUserName}
                   /*onChange={this.handleChange}*/
                 />
               </Grid>
@@ -80,6 +102,7 @@ export default function SignIn() {
                   label="Contraseña"
                   type="password"
                   autoComplete="current-password"
+                  bind={bindPassword}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -87,13 +110,14 @@ export default function SignIn() {
                   type="submit"
                   name="INICIAR SESIÓN"
                   className={classes.submit}
+                  onClick={handleSubmit}
                 ></PrimaryButton>
               </Grid>
               <Grid item xs={6} fontWeight="bold">
                 ¿NO TIENES CUENTA?
               </Grid>
               <Grid item xs={6}>
-                <Link href="" variant="body2">
+                <Link variant="body2" component={RouterLink} to="/signup">
                   {"¡REGISTRATE!"}
                 </Link>
               </Grid>

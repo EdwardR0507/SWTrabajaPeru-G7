@@ -21,7 +21,7 @@ const StyledContainer = withStyles({
 const StyledEditButton = withStyles({
   root: {
     background: theme.palette.primary.main,
-    color: "#FFFFFF",
+    color: theme.colorLetter.primary.main,
     display: "flex",
     justifyContent: "space-evenly",
     fontStyle: "normal",
@@ -40,10 +40,10 @@ const StyledEditButton = withStyles({
 
 const StyledDeletButton = withStyles({
   root: {
-    background: "#00000012",
+    background: theme.serviceButton.primary.main,
     display: "flex",
     justifyContent: "space-evenly",
-    color: "#000000",
+    color: theme.palette.secondary.main,
     fontStyle: "normal",
     fontWeight: "500",
     fontSize: "14px",
@@ -53,7 +53,7 @@ const StyledDeletButton = withStyles({
     width: "140px",
     height: "48px",
     "&:hover": {
-      background: "#00000012",
+      background: theme.serviceButton.primary.main,
     },
   },
 })(Button);
