@@ -11,6 +11,7 @@ import IconButton from "@material-ui/core/IconButton";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import Avatar from "@material-ui/core/Avatar";
 import theme from "../themes/themes";
+import SideBar from "../layouts/Sidebar/SideBar";
 
 const StyledNavBar = withStyles({
   root: {
@@ -77,6 +78,7 @@ const NavBar = () => {
   return (
     <StyledNavBar>
       <Toolbar>
+        <SideBar />
         <Logo />
         {/*Espacio vacío para el logo*/}
         <Link component={RouterLink} to="/">
