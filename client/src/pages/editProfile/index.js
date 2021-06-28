@@ -3,6 +3,7 @@ import NavBar from "../../layouts/NavBar";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { useInput } from "../../hooks/useInput";
 import Grid from "@material-ui/core/Grid";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
@@ -10,6 +11,8 @@ import Select from "@material-ui/core/Select";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import Input from "../../components/TextFields/Input";
 import SecondaryButton from "../../components/Buttons/SecondaryButton";
+import useLocations from "../../hooks/useLocations";
+import useFilterSelect from "../../hooks/useFilterSelect";
 
 const StyledTypography = withStyles({
   root: {
@@ -47,6 +50,17 @@ const useStyles = makeStyles((theme) => ({
 export default function EditProfile() {
   const classes = useStyles();
 
+  const locations = useLocations();
+
+  const { value: departamento, bind: bindDepatamento } = useInput("");
+  const { value: provincia, bind: bindProvincia } = useInput("");
+  const { value: distrito, bind: bindDistrito } = useInput("");
+
+  const [filteredProvincias, filteredDistritos] = useFilterSelect(
+    departamento,
+    provincia
+  );
+
   /*const [state, setState] = React.useState({
     age: '',
     name: 'hai',
@@ -82,18 +96,21 @@ export default function EditProfile() {
                   Departamento
                 </InputLabel>
                 <Select
-                  native
                   /*value={state.age}
                 onChange={handleChange}*/
+                  native
                   inputProps={{
                     name: "departamento",
                     id: "filled-departamento-native-simple",
                   }}
+                  {...bindDepatamento}
                 >
-                  <option aria-label="None" value="" />
-                  <option value={1}>Departamento 1</option>
-                  <option value={2}>Departamento 2</option>
-                  <option value={3}>Departamento 3</option>
+                  <option hidden />
+                  {locations.departamentos.map((dept) => (
+                    <option value={dept.name} key={dept.id}>
+                      {dept.name}
+                    </option>
+                  ))}
                 </Select>
               </FormControl>
             </Grid>
@@ -108,18 +125,22 @@ export default function EditProfile() {
                   Provincia
                 </InputLabel>
                 <Select
-                  native
                   /*value={state.age}
                 onChange={handleChange}*/
+                  native
                   inputProps={{
                     name: "provincia",
                     id: "filled-provincia-native-simple",
                   }}
+                  {...bindProvincia}
                 >
-                  <option aria-label="None" value="" />
-                  <option value={1}>Provincia 1</option>
-                  <option value={2}>Provincia 2</option>
-                  <option value={3}>Provincia 3</option>
+                  <option hidden />
+                  {filteredProvincias &&
+                    filteredProvincias.map((prov) => (
+                      <option value={prov.name} key={prov.id}>
+                        {prov.name}
+                      </option>
+                    ))}
                 </Select>
               </FormControl>
             </Grid>
@@ -134,18 +155,22 @@ export default function EditProfile() {
                   Distrito
                 </InputLabel>
                 <Select
-                  native
                   /*value={state.age}
                 onChange={handleChange}*/
+                  native
                   inputProps={{
                     name: "distrito",
                     id: "filled-distrito-native-simple",
                   }}
+                  {...bindDistrito}
                 >
-                  <option aria-label="None" value="" />
-                  <option value={1}>Distrito 1</option>
-                  <option value={2}>Distrito 2</option>
-                  <option value={3}>Distrito 3</option>
+                  <option hidden />
+                  {filteredDistritos &&
+                    filteredDistritos.map((dist) => (
+                      <option value={dist.name} key={dist.id}>
+                        {dist.name}
+                      </option>
+                    ))}
                 </Select>
               </FormControl>
             </Grid>
