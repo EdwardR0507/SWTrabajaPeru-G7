@@ -87,9 +87,9 @@ const SignUp = () => {
                     variant="filled" 
                     fullWidth 
                     label="Nombres y Apellidos" 
-                    name="name"
+                    name="us_nombres"
                     type="text"
-                    {...register("name")}
+                    {...register("us_nombres")}
                 />
               </Grid>
 
@@ -99,9 +99,9 @@ const SignUp = () => {
                   variant="filled"
                   id="email"
                   label="Correo Electrónico"
-                  name="email"
+                  name="us_correo"
                   type="email"
-                  {...register("email")}
+                  {...register("us_correo")}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -110,8 +110,8 @@ const SignUp = () => {
                   variant="filled"
                   id="phoneNumber"
                   label="Teléfono"
-                  name="phoneNumber"
-                  {...register("phoneNumber")}
+                  name="us_celular"
+                  {...register("us_celular")}
                 />
               </Grid>
 
@@ -119,11 +119,11 @@ const SignUp = () => {
                 <TextField
                   fullWidth
                   variant="filled"
-                  name="password"
+                  name="us_contrasena"
                   label="Contraseña"
                   type="password"
                   id="password"
-                  {...register("password")}
+                  {...register("us_contrasena")}
                 />
               </Grid>
 
@@ -148,10 +148,10 @@ const SignUp = () => {
                     /*value={state.age}
                     onChange={handleChange}*/
                     inputProps={{
-                      name: "departamento",
+                      name: "us_departamento",
                       id: "filled-departamento-native-simple",
                     }}
-                    {...register("departamento")}
+                    {...register("us_departamento")}
                   >
                     <option hidden />
                     <option value={1}>Amazonas</option>
@@ -193,10 +193,10 @@ const SignUp = () => {
                     /*value={state.age}
                     onChange={handleChange}*/
                     inputProps={{
-                      name: "provincia",
+                      name: "us_provincia",
                       id: "filled-provincia-native-simple",
                     }}
-                    {...register("provincia")}
+                    {...register("us_provincia")}
                   >
                     <option aria-label="None" value="" />
                     <option value={1}>Provincia 1</option>
@@ -216,10 +216,10 @@ const SignUp = () => {
                     /*value={state.age}
                     onChange={handleChange}*/
                     inputProps={{
-                      name: "distrito",
+                      name: "us_distrito",
                       id: "filled-distrito-native-simple",
                     }}
-                    {...register("distrito")}
+                    {...register("us_distrito")}
                   >
                     <option aria-label="None" value="" />
                     <option value={1}>Distrito 1</option>
