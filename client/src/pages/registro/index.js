@@ -60,7 +60,7 @@ const SignUp = () => {
   const locations = useLocations();
   const { register, handleSubmit } = useForm();
 
-  const onSubmit = async (evt, user) => {
+  const onSubmit = async (user, evt) => {
     evt.preventDefault();
     await axios
       .post("http://localhost:4000/user", {
