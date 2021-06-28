@@ -22,7 +22,7 @@ function App() {
       <GlobalStyles />
       <BrowserRouter>
         <Switch>
-          <Route exact path="/" component={EditProfile} />
+          <Route exact path="/" component={ManageServices} />
           <Route path="/signin" component={SignIn} />
           <Route path="/signup" component={SignUp} />
         </Switch>

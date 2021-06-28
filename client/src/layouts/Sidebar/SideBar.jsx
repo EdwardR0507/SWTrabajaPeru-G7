@@ -9,10 +9,7 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import FavoriteIcon from "@material-ui/icons/Favorite";
+import NestedList from "./NestedList";
 
 const drawerWidth = 240;
 
@@ -102,16 +99,7 @@ export default function PersistentDrawerLeft() {
         </div>
 
         <List>
-          {["Inicio", "Cliente", "Trabajador"].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                <IconButton>
-                  <FavoriteIcon />
-                </IconButton>
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
+          <NestedList />
         </List>
       </Drawer>
       <main
