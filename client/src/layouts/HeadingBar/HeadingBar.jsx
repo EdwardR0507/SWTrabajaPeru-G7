@@ -37,21 +37,21 @@ const StyledTypography = withStyles({
   root: {
     fontStyle: "normal",
     fontWeight: "500",
-    fontSize: "14px",
+    fontSize: "0.8em",
     lineHeight: "16px",
     letterSpacing: "1.25px",
     textTransform: "uppercase",
   },
 })(Typography);
 
-const HeadingBar = () => {
+const HeadingBar = ({ before, after }) => {
   return (
     <>
       <StyledContainer>
         <StyledContainerContent>
-          <StyledTypography>TRABAJADOR </StyledTypography>
+          <StyledTypography>{before}</StyledTypography>
           <StyledNavigate></StyledNavigate>
-          <StyledTypography>MIS SERVICIOS </StyledTypography>
+          <StyledTypography>{after}</StyledTypography>
         </StyledContainerContent>
       </StyledContainer>
     </>

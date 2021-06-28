@@ -59,7 +59,7 @@ export default function ManageServices() {
   return (
     <>
       <NavBar></NavBar>
-      <HeadingBar></HeadingBar>
+      <HeadingBar before={"TRABAJADOR"} after={"MIS SERVICIOS"}></HeadingBar>
       <StyledContainer>
         <StyledTypography>Mis Servicios</StyledTypography>
         <AddButton name="agregar"></AddButton>
