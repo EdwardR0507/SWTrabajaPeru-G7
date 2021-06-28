@@ -58,10 +58,11 @@ const StyledTypography = withStyles({
 const SignUp = () => {
   const classes = useStyles();
   const locations = useLocations();
-  const { register, handleSubmit } = useForm();
+  const { register, formState: {errors}, handleSubmit } = useForm();
 
-  const onSubmit = async (evt, user) => {
+  const onSubmit = async (user, evt) => {
     evt.preventDefault();
+    console.log(user);
     await axios
       .post("http://localhost:4000/user", {
         command: "REGISTER_USER",
@@ -89,10 +90,11 @@ const SignUp = () => {
                     label="Nombres y Apellidos" 
                     name="us_nombres"
                     type="text"
-                    {...register("us_nombres")}
+                    {...register("us_nombres", {required: true})}
                 />
+              {errors.us_nombres?.type === "required" && "Ingrese nombres y apellidos"}
               </Grid>
-
+              
               <Grid item xs={12}>
                 <TextField
                   fullWidth
@@ -101,8 +103,9 @@ const SignUp = () => {
                   label="Correo Electrónico"
                   name="us_correo"
                   type="email"
-                  {...register("us_correo")}
+                  {...register("us_correo", {required: true})}
                 />
+                {errors.us_correo?.type === "required" && "Ingrese correo electrónico"}
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -111,9 +114,10 @@ const SignUp = () => {
                   id="phoneNumber"
                   label="Teléfono"
                   name="us_celular"
-                  {...register("us_celular")}
+                  {...register("us_celular", {required: true})}
                 />
               </Grid>
+                {errors.us_celular?.type === "required" && "Ingrese celular"}
 
               <Grid item xs={12}>
                 <TextField
@@ -123,8 +127,9 @@ const SignUp = () => {
                   label="Contraseña"
                   type="password"
                   id="password"
-                  {...register("us_contrasena")}
+                  {...register("us_contrasena", {required: true})}
                 />
+                {errors.us_contrasena?.type === "required" && "Ingrese contraseña"}
               </Grid>
 
               <Grid item xs={12}>
@@ -136,6 +141,7 @@ const SignUp = () => {
                   type="password"
                   id="passwordConfirm"
                 />
+                {errors.passwordConfirm?.type === "required" && "Ingrese contraseña"}
               </Grid>
 
               <Grid container item xs={12}>
@@ -145,13 +151,8 @@ const SignUp = () => {
                   </InputLabel>
                   <Select
                     native
-                    /*value={state.age}
-                    onChange={handleChange}*/
-                    inputProps={{
-                      name: "us_departamento",
-                      id: "filled-departamento-native-simple",
-                    }}
-                    {...register("us_departamento")}
+                    name="us_departamento"
+                    {...register("us_departamento", {required: true})}
                   >
                     <option hidden />
                     <option value={1}>Amazonas</option>
@@ -180,6 +181,7 @@ const SignUp = () => {
                     <option value={24}>Tumbes</option>
                     <option value={25}>Ucayali</option>
                   </Select>
+                  {errors.us_departamento?.type === "required" && "Ingrese departamento"}
                 </FormControl>
               </Grid>
 
@@ -190,19 +192,15 @@ const SignUp = () => {
                   </InputLabel>
                   <Select
                     native
-                    /*value={state.age}
-                    onChange={handleChange}*/
-                    inputProps={{
-                      name: "us_provincia",
-                      id: "filled-provincia-native-simple",
-                    }}
-                    {...register("us_provincia")}
+                    name="us_provincia"
+                    {...register("us_provincia", {required: true})}
                   >
                     <option aria-label="None" value="" />
                     <option value={1}>Provincia 1</option>
                     <option value={2}>Provincia 2</option>
                     <option value={3}>Provincia 3</option>
                   </Select>
+                  {errors.us_provincia?.type === "required" && "Ingrese provincia"}
                 </FormControl>
               </Grid>
 
@@ -213,19 +211,15 @@ const SignUp = () => {
                   </InputLabel>
                   <Select
                     native
-                    /*value={state.age}
-                    onChange={handleChange}*/
-                    inputProps={{
-                      name: "us_distrito",
-                      id: "filled-distrito-native-simple",
-                    }}
-                    {...register("us_distrito")}
+                    name="us_distrito"
+                    {...register("us_distrito", {required: true})}
                   >
                     <option aria-label="None" value="" />
                     <option value={1}>Distrito 1</option>
                     <option value={2}>Distrito 2</option>
                     <option value={3}>Distrito 3</option>
                   </Select>
+                  {errors.us_distrito?.type === "required" && "Ingrese distrito"}
                 </FormControl>
               </Grid>
 
@@ -247,7 +241,7 @@ const SignUp = () => {
                   className={classes.submit}
                   name="REGISTRAR"
                   onClick={handleSubmit(onSubmit)}
-                ></PrimaryButton>
+                />
               </Grid>
 
               <Grid item xs={6} sm={6} align="center" fontWeight="bold">
