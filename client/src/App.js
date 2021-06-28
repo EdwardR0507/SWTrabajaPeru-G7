@@ -6,6 +6,7 @@ import SignIn from "./pages/login";
 import SignUp from "./pages/register";
 import EditProfile from "./pages/editProfile";
 import ManageServices from "./pages/services";
+import AddServices from "./pages/addServices";
 const GlobalStyles = withStyles({
   "@global": {
     "html, body": {
@@ -22,7 +23,7 @@ function App() {
       <GlobalStyles />
       <BrowserRouter>
         <Switch>
-          <Route exact path="/" component={ManageServices} />
+          <Route exact path="/" component={AddServices} />
           <Route path="/signin" component={SignIn} />
           <Route path="/signup" component={SignUp} />
         </Switch>
