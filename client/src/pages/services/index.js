@@ -1,5 +1,6 @@
 import React from "react";
 import NavBar from "../../layouts/NavBar";
+import SideBar from "../../layouts/Sidebar/SideBar";
 import HeadingBar from "../../layouts/HeadingBar/HeadingBar";
 import Container from "@material-ui/core/Container";
 import AddButton from "../../components/Buttons/AddButton";
