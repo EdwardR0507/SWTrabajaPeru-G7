@@ -1,8 +1,11 @@
-import "./App.css";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { MuiThemeProvider, withStyles } from "@material-ui/core/styles";
 import theme from "./themes/themes";
+import Home from "./pages/Home";
+import SignIn from "./pages/login";
+import SignUp from "./pages/registro";
+import EditProfile from "./pages/editProfile";
 import ManageServices from "./pages/services";
-
 const GlobalStyles = withStyles({
   "@global": {
     "html, body": {
@@ -17,11 +20,13 @@ function App() {
   return (
     <MuiThemeProvider theme={theme}>
       <GlobalStyles />
-      {/*Poner aquí la vista con la que están trabajando para probar,
-        cuando esté lista y van a hacer commit, 
-        dejan este espacio vacío para poner las rutas*/
-        <ManageServices/>
-        }
+      <BrowserRouter>
+        <Switch>
+          <Route exact path="/" component={EditProfile} />
+          <Route path="/signin" component={SignIn} />
+          <Route path="/signup" component={SignUp} />
+        </Switch>
+      </BrowserRouter>
     </MuiThemeProvider>
   );
 }
