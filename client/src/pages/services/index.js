@@ -1,6 +1,5 @@
 import React from "react";
 import NavBar from "../../layouts/NavBar";
-import SideBar from "../../layouts/Sidebar/SideBar";
 import HeadingBar from "../../layouts/HeadingBar/HeadingBar";
 import Container from "@material-ui/core/Container";
 import AddButton from "../../components/Buttons/AddButton";
@@ -10,11 +9,10 @@ import IconButton from "@material-ui/core/IconButton";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import { withStyles } from "@material-ui/core/styles";
-
 const StyledTypography = withStyles({
   root: {
-    fontSize: "34px",
-    lineHeigth: "36px",
+    fontSize: "2.25rem",
+    lineHeigth: "2.25em",
     fontStyle: "normal",
     fontWeigth: "400",
   },
@@ -64,7 +62,7 @@ export default function ManageServices() {
       <HeadingBar></HeadingBar>
       <StyledContainer>
         <StyledTypography>Mis Servicios</StyledTypography>
-        <AddButton name="+ agregar"></AddButton>
+        <AddButton name="agregar"></AddButton>
       </StyledContainer>
       <InfoService></InfoService>
       <InfoService></InfoService>

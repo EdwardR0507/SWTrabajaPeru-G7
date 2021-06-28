@@ -62,6 +62,7 @@ const RightBar = (props) => {
   } else {
     return (
       <>
+        <SideBar />
         <StyledIconButton>
           <NotificationsIcon fontSize="large" />
         </StyledIconButton>
@@ -78,7 +79,6 @@ const NavBar = () => {
   return (
     <StyledNavBar>
       <Toolbar>
-        <SideBar />
         <Logo />
         {/*Espacio vacío para el logo*/}
         <Link component={RouterLink} to="/">
