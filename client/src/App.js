@@ -3,7 +3,7 @@ import { MuiThemeProvider, withStyles } from "@material-ui/core/styles";
 import theme from "./themes/themes";
 import Home from "./pages/Home";
 import SignIn from "./pages/login";
-import SignUp from "./pages/register";
+import SignUp from "./pages/registro";
 import EditProfile from "./pages/editProfile";
 import ManageServices from "./pages/services";
 const GlobalStyles = withStyles({
