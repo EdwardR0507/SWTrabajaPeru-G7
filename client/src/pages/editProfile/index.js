@@ -1,8 +1,11 @@
 import React from "react";
+import axios from "axios";
 import NavBar from "../../layouts/NavBar";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { useInput } from "../../hooks/useInput";
+import useLocations from "../../hooks/useLocations";
 import Grid from "@material-ui/core/Grid";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
@@ -47,18 +50,37 @@ const useStyles = makeStyles((theme) => ({
 export default function EditProfile() {
   const classes = useStyles();
 
-  /*const [state, setState] = React.useState({
-    age: '',
-    name: 'hai',
-  });
+  const locations = useLocations();
 
-  const handleChange = (event) => {
-    const name = event.target.name;
-    setState({
-      ...state,
-      [name]: event.target.value,
-    });
-  };*/
+  const { value: name, bind: bindName } = useInput("");
+  const { value: email, bind: bindEmail } = useInput("");
+  const { value: phoneNumber, bind: bindPhoneNumber } = useInput("");
+  const { value: password, bind: bindPassword } = useInput("");
+  const { value: departamento, bind: bindDepatamento } = useInput("");
+  const { value: provincia, bind: bindProvincia } = useInput("");
+  const { value: distrito, bind: bindDistrito } = useInput("");
+
+  const handleSubmit = async (evt) => {
+    evt.preventDefault();
+    let profileEdit = {
+      us_nombres: name,
+      us_correo: email,
+      us_celular: phoneNumber,
+      us_contrasena: password,
+      us_departamento: departamento,
+      us_provincia: provincia,
+      us_distrito: distrito,
+    };
+    await axios
+      .post("http://localhost:4000/editProfile", {
+        command: "EDIT_PROFILE",
+        transaction: profileEdit,
+      })
+      .then((res) => {
+        console.log(res);
+        return res;
+      });
+  };
 
   return (
     <>

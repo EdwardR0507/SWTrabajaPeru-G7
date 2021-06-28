@@ -1,5 +1,6 @@
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import { useInput } from "../../hooks/useInput";
 import axios from "axios";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -11,6 +12,7 @@ import Select from "@material-ui/core/Select";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import TextField from "@material-ui/core/TextField";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import SecondaryButton from "../../components/Buttons/SecondaryButton";
 import NavBar from "../../layouts/NavBar";
@@ -55,28 +57,11 @@ const StyledTypography = withStyles({
 
 const SignUp = () => {
   const classes = useStyles();
-
   const locations = useLocations();
+  const { register, handleSubmit } = useForm();
 
-  const { value: name, bind: bindName } = useInput("");
-  const { value: email, bind: bindEmail } = useInput("");
-  const { value: phoneNumber, bind: bindPhoneNumber } = useInput("");
-  const { value: password, bind: bindPassword } = useInput("");
-  const { value: departamento, bind: bindDepatamento } = useInput("");
-  const { value: provincia, bind: bindProvincia } = useInput("");
-  const { value: distrito, bind: bindDistrito } = useInput("");
-
-  const handleSubmit = async (evt) => {
+  const onSubmit = async (evt, user) => {
     evt.preventDefault();
-    let user = {
-      us_nombres: name,
-      us_correo: email,
-      us_celular: phoneNumber,
-      us_contrasena: password,
-      us_departamento: departamento,
-      us_provincia: provincia,
-      us_distrito: distrito,
-    };
     await axios
       .post("http://localhost:4000/user", {
         command: "REGISTER_USER",
@@ -98,54 +83,54 @@ const SignUp = () => {
           <form className={classes.form} noValidate>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <Input
-                  required
-                  name="username"
-                  type="text"
-                  id="username"
-                  label="Nombre de Usuario"
-                  bind={bindName}
+                <TextField
+                    variant="filled" 
+                    fullWidth 
+                    label="Nombres y Apellidos" 
+                    name="name"
+                    type="text"
+                    {...register("name")}
                 />
               </Grid>
 
               <Grid item xs={12}>
-                <Input
-                  required
+                <TextField
                   fullWidth
+                  variant="filled"
                   id="email"
                   label="Correo Electrónico"
                   name="email"
                   type="email"
-                  bind={bindEmail}
+                  {...register("email")}
                 />
               </Grid>
               <Grid item xs={12}>
-                <Input
-                  required
+                <TextField
                   fullWidth
+                  variant="filled"
                   id="phoneNumber"
                   label="Teléfono"
                   name="phoneNumber"
-                  bind={bindPhoneNumber}
+                  {...register("phoneNumber")}
                 />
               </Grid>
 
               <Grid item xs={12}>
-                <Input
-                  required
+                <TextField
                   fullWidth
+                  variant="filled"
                   name="password"
                   label="Contraseña"
                   type="password"
                   id="password"
-                  bind={bindPassword}
+                  {...register("password")}
                 />
               </Grid>
 
               <Grid item xs={12}>
-                <Input
-                  required
+                <TextField
                   fullWidth
+                  variant="filled"
                   name="passwordConfirm"
                   label="Confirmar Contraseña"
                   type="password"
@@ -166,7 +151,7 @@ const SignUp = () => {
                       name: "departamento",
                       id: "filled-departamento-native-simple",
                     }}
-                    {...bindDepatamento}
+                    {...register("departamento")}
                   >
                     <option hidden />
                     <option value={1}>Amazonas</option>
@@ -211,7 +196,7 @@ const SignUp = () => {
                       name: "provincia",
                       id: "filled-provincia-native-simple",
                     }}
-                    {...bindProvincia}
+                    {...register("provincia")}
                   >
                     <option aria-label="None" value="" />
                     <option value={1}>Provincia 1</option>
@@ -234,7 +219,7 @@ const SignUp = () => {
                       name: "distrito",
                       id: "filled-distrito-native-simple",
                     }}
-                    {...bindDistrito}
+                    {...register("distrito")}
                   >
                     <option aria-label="None" value="" />
                     <option value={1}>Distrito 1</option>
@@ -261,7 +246,7 @@ const SignUp = () => {
                   color="primary"
                   className={classes.submit}
                   name="REGISTRAR"
-                  onClick={handleSubmit}
+                  onClick={handleSubmit(onSubmit)}
                 ></PrimaryButton>
               </Grid>
 
