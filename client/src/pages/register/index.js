@@ -18,6 +18,7 @@ import SecondaryButton from "../../components/Buttons/SecondaryButton";
 import NavBar from "../../layouts/NavBar";
 import Input from "../../components/TextFields/Input";
 import useLocations from "../../hooks/useLocations";
+import useFilterSelect from "../../hooks/useFilterSelect";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -151,35 +152,15 @@ const SignUp = () => {
                   </InputLabel>
                   <Select
                     native
-                    name="us_departamento"
+                     name="us_departamento"
                     {...register("us_departamento", {required: true})}
                   >
                     <option hidden />
-                    <option value={1}>Amazonas</option>
-                    <option value={2}>Áncash</option>
-                    <option value={3}>Apurímac</option>
-                    <option value={4}>Arequipa</option>
-                    <option value={5}>Ayacucho</option>
-                    <option value={6}>Cajamarca</option>
-                    <option value={7}>Callao</option>
-                    <option value={8}>Cusco</option>
-                    <option value={9}>Huancavelica</option>
-                    <option value={10}>Huánuco</option>
-                    <option value={11}>Ica</option>
-                    <option value={12}>Junín</option>
-                    <option value={13}>La Libertad</option>
-                    <option value={14}>Lambayeque</option>
-                    <option value={15}>Lima</option>
-                    <option value={16}>Loreto</option>
-                    <option value={17}>Madre de Dios</option>
-                    <option value={18}>Moquegua</option>
-                    <option value={19}>Pasco</option>
-                    <option value={20}>Piura</option>
-                    <option value={21}>Puno</option>
-                    <option value={22}>San Martín</option>
-                    <option value={23}>Tacna</option>
-                    <option value={24}>Tumbes</option>
-                    <option value={25}>Ucayali</option>
+                    {locations.departamentos.map((dept) => (
+                      <option value={dept.name} key={dept.id}>
+                        {dept.name}
+                      </option>
+                    ))}
                   </Select>
                   {errors.us_departamento?.type === "required" && "Ingrese departamento"}
                 </FormControl>
@@ -195,10 +176,13 @@ const SignUp = () => {
                     name="us_provincia"
                     {...register("us_provincia", {required: true})}
                   >
-                    <option aria-label="None" value="" />
-                    <option value={1}>Provincia 1</option>
-                    <option value={2}>Provincia 2</option>
-                    <option value={3}>Provincia 3</option>
+                    <option hidden />
+                    {filteredProvincias &&
+                      filteredProvincias.map((prov) => (
+                        <option value={prov.name} key={prov.id}>
+                          {prov.name}
+                        </option>
+                      ))}
                   </Select>
                   {errors.us_provincia?.type === "required" && "Ingrese provincia"}
                 </FormControl>
@@ -214,10 +198,13 @@ const SignUp = () => {
                     name="us_distrito"
                     {...register("us_distrito", {required: true})}
                   >
-                    <option aria-label="None" value="" />
-                    <option value={1}>Distrito 1</option>
-                    <option value={2}>Distrito 2</option>
-                    <option value={3}>Distrito 3</option>
+                    <option hidden />
+                    {filteredDistritos &&
+                      filteredDistritos.map((dist) => (
+                        <option value={dist.name} key={dist.id}>
+                          {dist.name}
+                        </option>
+                      ))}
                   </Select>
                   {errors.us_distrito?.type === "required" && "Ingrese distrito"}
                 </FormControl>

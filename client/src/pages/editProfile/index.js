@@ -13,6 +13,7 @@ import Select from "@material-ui/core/Select";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import Input from "../../components/TextFields/Input";
 import SecondaryButton from "../../components/Buttons/SecondaryButton";
+import useFilterSelect from "../../hooks/useFilterSelect";
 
 const StyledTypography = withStyles({
   root: {
@@ -52,24 +53,19 @@ export default function EditProfile() {
 
   const locations = useLocations();
 
-  const { value: name, bind: bindName } = useInput("");
-  const { value: email, bind: bindEmail } = useInput("");
-  const { value: phoneNumber, bind: bindPhoneNumber } = useInput("");
-  const { value: password, bind: bindPassword } = useInput("");
   const { value: departamento, bind: bindDepatamento } = useInput("");
   const { value: provincia, bind: bindProvincia } = useInput("");
   const { value: distrito, bind: bindDistrito } = useInput("");
+  
+  const [filteredProvincias, filteredDistritos] = useFilterSelect(
+    departamento,
+    provincia
+  );
 
   const handleSubmit = async (evt) => {
     evt.preventDefault();
     let profileEdit = {
-      us_nombres: name,
-      us_correo: email,
-      us_celular: phoneNumber,
-      us_contrasena: password,
-      us_departamento: departamento,
-      us_provincia: provincia,
-      us_distrito: distrito,
+
     };
     await axios
       .post("http://localhost:4000/editProfile", {
@@ -81,6 +77,20 @@ export default function EditProfile() {
         return res;
       });
   };
+
+
+  /*const [state, setState] = React.useState({
+    age: '',
+    name: 'hai',
+  });
+
+  const handleChange = (event) => {
+    const name = event.target.name;
+    setState({
+      ...state,
+      [name]: event.target.value,
+    });
+  };*/
 
   return (
     <>
@@ -104,18 +114,21 @@ export default function EditProfile() {
                   Departamento
                 </InputLabel>
                 <Select
-                  native
                   /*value={state.age}
                 onChange={handleChange}*/
+                  native
                   inputProps={{
                     name: "departamento",
                     id: "filled-departamento-native-simple",
                   }}
+                  {...bindDepatamento}
                 >
-                  <option aria-label="None" value="" />
-                  <option value={1}>Departamento 1</option>
-                  <option value={2}>Departamento 2</option>
-                  <option value={3}>Departamento 3</option>
+                  <option hidden />
+                  {locations.departamentos.map((dept) => (
+                    <option value={dept.name} key={dept.id}>
+                      {dept.name}
+                    </option>
+                  ))}
                 </Select>
               </FormControl>
             </Grid>
@@ -130,18 +143,22 @@ export default function EditProfile() {
                   Provincia
                 </InputLabel>
                 <Select
-                  native
                   /*value={state.age}
                 onChange={handleChange}*/
+                  native
                   inputProps={{
                     name: "provincia",
                     id: "filled-provincia-native-simple",
                   }}
+                  {...bindProvincia}
                 >
-                  <option aria-label="None" value="" />
-                  <option value={1}>Provincia 1</option>
-                  <option value={2}>Provincia 2</option>
-                  <option value={3}>Provincia 3</option>
+                  <option hidden />
+                  {filteredProvincias &&
+                    filteredProvincias.map((prov) => (
+                      <option value={prov.name} key={prov.id}>
+                        {prov.name}
+                      </option>
+                    ))}
                 </Select>
               </FormControl>
             </Grid>
@@ -156,18 +173,22 @@ export default function EditProfile() {
                   Distrito
                 </InputLabel>
                 <Select
-                  native
                   /*value={state.age}
                 onChange={handleChange}*/
+                  native
                   inputProps={{
                     name: "distrito",
                     id: "filled-distrito-native-simple",
                   }}
+                  {...bindDistrito}
                 >
-                  <option aria-label="None" value="" />
-                  <option value={1}>Distrito 1</option>
-                  <option value={2}>Distrito 2</option>
-                  <option value={3}>Distrito 3</option>
+                  <option hidden />
+                  {filteredDistritos &&
+                    filteredDistritos.map((dist) => (
+                      <option value={dist.name} key={dist.id}>
+                        {dist.name}
+                      </option>
+                    ))}
                 </Select>
               </FormControl>
             </Grid>

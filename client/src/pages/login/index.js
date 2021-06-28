@@ -73,8 +73,7 @@ export default function SignIn() {
       .then((res) => {
         user = res;
         console.log(user.data.transaction);
-        });
-      
+      });
   };
 
   return (
