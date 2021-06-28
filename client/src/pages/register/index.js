@@ -16,7 +16,6 @@ import TextField from "@material-ui/core/TextField";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import SecondaryButton from "../../components/Buttons/SecondaryButton";
 import NavBar from "../../layouts/NavBar";
-import Input from "../../components/TextFields/Input";
 import useLocations from "../../hooks/useLocations";
 import useFilterSelect from "../../hooks/useFilterSelect";
 
@@ -56,10 +55,26 @@ const StyledTypography = withStyles({
   },
 })(Typography);
 
+const StyledErrorSpan = withStyles({
+  root:{
+    color: "#FF4D4D"
+  }
+})(Typography);
+
 const SignUp = () => {
   const classes = useStyles();
   const locations = useLocations();
+
   const { register, formState: {errors}, handleSubmit } = useForm();
+
+  const { value: departamento, bind: bindDepartamento } = useInput("");
+  const { value: provincia, bind: bindProvincia } = useInput("");
+  const { value: distrito, bind: bindDistrito } = useInput("");
+
+  const [filteredProvincias, filteredDistritos] = useFilterSelect(
+    departamento,
+    provincia
+  );
 
   const onSubmit = async (user, evt) => {
     evt.preventDefault();
@@ -91,9 +106,15 @@ const SignUp = () => {
                     label="Nombres y Apellidos" 
                     name="us_nombres"
                     type="text"
-                    {...register("us_nombres", {required: true})}
+                    {...register("us_nombres", {required: true,
+                                                maxLength: 40})}
                 />
-              {errors.us_nombres?.type === "required" && "Ingrese nombres y apellidos"}
+                <StyledErrorSpan>
+                  {errors.us_nombres?.type === "required" && "Ingrese nombres y apellidos"}
+                </StyledErrorSpan>
+                <StyledErrorSpan>
+                  {errors.us_nombres?.type === "maxLength" && "Nombre no válido"}
+                </StyledErrorSpan>
               </Grid>
               
               <Grid item xs={12}>
@@ -104,9 +125,16 @@ const SignUp = () => {
                   label="Correo Electrónico"
                   name="us_correo"
                   type="email"
-                  {...register("us_correo", {required: true})}
+                  {...register("us_correo", {required: true,
+                                             maxLength: 45,
+                                             pattern: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/})}
                 />
-                {errors.us_correo?.type === "required" && "Ingrese correo electrónico"}
+                <StyledErrorSpan>
+                  {errors.us_correo?.type === "required" && "Ingrese correo electrónico"}
+                </StyledErrorSpan>
+                <StyledErrorSpan>
+                  {errors.us_correo?.type === "pattern"  && "Dirección de correo no válido"}
+                </StyledErrorSpan>
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -115,10 +143,16 @@ const SignUp = () => {
                   id="phoneNumber"
                   label="Teléfono"
                   name="us_celular"
-                  {...register("us_celular", {required: true})}
+                  {...register("us_celular", {required: true,
+                                              pattern: /^^9\d{8}$/})}
                 />
+                <StyledErrorSpan>
+                  {errors.us_celular?.type === "required" && "Ingrese celular"}
+                </StyledErrorSpan>
+                <StyledErrorSpan>
+                  {errors.us_celular?.type === "pattern"  && "Número de celular no válido"}
+                </StyledErrorSpan>
               </Grid>
-                {errors.us_celular?.type === "required" && "Ingrese celular"}
 
               <Grid item xs={12}>
                 <TextField
@@ -128,9 +162,19 @@ const SignUp = () => {
                   label="Contraseña"
                   type="password"
                   id="password"
-                  {...register("us_contrasena", {required: true})}
+                  {...register("us_contrasena", {required: true, 
+                                                minLength: 8, 
+                                                maxLength: 14})}
                 />
-                {errors.us_contrasena?.type === "required" && "Ingrese contraseña"}
+                <StyledErrorSpan>
+                  {errors.us_contrasena?.type === "required" && "Ingrese contraseña"}
+                </StyledErrorSpan> 
+                <StyledErrorSpan>
+                  {errors.us_contrasena?.type === "minLength" && "Ingrese como mínimo 8 caracteres"}
+                </StyledErrorSpan>
+                <StyledErrorSpan>
+                  {errors.us_contrasena?.type === "maxLength" && "Ingrese como máximo 14 caracteres"}
+                </StyledErrorSpan>
               </Grid>
 
               <Grid item xs={12}>
@@ -154,6 +198,7 @@ const SignUp = () => {
                     native
                      name="us_departamento"
                     {...register("us_departamento", {required: true})}
+                    {...bindDepartamento}
                   >
                     <option hidden />
                     {locations.departamentos.map((dept) => (
@@ -162,7 +207,9 @@ const SignUp = () => {
                       </option>
                     ))}
                   </Select>
-                  {errors.us_departamento?.type === "required" && "Ingrese departamento"}
+                  <StyledErrorSpan>
+                    {errors.us_departamento?.type === "required" && "Ingrese departamento"}
+                  </StyledErrorSpan>
                 </FormControl>
               </Grid>
 
@@ -175,6 +222,7 @@ const SignUp = () => {
                     native
                     name="us_provincia"
                     {...register("us_provincia", {required: true})}
+                    {...bindProvincia}
                   >
                     <option hidden />
                     {filteredProvincias &&
@@ -184,7 +232,9 @@ const SignUp = () => {
                         </option>
                       ))}
                   </Select>
-                  {errors.us_provincia?.type === "required" && "Ingrese provincia"}
+                  <StyledErrorSpan>
+                    {errors.us_provincia?.type === "required" && "Ingrese provincia"}
+                  </StyledErrorSpan>
                 </FormControl>
               </Grid>
 
@@ -197,6 +247,7 @@ const SignUp = () => {
                     native
                     name="us_distrito"
                     {...register("us_distrito", {required: true})}
+                    {...bindDistrito}
                   >
                     <option hidden />
                     {filteredDistritos &&
@@ -206,7 +257,9 @@ const SignUp = () => {
                         </option>
                       ))}
                   </Select>
-                  {errors.us_distrito?.type === "required" && "Ingrese distrito"}
+                  <StyledErrorSpan>
+                    {errors.us_distrito?.type === "required" && "Ingrese distrito"}
+                  </StyledErrorSpan>
                 </FormControl>
               </Grid>
 

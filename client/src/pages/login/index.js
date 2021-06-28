@@ -1,5 +1,6 @@
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import axios from "axios";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Link from "@material-ui/core/Link";
@@ -7,6 +8,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import TextField from "@material-ui/core/TextField";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import NavBar from "../../layouts/NavBar";
 import Input from "../../components/TextFields/Input";
@@ -36,35 +38,23 @@ const StyledTypography = withStyles({
   },
 })(Typography);
 
+const StyledErrorSpan = withStyles({
+  root:{
+    color: "#FF4D4D",
+    float: "left"
+  }
+})(Typography);
+
 export default function SignIn() {
   const classes = useStyles();
-  /*state={
-    form:{
-      username:'',
-      password:''
-    }
-  }
-  handleChange=e => {
-    this.setState({
-      form:{
-        ...this.state.form,
-        [e.target.name]: e.target.value
-      }
-    });
-    console.log(this.state.form)
-  }
-  */
-  const { value: userName, bind: bindUserName } = useInput("");
-  const { value: password, bind: bindPassword } = useInput("");
+
+  const { register, formState: {errors}, handleSubmit } = useForm();
 
   let user;
 
-  const handleSubmit = async (evt) => {
+  const onSubmit = async (getUser, evt) => {
     evt.preventDefault();
-    let getUser = {
-      us_correo: userName,
-      us_contrasena: password,
-    };
+    console.log(getUser);
     await axios
       .post("http://localhost:4000/user", {
         command: "LOGIN_USER",
@@ -86,34 +76,53 @@ export default function SignIn() {
           <form className={classes.form} noValidate maxWidth="xs">
             <Grid container align="center" spacing={3}>
               <Grid item xs={12}>
-                <Input
-                  required
-                  id="username"
-                  name="username"
-                  label="Nombre de usuario"
-                  type="text"
-                  autoComplete="username"
-                  bind={bindUserName}
-                  /*onChange={this.handleChange}*/
+                <TextField
+                  fullWidth
+                  variant="filled"
+                  id="email"
+                  name="us_correo"
+                  label="Correo electrónico"
+                  type="email"
+                  autoComplete="us_correo"
+                  {...register("us_correo", {required:true,
+                                            pattern: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/})}
                 />
+                <StyledErrorSpan>
+                  {errors.us_correo?.type === "required" && "Ingrese el correo"}
+                </StyledErrorSpan>
+                <StyledErrorSpan>
+                  {errors.us_correo?.type === "pattern" && "Correo no válido"}
+                </StyledErrorSpan>
               </Grid>
               <Grid item xs={12}>
-                <Input
-                  required
+                <TextField
+                  fullWidth
+                  variant="filled"
                   id="password"
-                  name="password"
+                  name="us_contrasena"
                   label="Contraseña"
                   type="password"
                   autoComplete="current-password"
-                  bind={bindPassword}
+                  {...register("us_contrasena", {required:true,
+                                                minLength: 8,
+                                                maxLength: 14})}
                 />
+                <StyledErrorSpan>
+                  {errors.us_contrasena?.type === "required" && "Ingrese la contraseña"}
+                </StyledErrorSpan>
+                <StyledErrorSpan>
+                  {errors.us_contrasena?.type === "minLength" && "Contraseña no válida"}
+                </StyledErrorSpan>
+                <StyledErrorSpan>
+                  {errors.us_contrasena?.type === "maxLength" && "Contraseña no válida"}
+                </StyledErrorSpan>
               </Grid>
               <Grid item xs={12}>
                 <PrimaryButton
                   type="submit"
                   name="INICIAR SESIÓN"
                   className={classes.submit}
-                  onClick={handleSubmit}
+                  onClick={handleSubmit(onSubmit)}
                 ></PrimaryButton>
               </Grid>
               <Grid item xs={6} fontWeight="bold">
