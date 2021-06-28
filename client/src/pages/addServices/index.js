@@ -4,13 +4,14 @@ import Container from "@material-ui/core/Container";
 import HeadingBar from "../../layouts/HeadingBar/HeadingBar";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
-import Input from "../../components/TextFields/Input";
 import SecondaryButton from "../../components/Buttons/SecondaryButton";
 import Image from "material-ui-image";
-
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
+import TextField from "@material-ui/core/TextField";
 const StyledContainerAll = withStyles({
   root: {
-    marginTop: "0.9em",
+    marginTop: "2em",
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-evenly",
@@ -30,8 +31,7 @@ const StyledTypography = withStyles({
 
 const StyledContainer = withStyles({
   root: {
-    marginTop: "0.9em",
-    height: "300px",
+    height: "100%",
     display: "flex",
   },
 })(Container);
@@ -49,11 +49,28 @@ const StyledContainerButton = withStyles({
   },
 })(Container);
 
+const StyledContainerData = withStyles({
+  root: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-evenly",
+    height: "100%",
+  },
+})(Container);
+
+const StayledContainerService = withStyles({
+  root: {
+    display: "flex",
+    flexDirection: "column",
+    padding: "0",
+  },
+})(Container);
+
 const useStyles = makeStyles((theme) => ({
   form: {
-    width: "100%",
     height: "100%",
     display: "flex",
+    width: "100%",
     flexDirection: "column",
     justifyContent: "space-evenly",
   },
@@ -67,23 +84,44 @@ export default function AddServices() {
       <HeadingBar before={"TRABAJADOR"} after={"REGISTRAR SERVICIO"} />
       <StyledContainerAll>
         <StyledTypography>Nuevo Servicio</StyledTypography>
-        <StyledContainer>
-          <form className={classes.form} noValidate>
-            <Input id="imput1" label="Nombre del Servicio" />
-            <Input id="imput2" label="Descripción" />
-            <Input id="imput3" label="Tarifa" />
-          </form>
-          <StyledContainerImage>Imagen</StyledContainerImage>
-        </StyledContainer>
-        <StyledContainerButton>
-          <SecondaryButton
-            type="submit"
-            variant="contained"
-            color="secondary"
-            className={classes.submit}
-            name="CREAR"
-          ></SecondaryButton>
-        </StyledContainerButton>
+        <form className={classes.form} noValidate>
+          <StyledContainer>
+            <StyledContainerData>
+              <StayledContainerService>
+                <InputLabel id="imput6" htmlFor="filled-age-native-simple">
+                  Nombre el Servicio
+                </InputLabel>
+                <Select
+                  native
+                  inputProps={{
+                    name: "servicio",
+                    id: "filled-servicio-native-simple",
+                  }}
+                >
+                  <option hidden />
+                  <option value="Albañil">Albañil</option>
+                </Select>
+              </StayledContainerService>
+              <TextField
+                id="filled-multiline-flexible"
+                label="Descripción"
+                multiline
+                rowsMax={4}
+                variant="filled"
+              />
+            </StyledContainerData>
+            <StyledContainerImage>Imagen</StyledContainerImage>
+          </StyledContainer>
+          <StyledContainerButton>
+            <SecondaryButton
+              type="submit"
+              variant="contained"
+              color="secondary"
+              className={classes.submit}
+              name="CREAR"
+            ></SecondaryButton>
+          </StyledContainerButton>
+        </form>
       </StyledContainerAll>
     </>
   );
