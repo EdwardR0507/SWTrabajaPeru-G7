@@ -2,12 +2,12 @@ import React from "react";
 import NavBar from "../../layouts/NavBar";
 import HeadingBar from "../../layouts/HeadingBar/HeadingBar";
 import Container from "@material-ui/core/Container";
-import AddButton from "../../components/Buttons/AddButton";
 import Typography from "@material-ui/core/Typography";
 import InfoService from "../../components/Info/InfoService.jsx";
 import IconButton from "@material-ui/core/IconButton";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+import ServiceModal from "../../components/Modals/ServiceModal";
 import { withStyles } from "@material-ui/core/styles";
 const StyledTypography = withStyles({
   root: {
@@ -62,7 +62,7 @@ export default function ManageServices() {
       <HeadingBar before={"TRABAJADOR"} after={"MIS SERVICIOS"}></HeadingBar>
       <StyledContainer>
         <StyledTypography>Mis Servicios</StyledTypography>
-        <AddButton name="agregar"></AddButton>
+        <ServiceModal />
       </StyledContainer>
       <InfoService></InfoService>
       <InfoService></InfoService>

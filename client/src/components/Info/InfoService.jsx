@@ -12,7 +12,7 @@ const StyledContainer = withStyles({
   root: {
     display: "flex",
     marginTop: "20px",
-    width: "59.4em",
+    width: "85%",
     height: "9em",
     borderBottom: "1px solid #00000012",
   },
@@ -30,8 +30,8 @@ const StyledEditButton = withStyles({
     lineHeight: "16px",
     letterSpacing: "1.25px",
     textTransform: "uppercase",
-    width: "140px",
-    height: "48px",
+    width: "8.7em",
+    height: "2.85em",
     "&:hover": {
       background: theme.palette.primary.main,
     },
@@ -51,7 +51,7 @@ const StyledDeletButton = withStyles({
     letterSpacing: "1.25px",
     textTransform: "uppercase",
     width: "140px",
-    height: "48px",
+    height: "2.85em",
     "&:hover": {
       background: theme.serviceButton.primary.main,
     },
