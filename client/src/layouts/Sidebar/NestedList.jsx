@@ -1,4 +1,5 @@
 import React from "react";
+import { useHistory, useLocation } from "react-router";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link as RouterLink } from "react-router-dom";
 import Link from "@material-ui/core/Link";
@@ -28,6 +29,9 @@ const useStyles = makeStyles((theme) => ({
 export default function NestedList() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
+  const location = useLocation();
+  const history = useHistory();
+  const state = location.state;
 
   const handleClick = () => {
     setOpen(!open);
@@ -59,19 +63,17 @@ export default function NestedList() {
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <ListItem button className={classes.nested}>
-            <ListItemIcon>
-              <AddIcon />
-            </ListItemIcon>
-            <Link component={RouterLink} to="/newservice">
-              <ListItemText primary="Registrar Servicios" />
-            </Link>
-          </ListItem>
-          <ListItem button className={classes.nested}>
+          <ListItem button className={classes.nested} onClick={() => {
+                history.push({
+                  pathname: '/manageservices',
+                  search: `?id=${state.user.us_id}`,
+                  state: {user: state.user}
+                })
+          }}>
             <ListItemIcon>
               <SettingsIcon />
             </ListItemIcon>
-            <Link component={RouterLink} to="/manageservices">
+            <Link>
               <ListItemText primary="Mis Servicios" />
             </Link>
           </ListItem>

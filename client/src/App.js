@@ -26,7 +26,6 @@ function App() {
           <Route exact path="/" component={Home} />
           <Route exact path="/signin" component={SignIn} />
           <Route exact path="/signup" component={SignUp} />
-          <Route path="/newservice" component={AddServices} />
           <Route path="/manageservices" component={ManageServices}/>
           <Route path='*' component={()=><h1>404 NOT FOUND</h1>} />
         </Switch>

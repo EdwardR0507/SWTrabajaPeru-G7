@@ -147,7 +147,7 @@ const ServiceModal = () => {
                     variant="filled"
                   />
                 </Container>
-                <Container className={classes.containerImage}>Imagen</Container>
+              <Container className={classes.containerImage}> <></></Container>
               </Container>
               <Container className={classes.containerButton}>
                 <SecondaryButton

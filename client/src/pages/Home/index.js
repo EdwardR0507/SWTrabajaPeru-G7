@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 import { useLocation } from "react-router";
 import { withStyles } from "@material-ui/styles";
 import Container from "@material-ui/core/Container";
@@ -59,24 +58,24 @@ export default function Home() {
   const location = useLocation();
   const state = location.state;
 
-  let servicesHome;
+  /*let servicesHome;
   let workersHome;
 
   async function getServices() {
     await axios
-      .get("http://localhost:4000/homeServices", {
+      .get("http://localhost:4000/service", {
         command: "GET_SERVICES",
       })
       .then((res) => (servicesHome = res));
   }
 
-  async function getWorkers() {
+  /*async function getWorkers() {
     await axios
       .get("http://localhost:4000/homeWorkers", {
         command: "GET_WORKERS",
       })
       .then((res) => (workersHome = res));
-  }
+  }*/
 
   //getServices();
   //getWorkers();

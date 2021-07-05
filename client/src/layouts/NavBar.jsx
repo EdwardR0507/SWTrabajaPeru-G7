@@ -1,11 +1,11 @@
 import React from "react";
+import logo from "../assets/Trabaja peru.png"
 import { withStyles } from "@material-ui/core/styles";
 import { Link as RouterLink } from "react-router-dom";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Link from "@material-ui/core/Link";
-import Image from "material-ui-image";
 import SearchField from "../components/TextFields/SearchField";
 import IconButton from "@material-ui/core/IconButton";
 import NotificationsIcon from "@material-ui/icons/Notifications";
@@ -16,7 +16,9 @@ import SideBar from "../layouts/Sidebar/SideBar";
 const StyledNavBar = withStyles({
   root: {
     background: theme.palette.primary.main,
+    display: 'flex',
     position: "sticky",
+    justifyContent: 'space-around',
     height: "14.5%",
     lineHeight: "24px",
     letterSpacing: "0.18px",
@@ -28,17 +30,9 @@ const StyledTypography = withStyles({
   root: {
     color: theme.colorLetter.primary.main,
     textDecoration: "none",
-    margin: "0 20px",
+    margin: "0 40px",
   },
 })(Typography);
-
-const Logo = withStyles({
-  root: {
-    width: "96px",
-    margin: "0 20px",
-  },
-})(Typography);
-/*Cambiar por Image cuando esté listo el logo */
 
 const StyledIconButton = withStyles({
   root: {
@@ -53,12 +47,12 @@ const NavBar = (props) => {
         {props.user ?
           <>
             <SideBar />
-            <Logo />
+            <img src={logo} alt="logo" width="56px" height="50px"/>
             {/*Espacio vacío para el logo*/}
           </>
           :
           <>
-            <Logo />
+            <img src={logo} alt="logo" width="60px" height="50px"/>
             {/*Espacio vacío para el logo*/}
             <Link component={RouterLink} to="/">
               <StyledTypography variant="h5">Inicio</StyledTypography>

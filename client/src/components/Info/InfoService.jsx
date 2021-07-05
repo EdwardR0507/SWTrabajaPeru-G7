@@ -4,7 +4,6 @@ import Button from "@material-ui/core/Button";
 import DeleteIcon from "@material-ui/icons/Delete";
 import CreateIcon from "@material-ui/icons/Create";
 import theme from "../../themes/themes";
-import Image from "material-ui-image";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 
@@ -72,12 +71,6 @@ const StyledContainerImage = withStyles({
   },
 })(Container);
 
-const StyledImage = withStyles({
-  root: {
-    maxWidth: "100%",
-  },
-})(Image);
-
 const StyledContainerButtons = withStyles({
   root: {
     display: "flex",
@@ -109,12 +102,7 @@ const ServiceCard = () => {
         <>
           <Container className={classes.root}>
             <StyledContainerData>
-              <StyledContainerImage>
-                {/*
-            <StyledImage
-              src="acá irá la imagen del servicio"
-              cover
-            ></StyledImage>*/}
+              <StyledContainerImage><></>
               </StyledContainerImage>
               <Container>
                 <Typography color="primary" variant="subtitle1">

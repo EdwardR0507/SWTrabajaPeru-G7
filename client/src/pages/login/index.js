@@ -12,8 +12,7 @@ import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import NavBar from "../../layouts/NavBar";
-import Input from "../../components/TextFields/Input";
-import { useInput } from "../../hooks/useInput";
+
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -79,7 +78,7 @@ export default function SignIn() {
         <CssBaseline />
         <div className={classes.paper}>
           <StyledTypography>Iniciar Sesión</StyledTypography>
-          <form className={classes.form} noValidate maxWidth="xs">
+          <form className={classes.form} noValidate >
             <Grid container align="center" spacing={3}>
               <Grid item xs={12}>
                 <TextField

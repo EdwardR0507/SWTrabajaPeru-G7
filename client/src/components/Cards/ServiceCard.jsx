@@ -33,16 +33,6 @@ const StyledCardActions = withStyles({
   },
 })(CardActions);
 
-const StyledH2 = withStyles({
-  root: {
-    color: theme.palette.primary.main,
-    fontWeight: "bold",
-    fontSize: "20px",
-    lineHeight: "23px",
-    letterSpacing: "-0.02em",
-  },
-})(Typography);
-
 const StyledButton = withStyles({
   root: {
     color: theme.palette.primary.main,
@@ -78,7 +68,6 @@ const ServiceCard = () => {
       />
       <StyledCardMedia image="src/assets/CardTest.jpeg" />
       <CardContent>
-        <StyledH2 variant="h2">Precio</StyledH2>
         <StyledBody2 variant="body2">
           Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quas culpa
           maxime mollitia velit sunt, rem sint, nam iusto placeat ratione quae

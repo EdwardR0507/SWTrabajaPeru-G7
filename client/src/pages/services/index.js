@@ -1,4 +1,5 @@
 import React from "react";
+import { useLocation } from "react-router";
 import NavBar from "../../layouts/NavBar";
 import HeadingBar from "../../layouts/HeadingBar/HeadingBar";
 import Container from "@material-ui/core/Container";
@@ -56,9 +57,16 @@ const StyledNextButton = withStyles({
 })(NavigateNextIcon);
 
 export default function ManageServices() {
+  const location = useLocation();
+  const state = location.state;
+
   return (
     <>
-      <NavBar></NavBar>
+      {
+      state ?
+        <NavBar user={state.user}/>
+      : <NavBar />
+    }
       <HeadingBar before={"TRABAJADOR"} after={"MIS SERVICIOS"}></HeadingBar>
       <StyledContainer>
         <StyledTypography>Mis Servicios</StyledTypography>
