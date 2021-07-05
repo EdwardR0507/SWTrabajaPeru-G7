@@ -2,6 +2,7 @@ import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
@@ -47,6 +48,7 @@ const StyledErrorSpan = withStyles({
 export default function SignIn() {
   const classes = useStyles();
 
+  const history = useHistory();
   const {
     register,
     formState: { errors },
@@ -57,15 +59,19 @@ export default function SignIn() {
 
   const onSubmit = async (getUser, evt) => {
     evt.preventDefault();
-    console.log(getUser);
     await axios
       .post("http://localhost:4000/user", {
         command: "LOGIN_USER",
         transaction: getUser,
       })
       .then((res) => {
-        user = res;
-        console.log(user.data.transaction);
+        user = res.data.transaction;
+        console.log(user);
+        history.push({
+          pathname: "/",
+          search: `?id=${user.us_id}`,
+          state: { user: user },
+        });
       });
   };
 
