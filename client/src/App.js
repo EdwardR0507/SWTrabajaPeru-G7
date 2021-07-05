@@ -6,7 +6,6 @@ import SignIn from "./pages/login";
 import SignUp from "./pages/register";
 import EditProfile from "./pages/editProfile";
 import ManageServices from "./pages/services";
-import AddServices from "./pages/addServices";
 const GlobalStyles = withStyles({
   "@global": {
     "html, body": {
