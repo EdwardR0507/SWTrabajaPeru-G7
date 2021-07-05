@@ -2,7 +2,7 @@ import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { useHistory } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
@@ -41,15 +41,19 @@ const StyledTypography = withStyles({
 const StyledErrorSpan = withStyles({
   root: {
     color: "#FF4D4D",
-    float: "left"
-  }
+    float: "left",
+  },
 })(Typography);
 
 export default function SignIn() {
   const classes = useStyles();
 
   const history = useHistory();
-  const { register, formState: { errors }, handleSubmit } = useForm();
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm();
 
   let user;
 
@@ -62,13 +66,13 @@ export default function SignIn() {
       })
       .then((res) => {
         user = res.data.transaction;
-        console.log(user)
+        console.log(user);
         history.push({
-          pathname: '/',
+          pathname: "/",
           search: `?id=${user.us_id}`,
-          state: {user: user}
-        })
-      })
+          state: { user: user },
+        });
+      });
   };
 
   return (
@@ -91,7 +95,7 @@ export default function SignIn() {
                   autoComplete="us_correo"
                   {...register("us_correo", {
                     required: true,
-                    pattern: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
+                    pattern: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
                   })}
                 />
                 <StyledErrorSpan>
@@ -113,17 +117,20 @@ export default function SignIn() {
                   {...register("us_contrasena", {
                     required: true,
                     minLength: 8,
-                    maxLength: 14
+                    maxLength: 14,
                   })}
                 />
                 <StyledErrorSpan>
-                  {errors.us_contrasena?.type === "required" && "Ingrese la contraseña"}
+                  {errors.us_contrasena?.type === "required" &&
+                    "Ingrese la contraseña"}
                 </StyledErrorSpan>
                 <StyledErrorSpan>
-                  {errors.us_contrasena?.type === "minLength" && "Contraseña no válida"}
+                  {errors.us_contrasena?.type === "minLength" &&
+                    "Contraseña no válida"}
                 </StyledErrorSpan>
                 <StyledErrorSpan>
-                  {errors.us_contrasena?.type === "maxLength" && "Contraseña no válida"}
+                  {errors.us_contrasena?.type === "maxLength" &&
+                    "Contraseña no válida"}
                 </StyledErrorSpan>
               </Grid>
               <Grid item xs={12}>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
@@ -9,6 +9,7 @@ import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 import InputLabel from "@material-ui/core/InputLabel";
 import SecondaryButton from "../Buttons/SecondaryButton";
+import PrimaryButton from "../Buttons/PrimaryButton";
 import Select from "@material-ui/core/Select";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -26,8 +27,8 @@ const useStyles = makeStyles(() => ({
     border: "2px solid #000",
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
-    width: "50em",
-    height: "25em",
+    width: "60em",
+    height: "35em",
   },
   title: {
     fontSize: "1.8em",
@@ -81,19 +82,38 @@ const useStyles = makeStyles(() => ({
   },
   containerButton: {
     display: "flex",
-    justifyContent: "center",
+    width: "60%",
+    justifyContent: "space-evenly",
+  },
+  wrapp: {
+    width: "214px",
   },
 }));
-const ServiceModal = () => {
+const ServiceModal = ({ data, setData }) => {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
 
   const handleOpen = () => {
     setOpen(true);
   };
 
+  const handleCreate = () => {
+    setData([...data, { id: data[data.length - 1].id + 1, name, description }]);
+    setOpen(false);
+  };
+
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleDescription = (e) => {
+    setDescription(e.target.value);
+  };
+
+  const handleSelect = (e) => {
+    setName(e.target.value);
   };
 
   return (
@@ -130,32 +150,41 @@ const ServiceModal = () => {
                     </InputLabel>
                     <Select
                       native
+                      onChange={handleSelect}
                       inputProps={{
                         name: "servicio",
                         id: "filled-servicio-native-simple",
                       }}
                     >
                       <option hidden />
-                      <option value="Albañil">Albañil</option>
+                      <option value="Albañil">Albañileria</option>
+                      <option value="Gasfiteria">Gasfiteria</option>
                     </Select>
                   </Container>
                   <TextField
                     id="filled-multiline-flexible"
                     label="Descripción"
                     multiline
-                    rowsMax={4}
+                    rowsMax={3}
                     variant="filled"
+                    onChange={handleDescription}
                   />
                 </Container>
               <Container className={classes.containerImage}> <></></Container>
               </Container>
               <Container className={classes.containerButton}>
+                <Container className={classes.wrapp}>
+                  <PrimaryButton
+                    type="submit"
+                    className={classes.create}
+                    variant="contained"
+                    name="ACEPTAR"
+                    onClick={handleCreate}
+                  ></PrimaryButton>
+                </Container>
                 <SecondaryButton
-                  className="createButton"
-                  type="submit"
                   variant="contained"
-                  color="secondary"
-                  name="CREAR"
+                  name="CANCELAR"
                   onClick={handleClose}
                 ></SecondaryButton>
               </Container>

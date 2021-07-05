@@ -16,7 +16,6 @@ const GlobalStyles = withStyles({
   },
 })(() => null);
 
-
 function App() {
   return (
     <MuiThemeProvider theme={theme}>

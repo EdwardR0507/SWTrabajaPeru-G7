@@ -16,6 +16,7 @@ const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
+    marginRight: "50px",
   },
   hide: {
     display: "none",

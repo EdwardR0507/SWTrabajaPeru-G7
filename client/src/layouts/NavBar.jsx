@@ -37,6 +37,7 @@ const StyledTypography = withStyles({
 const StyledIconButton = withStyles({
   root: {
     color: theme.colorLetter.primary.main,
+    marginRight: '50px'
   },
 })(IconButton);
 
@@ -47,12 +48,12 @@ const NavBar = (props) => {
         {props.user ?
           <>
             <SideBar />
-            <img src={logo} alt="logo" width="56px" height="50px"/>
+            <img src={logo} alt="logo" width="56px" height="50px" />
             {/*Espacio vacío para el logo*/}
           </>
           :
           <>
-            <img src={logo} alt="logo" width="60px" height="50px"/>
+            <img src={logo} alt="logo" width="60px" height="50px" />
             {/*Espacio vacío para el logo*/}
             <Link component={RouterLink} to="/">
               <StyledTypography variant="h5">Inicio</StyledTypography>
