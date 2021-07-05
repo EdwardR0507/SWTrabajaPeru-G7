@@ -2,6 +2,7 @@ import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import { useHistory } from 'react-router-dom';
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
@@ -39,7 +40,7 @@ const StyledTypography = withStyles({
 })(Typography);
 
 const StyledErrorSpan = withStyles({
-  root:{
+  root: {
     color: "#FF4D4D",
     float: "left"
   }
@@ -48,22 +49,27 @@ const StyledErrorSpan = withStyles({
 export default function SignIn() {
   const classes = useStyles();
 
-  const { register, formState: {errors}, handleSubmit } = useForm();
+  const history = useHistory();
+  const { register, formState: { errors }, handleSubmit } = useForm();
 
   let user;
 
   const onSubmit = async (getUser, evt) => {
     evt.preventDefault();
-    console.log(getUser);
     await axios
       .post("http://localhost:4000/user", {
         command: "LOGIN_USER",
         transaction: getUser,
       })
       .then((res) => {
-        user = res;
-        console.log(user.data.transaction);
-      });
+        user = res.data.transaction;
+        console.log(user)
+        history.push({
+          pathname: '/',
+          search: `?id=${user.us_id}`,
+          state: {user: user}
+        })
+      })
   };
 
   return (
@@ -84,8 +90,10 @@ export default function SignIn() {
                   label="Correo electrónico"
                   type="email"
                   autoComplete="us_correo"
-                  {...register("us_correo", {required:true,
-                                            pattern: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/})}
+                  {...register("us_correo", {
+                    required: true,
+                    pattern: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
+                  })}
                 />
                 <StyledErrorSpan>
                   {errors.us_correo?.type === "required" && "Ingrese el correo"}
@@ -103,9 +111,11 @@ export default function SignIn() {
                   label="Contraseña"
                   type="password"
                   autoComplete="current-password"
-                  {...register("us_contrasena", {required:true,
-                                                minLength: 8,
-                                                maxLength: 14})}
+                  {...register("us_contrasena", {
+                    required: true,
+                    minLength: 8,
+                    maxLength: 14
+                  })}
                 />
                 <StyledErrorSpan>
                   {errors.us_contrasena?.type === "required" && "Ingrese la contraseña"}

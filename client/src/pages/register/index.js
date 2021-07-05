@@ -2,6 +2,7 @@ import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useInput } from "../../hooks/useInput";
+import { useHistory } from 'react-router-dom';
 import axios from "axios";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Link from "@material-ui/core/Link";
@@ -66,6 +67,7 @@ const SignUp = () => {
   const locations = useLocations();
 
   const { register, formState: {errors}, handleSubmit } = useForm();
+  const history = useHistory();
 
   const { value: departamento, bind: bindDepartamento } = useInput("");
   const { value: provincia, bind: bindProvincia } = useInput("");
@@ -84,10 +86,9 @@ const SignUp = () => {
         command: "REGISTER_USER",
         transaction: user,
       })
-      .then((res) => {
-        console.log(res);
-        return res;
-      });
+      //.then((res) => {
+        //history.push(`/home/:${res.data.transaction.us_id}`)
+      //})
   };
 
   return (

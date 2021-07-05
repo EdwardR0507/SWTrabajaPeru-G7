@@ -46,46 +46,46 @@ const StyledIconButton = withStyles({
   },
 })(IconButton);
 
-const RightBar = (props) => {
-  const isLogged = props.isLogged;
-  if (!isLogged) {
-    return (
-      <>
-        <Link component={RouterLink} to="/signup">
-          <StyledTypography variant="h5">Registrarse</StyledTypography>
-        </Link>
-        <Link component={RouterLink} to="/signin">
-          <StyledTypography variant="h5">Iniciar Sesión</StyledTypography>
-        </Link>
-      </>
-    );
-  } else {
-    return (
-      <>
-        <SideBar />
-        <StyledIconButton>
-          <NotificationsIcon fontSize="large" />
-        </StyledIconButton>
-        <Avatar></Avatar>
-        <Link>
-          <StyledTypography variant="h5">DANIEL CIFUENTES</StyledTypography>
-        </Link>
-      </>
-    );
-  }
-};
-
-const NavBar = () => {
+const NavBar = (props) => {
   return (
     <StyledNavBar>
       <Toolbar>
-        <Logo />
-        {/*Espacio vacío para el logo*/}
-        <Link component={RouterLink} to="/">
-          <StyledTypography variant="h5">Inicio</StyledTypography>
-        </Link>
+        {props.user ?
+          <>
+            <SideBar />
+            <Logo />
+            {/*Espacio vacío para el logo*/}
+          </>
+          :
+          <>
+            <Logo />
+            {/*Espacio vacío para el logo*/}
+            <Link component={RouterLink} to="/">
+              <StyledTypography variant="h5">Inicio</StyledTypography>
+            </Link>
+          </>
+        }
         <SearchField placeholder="Buscar Cliente o Servicio" />
-        <RightBar isLogged={false} />
+        {props.user ?
+          <>
+            <StyledIconButton>
+              <NotificationsIcon fontSize="large" />
+            </StyledIconButton>
+            <Avatar></Avatar>
+            <Link>
+              <StyledTypography variant="h5">{props.user.us_nombres}</StyledTypography>
+            </Link>
+          </>
+          :
+          <>
+            <Link component={RouterLink} to="/signup">
+              <StyledTypography variant="h5">Registrarse</StyledTypography>
+            </Link>
+            <Link component={RouterLink} to="/signin">
+              <StyledTypography variant="h5">Iniciar Sesión</StyledTypography>
+            </Link>
+          </>
+        }
       </Toolbar>
     </StyledNavBar>
   );

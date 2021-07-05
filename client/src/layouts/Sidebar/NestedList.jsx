@@ -1,9 +1,12 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { Link as RouterLink } from "react-router-dom";
+import Link from "@material-ui/core/Link";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
+import IconButton from "@material-ui/core/IconButton";
 import Collapse from "@material-ui/core/Collapse";
 import HomeIcon from "@material-ui/icons/Home";
 import PersonIcon from "@material-ui/icons/Person";
@@ -60,13 +63,17 @@ export default function NestedList() {
             <ListItemIcon>
               <AddIcon />
             </ListItemIcon>
-            <ListItemText primary="Registrar Servicios" />
+            <Link component={RouterLink} to="/newservice">
+              <ListItemText primary="Registrar Servicios" />
+            </Link>
           </ListItem>
           <ListItem button className={classes.nested}>
             <ListItemIcon>
               <SettingsIcon />
             </ListItemIcon>
-            <ListItemText primary="Mis Servicios" />
+            <Link component={RouterLink} to="/manageservices">
+              <ListItemText primary="Mis Servicios" />
+            </Link>
           </ListItem>
         </List>
       </Collapse>

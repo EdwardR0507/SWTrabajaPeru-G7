@@ -17,6 +17,7 @@ const GlobalStyles = withStyles({
   },
 })(() => null);
 
+
 function App() {
   return (
     <MuiThemeProvider theme={theme}>
@@ -24,8 +25,11 @@ function App() {
       <BrowserRouter>
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route path="/signin" component={SignIn} />
-          <Route path="/signup" component={SignUp} />
+          <Route exact path="/signin" component={SignIn} />
+          <Route exact path="/signup" component={SignUp} />
+          <Route path="/newservice" component={AddServices} />
+          <Route path="/manageservices" component={ManageServices}/>
+          <Route path='*' component={()=><h1>404 NOT FOUND</h1>} />
         </Switch>
       </BrowserRouter>
     </MuiThemeProvider>

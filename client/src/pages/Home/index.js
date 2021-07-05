@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import { useLocation } from "react-router";
 import { withStyles } from "@material-ui/styles";
 import Container from "@material-ui/core/Container";
 import Link from "@material-ui/core/Link";
@@ -55,12 +56,15 @@ const StyledLink = withStyles({
 })(Link);
 
 export default function Home() {
+  const location = useLocation();
+  const state = location.state;
+
   let servicesHome;
   let workersHome;
 
   async function getServices() {
     await axios
-      .get("https://localhost:4000/homeServices", {
+      .get("http://localhost:4000/homeServices", {
         command: "GET_SERVICES",
       })
       .then((res) => (servicesHome = res));
@@ -68,18 +72,21 @@ export default function Home() {
 
   async function getWorkers() {
     await axios
-      .get("https://localhost:4000/homeWorkers", {
+      .get("http://localhost:4000/homeWorkers", {
         command: "GET_WORKERS",
       })
       .then((res) => (workersHome = res));
   }
 
-  getServices();
-  getWorkers();
+  //getServices();
+  //getWorkers();
 
-  return (
-    <>
-      <NavBar />
+  return(
+    <>{
+      state ?
+        <NavBar user={state.user}/>
+      : <NavBar />
+    }
       <Container>
         <StyledContentContainer>
           <StyledH2 variant="h2">Servicios</StyledH2>
