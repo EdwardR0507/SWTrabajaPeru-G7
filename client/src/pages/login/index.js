@@ -11,8 +11,7 @@ import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import NavBar from "../../layouts/NavBar";
-import Input from "../../components/TextFields/Input";
-import { useInput } from "../../hooks/useInput";
+
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -39,16 +38,20 @@ const StyledTypography = withStyles({
 })(Typography);
 
 const StyledErrorSpan = withStyles({
-  root:{
+  root: {
     color: "#FF4D4D",
-    float: "left"
-  }
+    float: "left",
+  },
 })(Typography);
 
 export default function SignIn() {
   const classes = useStyles();
 
-  const { register, formState: {errors}, handleSubmit } = useForm();
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm();
 
   let user;
 
@@ -84,8 +87,10 @@ export default function SignIn() {
                   label="Correo electrónico"
                   type="email"
                   autoComplete="us_correo"
-                  {...register("us_correo", {required:true,
-                                            pattern: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/})}
+                  {...register("us_correo", {
+                    required: true,
+                    pattern: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
+                  })}
                 />
                 <StyledErrorSpan>
                   {errors.us_correo?.type === "required" && "Ingrese el correo"}
@@ -103,18 +108,23 @@ export default function SignIn() {
                   label="Contraseña"
                   type="password"
                   autoComplete="current-password"
-                  {...register("us_contrasena", {required:true,
-                                                minLength: 8,
-                                                maxLength: 14})}
+                  {...register("us_contrasena", {
+                    required: true,
+                    minLength: 8,
+                    maxLength: 14,
+                  })}
                 />
                 <StyledErrorSpan>
-                  {errors.us_contrasena?.type === "required" && "Ingrese la contraseña"}
+                  {errors.us_contrasena?.type === "required" &&
+                    "Ingrese la contraseña"}
                 </StyledErrorSpan>
                 <StyledErrorSpan>
-                  {errors.us_contrasena?.type === "minLength" && "Contraseña no válida"}
+                  {errors.us_contrasena?.type === "minLength" &&
+                    "Contraseña no válida"}
                 </StyledErrorSpan>
                 <StyledErrorSpan>
-                  {errors.us_contrasena?.type === "maxLength" && "Contraseña no válida"}
+                  {errors.us_contrasena?.type === "maxLength" &&
+                    "Contraseña no válida"}
                 </StyledErrorSpan>
               </Grid>
               <Grid item xs={12}>

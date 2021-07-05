@@ -8,13 +8,17 @@ import Image from "material-ui-image";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     display: "flex",
     marginTop: "20px",
     width: "85%",
     height: "9em",
     borderBottom: "1px solid #00000012",
+  },
+  description: {
+    fontSize: "1.1em",
+    fontFamily: "Roboto",
   },
 }));
 
@@ -87,20 +91,40 @@ const StyledContainerButtons = withStyles({
   },
 })(Container);
 
-const ServiceCard = () => {
+const ServiceCard = ({ name, description }) => {
   const classes = useStyles();
 
-  const [name, setName] = useState("Nombre del Servicio");
-  const [description, setDescription] = useState("Descripción");
+  const [nameService, setNameService] = useState(name);
+  const [descriptionService, setDescriptionService] = useState(description);
   const [state, setState] = useState(true);
 
   const handleEdit = () => {
-    setName("");
-    setDescription("");
+    setNameService("nombre");
+    setDescriptionService("descripcion");
   };
 
   const handleDelete = () => {
     setState(false);
+  };
+
+  const filteredWords = (str) => {
+    let wrapWords = [];
+    let i = 0,
+      j = 0;
+    if (str.split(" ").length === 1) {
+      if (str.length >= 35) {
+        while (i <= str.length) {
+          wrapWords[j] = str.slice(i, i + 35);
+          i += 35;
+          j++;
+        }
+        return wrapWords.join("\n");
+      } else {
+        return str;
+      }
+    } else {
+      return str;
+    }
   };
 
   return (
@@ -111,16 +135,21 @@ const ServiceCard = () => {
             <StyledContainerData>
               <StyledContainerImage>
                 {/*
-            <StyledImage
-              src="acá irá la imagen del servicio"
-              cover
-            ></StyledImage>*/}
+                 <StyledImage
+                  src="acá irá la imagen del servicio"
+                  cover
+                ></StyledImage>*/}
               </StyledContainerImage>
               <Container>
                 <Typography color="primary" variant="subtitle1">
-                  {name}
+                  {nameService}
                 </Typography>
-                <Typography variant="subtitle2">{description}</Typography>
+                <Typography
+                  variant="subtitle2"
+                  style={{ whiteSpace: "pre-wrap" }}
+                >
+                  {filteredWords(descriptionService)}
+                </Typography>
               </Container>
             </StyledContainerData>
             <StyledContainerButtons>

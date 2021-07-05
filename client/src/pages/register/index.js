@@ -56,16 +56,20 @@ const StyledTypography = withStyles({
 })(Typography);
 
 const StyledErrorSpan = withStyles({
-  root:{
-    color: "#FF4D4D"
-  }
+  root: {
+    color: "#FF4D4D",
+  },
 })(Typography);
 
 const SignUp = () => {
   const classes = useStyles();
   const locations = useLocations();
 
-  const { register, formState: {errors}, handleSubmit } = useForm();
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm();
 
   const { value: departamento, bind: bindDepartamento } = useInput("");
   const { value: provincia, bind: bindProvincia } = useInput("");
@@ -101,22 +105,23 @@ const SignUp = () => {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
-                    variant="filled" 
-                    fullWidth 
-                    label="Nombres y Apellidos" 
-                    name="us_nombres"
-                    type="text"
-                    {...register("us_nombres", {required: true,
-                                                maxLength: 40})}
+                  variant="filled"
+                  fullWidth
+                  label="Nombres y Apellidos"
+                  name="us_nombres"
+                  type="text"
+                  {...register("us_nombres", { required: true, maxLength: 40 })}
                 />
                 <StyledErrorSpan>
-                  {errors.us_nombres?.type === "required" && "Ingrese nombres y apellidos"}
+                  {errors.us_nombres?.type === "required" &&
+                    "Ingrese nombres y apellidos"}
                 </StyledErrorSpan>
                 <StyledErrorSpan>
-                  {errors.us_nombres?.type === "maxLength" && "Nombre no válido"}
+                  {errors.us_nombres?.type === "maxLength" &&
+                    "Nombre no válido"}
                 </StyledErrorSpan>
               </Grid>
-              
+
               <Grid item xs={12}>
                 <TextField
                   fullWidth
@@ -125,15 +130,19 @@ const SignUp = () => {
                   label="Correo Electrónico"
                   name="us_correo"
                   type="email"
-                  {...register("us_correo", {required: true,
-                                             maxLength: 45,
-                                             pattern: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/})}
+                  {...register("us_correo", {
+                    required: true,
+                    maxLength: 45,
+                    pattern: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
+                  })}
                 />
                 <StyledErrorSpan>
-                  {errors.us_correo?.type === "required" && "Ingrese correo electrónico"}
+                  {errors.us_correo?.type === "required" &&
+                    "Ingrese correo electrónico"}
                 </StyledErrorSpan>
                 <StyledErrorSpan>
-                  {errors.us_correo?.type === "pattern"  && "Dirección de correo no válido"}
+                  {errors.us_correo?.type === "pattern" &&
+                    "Dirección de correo no válido"}
                 </StyledErrorSpan>
               </Grid>
               <Grid item xs={12}>
@@ -143,14 +152,17 @@ const SignUp = () => {
                   id="phoneNumber"
                   label="Teléfono"
                   name="us_celular"
-                  {...register("us_celular", {required: true,
-                                              pattern: /^^9\d{8}$/})}
+                  {...register("us_celular", {
+                    required: true,
+                    pattern: /^^9\d{8}$/,
+                  })}
                 />
                 <StyledErrorSpan>
                   {errors.us_celular?.type === "required" && "Ingrese celular"}
                 </StyledErrorSpan>
                 <StyledErrorSpan>
-                  {errors.us_celular?.type === "pattern"  && "Número de celular no válido"}
+                  {errors.us_celular?.type === "pattern" &&
+                    "Número de celular no válido"}
                 </StyledErrorSpan>
               </Grid>
 
@@ -162,18 +174,23 @@ const SignUp = () => {
                   label="Contraseña"
                   type="password"
                   id="password"
-                  {...register("us_contrasena", {required: true, 
-                                                minLength: 8, 
-                                                maxLength: 14})}
+                  {...register("us_contrasena", {
+                    required: true,
+                    minLength: 8,
+                    maxLength: 14,
+                  })}
                 />
                 <StyledErrorSpan>
-                  {errors.us_contrasena?.type === "required" && "Ingrese contraseña"}
-                </StyledErrorSpan> 
-                <StyledErrorSpan>
-                  {errors.us_contrasena?.type === "minLength" && "Ingrese como mínimo 8 caracteres"}
+                  {errors.us_contrasena?.type === "required" &&
+                    "Ingrese contraseña"}
                 </StyledErrorSpan>
                 <StyledErrorSpan>
-                  {errors.us_contrasena?.type === "maxLength" && "Ingrese como máximo 14 caracteres"}
+                  {errors.us_contrasena?.type === "minLength" &&
+                    "Ingrese como mínimo 8 caracteres"}
+                </StyledErrorSpan>
+                <StyledErrorSpan>
+                  {errors.us_contrasena?.type === "maxLength" &&
+                    "Ingrese como máximo 14 caracteres"}
                 </StyledErrorSpan>
               </Grid>
 
@@ -186,7 +203,8 @@ const SignUp = () => {
                   type="password"
                   id="passwordConfirm"
                 />
-                {errors.passwordConfirm?.type === "required" && "Ingrese contraseña"}
+                {errors.passwordConfirm?.type === "required" &&
+                  "Ingrese contraseña"}
               </Grid>
 
               <Grid container item xs={12}>
@@ -196,8 +214,8 @@ const SignUp = () => {
                   </InputLabel>
                   <Select
                     native
-                     name="us_departamento"
-                    {...register("us_departamento", {required: true})}
+                    name="us_departamento"
+                    {...register("us_departamento", { required: true })}
                     {...bindDepartamento}
                   >
                     <option hidden />
@@ -208,7 +226,8 @@ const SignUp = () => {
                     ))}
                   </Select>
                   <StyledErrorSpan>
-                    {errors.us_departamento?.type === "required" && "Ingrese departamento"}
+                    {errors.us_departamento?.type === "required" &&
+                      "Ingrese departamento"}
                   </StyledErrorSpan>
                 </FormControl>
               </Grid>
@@ -221,7 +240,7 @@ const SignUp = () => {
                   <Select
                     native
                     name="us_provincia"
-                    {...register("us_provincia", {required: true})}
+                    {...register("us_provincia", { required: true })}
                     {...bindProvincia}
                   >
                     <option hidden />
@@ -233,7 +252,8 @@ const SignUp = () => {
                       ))}
                   </Select>
                   <StyledErrorSpan>
-                    {errors.us_provincia?.type === "required" && "Ingrese provincia"}
+                    {errors.us_provincia?.type === "required" &&
+                      "Ingrese provincia"}
                   </StyledErrorSpan>
                 </FormControl>
               </Grid>
@@ -246,7 +266,7 @@ const SignUp = () => {
                   <Select
                     native
                     name="us_distrito"
-                    {...register("us_distrito", {required: true})}
+                    {...register("us_distrito", { required: true })}
                     {...bindDistrito}
                   >
                     <option hidden />
@@ -258,7 +278,8 @@ const SignUp = () => {
                       ))}
                   </Select>
                   <StyledErrorSpan>
-                    {errors.us_distrito?.type === "required" && "Ingrese distrito"}
+                    {errors.us_distrito?.type === "required" &&
+                      "Ingrese distrito"}
                   </StyledErrorSpan>
                 </FormControl>
               </Grid>
@@ -275,7 +296,6 @@ const SignUp = () => {
               <Grid item xs={6} sm={6}>
                 <PrimaryButton
                   type="submit"
-                  fullWidth
                   variant="contained"
                   color="primary"
                   className={classes.submit}

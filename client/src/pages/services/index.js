@@ -1,12 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import NavBar from "../../layouts/NavBar";
 import HeadingBar from "../../layouts/HeadingBar/HeadingBar";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 import InfoService from "../../components/Info/InfoService.jsx";
-import IconButton from "@material-ui/core/IconButton";
-import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
-import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import ServiceModal from "../../components/Modals/ServiceModal";
 import { withStyles } from "@material-ui/core/styles";
 const StyledTypography = withStyles({
@@ -27,56 +24,42 @@ const StyledContainer = withStyles({
   },
 })(Container);
 
-const StyledContainerButtons = withStyles({
-  root: {
-    display: "flex",
-    justifyContent: "center",
-    margin: "0 auto",
+const arrObj = [
+  {
+    id: "1",
+    name: "name1",
+    description: "description1",
   },
-})(Container);
-
-const StyledBeforeButton = withStyles({
-  root: {
-    backgroundColor: "#414040",
-    width: "30px",
-    height: "30px",
-    borderRadius: "50%",
-    color: "white",
+  {
+    id: "2",
+    name: "name2",
+    description: "description2",
   },
-})(NavigateBeforeIcon);
-
-const StyledNextButton = withStyles({
-  root: {
-    backgroundColor: "#000",
-    width: "30px",
-    height: "30px",
-    borderRadius: "50%",
-    color: "white",
+  {
+    id: "3",
+    name: "name3",
+    description: "description3",
   },
-})(NavigateNextIcon);
+  {
+    id: "4",
+    name: "name4",
+    description: "description4",
+  },
+];
 
 export default function ManageServices() {
+  const [data, setData] = useState(arrObj);
   return (
     <>
       <NavBar></NavBar>
       <HeadingBar before={"TRABAJADOR"} after={"MIS SERVICIOS"}></HeadingBar>
       <StyledContainer>
         <StyledTypography>Mis Servicios</StyledTypography>
-        <ServiceModal />
+        <ServiceModal data={data} setData={setData} />
       </StyledContainer>
-      <InfoService></InfoService>
-      <InfoService></InfoService>
-      <InfoService></InfoService>
-      <InfoService></InfoService>
-      <InfoService></InfoService>
-      <StyledContainerButtons>
-        <IconButton>
-          <StyledBeforeButton></StyledBeforeButton>
-        </IconButton>
-        <IconButton>
-          <StyledNextButton></StyledNextButton>
-        </IconButton>
-      </StyledContainerButtons>
+      {data.map((el) => {
+        return <InfoService key={el.id} {...el} />;
+      })}
     </>
   );
 }
