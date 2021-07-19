@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { withStyles } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
@@ -22,13 +22,23 @@ const StyledCardMedia = withStyles({
   },
 })(CardMedia);
 
-const WorkerCard = () => {
-  return (
+const WorkerCard = (props) => {
+  const [worker, setWorker] = useState();
+
+  useEffect(()=>{
+    setWorker(props.worker);
+  }, [])
+
+  return worker ? (
     <StyledCard>
       <StyledCardMedia image="src/assets/CardTest.jpeg" />
       <CardContent>
-        <Typography variant="h6">Nombre Usuario</Typography>
-        <Typography variant="body2">Distrito/Provincia/Ciudad</Typography>
+        <Typography variant="h6">
+          {worker.us_nombres}
+        </Typography>
+        <Typography variant="body2">
+          {worker.us_distrito}/{worker.us_provincia}/{worker.us_departamento}
+        </Typography>
       </CardContent>
       <CardActions>
         <IconButton>
@@ -48,7 +58,7 @@ const WorkerCard = () => {
         </IconButton>
       </CardActions>
     </StyledCard>
-  );
+  ): (<div>Cargando... </div>)
 };
 
 export default WorkerCard;
