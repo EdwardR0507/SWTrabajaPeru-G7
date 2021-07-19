@@ -12,7 +12,7 @@ import {
   Fade,
   IconButton,
 } from "@material-ui/core/";
-import AddIcon from "@material-ui/icons/Add";
+import CreateIcon from "@material-ui/icons/Create";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import PrimaryButton from "../Buttons/PrimaryButton";
 import SecondaryButton from "../Buttons/SecondaryButton";
@@ -105,32 +105,21 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const ServiceModal = ({ data, setData }) => {
+const ServiceEditModal = ({ service, serviceDescription, handleEdit }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
 
   const handleOpen = () => {
     setOpen(true);
   };
 
-  //Función que crea un nuevo componente InfoService
-  const handleCreate = () => {
-    setData([...data, { id: data[data.length - 1].id + 1, name, description }]);
+  //Función que edita el componente InfoService
+  const handleEditService = () => {
     setOpen(false);
   };
 
   const handleClose = () => {
     setOpen(false);
-  };
-
-  const handleDescription = (e) => {
-    setDescription(e.target.value);
-  };
-
-  const handleSelect = (e) => {
-    setName(e.target.value);
   };
 
   return (
@@ -140,11 +129,10 @@ const ServiceModal = ({ data, setData }) => {
         color="primary"
         className={classes.button}
         onClick={handleOpen}
-        endIcon={<AddIcon />}
+        endIcon={<CreateIcon />}
       >
-        Agregar
+        Editar
       </Button>
-
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -159,7 +147,7 @@ const ServiceModal = ({ data, setData }) => {
       >
         <Fade in={open}>
           <div className={classes.paper}>
-            <Typography className={classes.title}>Nuevo Servicio</Typography>
+            <Typography className={classes.title}>Editar Servicio</Typography>
             {/* Formulario donde se llenarán los datos para crear un nuevo servicio */}
             <form className={classes.form}>
               <Container className={classes.container}>
@@ -174,15 +162,13 @@ const ServiceModal = ({ data, setData }) => {
                     </InputLabel>
                     <Select
                       native
-                      onChange={handleSelect}
+                      disabled
                       inputProps={{
                         name: "servicio",
                         id: "filled-servicio-native-simple",
                       }}
                     >
-                      <option hidden />
-                      <option value="Albañilería">Albañilería</option>
-                      <option value="Gasfitería">Gasfitería</option>
+                      <option>{service}</option>
                     </Select>
                   </Container>
                   <TextField
@@ -190,8 +176,9 @@ const ServiceModal = ({ data, setData }) => {
                     label="Descripción"
                     multiline
                     rowsMax={3}
+                    defaultValue={serviceDescription}
+                    onChange={handleEdit}
                     variant="filled"
-                    onChange={handleDescription}
                   />
                 </Container>
                 {/*Aquí irá la imagen del servicio, primero importamos la imagen y luego la colocamos dentro del src, no olvidar poner el alt */}
@@ -209,7 +196,7 @@ const ServiceModal = ({ data, setData }) => {
                     className={classes.create}
                     variant="contained"
                     name="ACEPTAR"
-                    onClick={handleCreate}
+                    onClick={handleEditService}
                   ></PrimaryButton>
                 </Container>
                 <SecondaryButton
@@ -225,4 +212,4 @@ const ServiceModal = ({ data, setData }) => {
     </>
   );
 };
-export default ServiceModal;
+export default ServiceEditModal;

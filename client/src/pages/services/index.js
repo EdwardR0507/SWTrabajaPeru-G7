@@ -1,13 +1,10 @@
-import React from "react";
+import { React, useState } from "react";
 import { useLocation } from "react-router";
-import { useState } from "react";
 import NavBar from "../../layouts/NavBar";
 import HeadingBar from "../../layouts/HeadingBar/HeadingBar";
-import Container from "@material-ui/core/Container";
-import Typography from "@material-ui/core/Typography";
+import { Container, Typography, withStyles } from "@material-ui/core/";
 import InfoService from "../../components/Info/InfoService.jsx";
 import ServiceModal from "../../components/Modals/ServiceModal";
-import { withStyles } from "@material-ui/core/styles";
 const StyledTypography = withStyles({
   root: {
     fontSize: "2.25rem",
@@ -34,18 +31,14 @@ const arrObj = [
   },
 ];
 
-export default function ManageServices() {
+const ManageServices = () => {
   const location = useLocation();
   const state = location.state;
 
   const [data, setData] = useState(arrObj);
   return (
     <>
-      {
-      state ?
-        <NavBar user={state.user}/>
-      : <NavBar />
-    }
+      {state ? <NavBar user={state.user} /> : <NavBar />}
       <HeadingBar before={"TRABAJADOR"} after={"MIS SERVICIOS"}></HeadingBar>
       <StyledContainer>
         <StyledTypography>Mis Servicios</StyledTypography>
@@ -56,4 +49,5 @@ export default function ManageServices() {
       })}
     </>
   );
-}
+};
+export default ManageServices;

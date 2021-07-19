@@ -1,69 +1,40 @@
-import React, { useState } from "react";
-import Container from "@material-ui/core/Container";
-import Button from "@material-ui/core/Button";
-import DeleteIcon from "@material-ui/icons/Delete";
-import CreateIcon from "@material-ui/icons/Create";
-import theme from "../../themes/themes";
-import Typography from "@material-ui/core/Typography";
+import { React, useState } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { Container, Button, Typography } from "@material-ui/core/";
+import DeleteIcon from "@material-ui/icons/Delete";
+import ServiceEditModal from "../Modals/ServiceEditModal";
 
 const useStyles = makeStyles(() => ({
   root: {
     display: "flex",
     marginTop: "20px",
-    width: "85%",
-    height: "9em",
+    marginBottom: "20px",
+    width: "80%",
+    height: "25vh",
     borderBottom: "1px solid #00000012",
   },
   description: {
-    fontSize: "1.1em",
-    fontFamily: "Roboto",
+    display: "flex",
+    flexDirection: "column",
+    width: "100%",
+    textAlign: "justify",
+  },
+  button: {
+    width: "9em",
+    height: "2.8em",
+    fontSize: "0.9em",
+    lineHeight: "16px",
+    letterSpacing: "1.25px",
+  },
+  image: {
+    maxWidth: "100%",
+    objectFit: "cover",
   },
 }));
 
-const StyledEditButton = withStyles({
-  root: {
-    background: theme.palette.primary.main,
-    color: theme.colorLetter.primary.main,
-    display: "flex",
-    justifyContent: "space-evenly",
-    fontStyle: "normal",
-    fontWeight: "500",
-    fontSize: "14px",
-    lineHeight: "16px",
-    letterSpacing: "1.25px",
-    textTransform: "uppercase",
-    width: "8.7em",
-    height: "2.85em",
-    "&:hover": {
-      background: theme.palette.primary.main,
-    },
-  },
-})(Button);
-
-const StyledDeletButton = withStyles({
-  root: {
-    background: theme.serviceButton.primary.main,
-    display: "flex",
-    justifyContent: "space-evenly",
-    color: theme.palette.secondary.main,
-    fontStyle: "normal",
-    fontWeight: "500",
-    fontSize: "14px",
-    lineHeight: "16px",
-    letterSpacing: "1.25px",
-    textTransform: "uppercase",
-    width: "140px",
-    height: "2.85em",
-    "&:hover": {
-      background: theme.serviceButton.primary.main,
-    },
-  },
-})(Button);
-
 const StyledContainerData = withStyles({
   root: {
-    width: "50%",
+    width: "100%",
     display: "flex",
     alignItems: "center",
   },
@@ -71,23 +42,30 @@ const StyledContainerData = withStyles({
 
 const StyledContainerImage = withStyles({
   root: {
-    width: "15em",
+    width: "25%",
   },
 })(Container);
 
 const StyledContainerButtons = withStyles({
   root: {
     display: "flex",
-    width: "50%",
+    width: "70%",
     justifyContent: "space-evenly",
     alignItems: "center",
   },
 })(Container);
 
-const ServiceCard = ({ name, description }) => {
+const WrapContainer = withStyles({
+  root: {
+    width: "100%",
+    padding: "0.1em",
+    overflowWrap: "break-word",
+  },
+})(Container);
+
+const InfoService = ({ name, description }) => {
   const classes = useStyles();
 
-  const [nameService, setNameService] = useState(name);
   const [descriptionService, setDescriptionService] = useState(description);
   const [state, setState] = useState(true);
 
@@ -95,61 +73,48 @@ const ServiceCard = ({ name, description }) => {
     setState(false);
   };
 
-  const filteredWords = (str) => {
-    let wrapWords = [];
-    let i = 0,
-      j = 0;
-    if (str.split(" ").length === 1) {
-      if (str.length >= 35) {
-        while (i <= str.length) {
-          wrapWords[j] = str.slice(i, i + 35);
-          i += 35;
-          j++;
-        }
-        return wrapWords.join("\n");
-      } else {
-        return str;
-      }
-    } else {
-      return str;
-    }
+  const handleEdit = (e) => {
+    setDescriptionService(e.target.value);
   };
 
   return (
     <>
       {state ? (
-        <>
-          <Container className={classes.root}>
-            <StyledContainerData>
-              <StyledContainerImage><></>
-              </StyledContainerImage>
-              <Container>
-                <Typography color="primary" variant="subtitle1">
-                  {nameService}
-                </Typography>
-                <Typography
-                  variant="subtitle2"
-                  style={{ whiteSpace: "pre-wrap" }}
-                >
-                  {filteredWords(descriptionService)}
-                </Typography>
-              </Container>
-            </StyledContainerData>
-            <StyledContainerButtons>
-              <StyledEditButton>
-                Editar
-                <CreateIcon />
-              </StyledEditButton>
-              <StyledDeletButton onClick={handleDelete}>
-                Eliminar
-                <DeleteIcon />
-              </StyledDeletButton>
-            </StyledContainerButtons>
-          </Container>
-        </>
+        <Container className={classes.root}>
+          <StyledContainerData>
+            {/*Aquí irá la imagen del servicio, primero importamos la imagen y luego la colocamos dentro del src, no olvidar poner el alt */}
+            <StyledContainerImage>
+              <></>
+              {/*<img src={imageService} alt={"servicio"} className={classes.image} />*/}
+            </StyledContainerImage>
+            <Container className={classes.description}>
+              <Typography color="primary" variant="subtitle1">
+                {name}
+              </Typography>
+              <WrapContainer>
+                <Typography variant="body2">{descriptionService}</Typography>
+              </WrapContainer>
+            </Container>
+          </StyledContainerData>
+          <StyledContainerButtons>
+            <ServiceEditModal
+              service={name}
+              serviceDescription={descriptionService}
+              handleEdit={handleEdit}
+            />
+            <Button
+              variant="contained"
+              endIcon={<DeleteIcon />}
+              className={classes.button}
+              onClick={handleDelete}
+            >
+              Eliminar
+            </Button>
+          </StyledContainerButtons>
+        </Container>
       ) : null}
     </>
   );
 };
 
-export default ServiceCard;
+export default InfoService;
