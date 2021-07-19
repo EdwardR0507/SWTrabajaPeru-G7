@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import { useLocation } from "react-router";
+import axios from "axios";
+import GlobalEnv from "../../GlobalEnv"
 import { withStyles } from "@material-ui/styles";
 import Container from "@material-ui/core/Container";
 import Link from "@material-ui/core/Link";
@@ -47,7 +49,7 @@ const StyledH2 = withStyles({
 
 const StyledLink = withStyles({
   root: {
-    color: theme.palette.secondary.main,
+    color: theme.palette.primary.main,
     marginRight: "40px",
     marginTop: "12px",
     letterSpacing: "0.18px",
@@ -56,31 +58,31 @@ const StyledLink = withStyles({
 
 export default function Home() {
   const location = useLocation();
+  const [services, setServices] = useState();
+  const [workers, setWorkers] = useState(null);
   const state = location.state;
 
-  /*let servicesHome;
-  let workersHome;
-
-  async function getServices() {
-    await axios
-      .get("http://localhost:4000/service", {
-        command: "GET_SERVICES",
+  useEffect(()=>{
+    //Cambiar post por get cuando se arregle
+    axios
+      .post(`${GlobalEnv.host}/service`, {
+        command: "GET_HOME_SERVICES"
       })
-      .then((res) => (servicesHome = res));
-  }
+      .then(res => {setServices(res.data); console.log(res.data)})
+  }, [])
 
-  /*async function getWorkers() {
-    await axios
-      .get("http://localhost:4000/homeWorkers", {
-        command: "GET_WORKERS",
+  useEffect(() => {
+    //Cambiar post por get cuando se arregle
+    axios
+      .post(`${GlobalEnv.host}/user`, {
+        command: "GET_USERS"
       })
-      .then((res) => (workersHome = res));
-  }*/
+      .then(res => {
+        setWorkers(res.data)
+      }) 
+  }, [])
 
-  //getServices();
-  //getWorkers();
-
-  return(
+  return workers && services ? (
     <>{
       state ?
         <NavBar user={state.user}/>
@@ -117,14 +119,13 @@ export default function Home() {
           <StyledIconButton>
             <NavigateBeforeIcon />
           </StyledIconButton>
-          <WorkerCard />
-          <WorkerCard />
-          <WorkerCard />
+          {workers.map((worker)=><WorkerCard worker={worker} />)} 
           <StyledIconButton>
             <NavigateNextIcon />
           </StyledIconButton>
         </StyledCardContainer>
       </Container>
     </>
-  );
+  )
+  :(<div>Cargando...</div>);
 }

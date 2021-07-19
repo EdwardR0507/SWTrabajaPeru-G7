@@ -1,8 +1,8 @@
 import React from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
+import GlobalEnv from "../../GlobalEnv"
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
@@ -60,7 +60,7 @@ export default function SignIn() {
   const onSubmit = async (getUser, evt) => {
     evt.preventDefault();
     await axios
-      .post("http://localhost:4000/user", {
+      .post(`${GlobalEnv.host}/user`, {
         command: "LOGIN_USER",
         transaction: getUser,
       })
