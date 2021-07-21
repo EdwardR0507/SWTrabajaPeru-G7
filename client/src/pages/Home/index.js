@@ -3,10 +3,7 @@ import { useLocation } from "react-router";
 import axios from "axios";
 import GlobalEnv from "../../GlobalEnv"
 import { withStyles } from "@material-ui/styles";
-import Container from "@material-ui/core/Container";
-import Link from "@material-ui/core/Link";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
+import { Container, Link, Typography, IconButton } from "@material-ui/core/";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import NavBar from "../../layouts/NavBar";
@@ -82,12 +79,18 @@ export default function Home() {
       }) 
   }, [])
 
+<<<<<<< HEAD
   return workers && services ? (
     <>{
       state ?
         <NavBar user={state.user}/>
       : <NavBar />
     }
+=======
+  return (
+    <>
+      {state ? <NavBar user={state.user} /> : <NavBar />}
+>>>>>>> EdwardRamos_Front
       <Container>
         <StyledContentContainer>
           <StyledH2 variant="h2">Servicios</StyledH2>
