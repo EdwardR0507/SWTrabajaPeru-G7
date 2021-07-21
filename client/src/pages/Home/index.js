@@ -59,7 +59,7 @@ const StyledLink = withStyles({
 export default function Home() {
   const location = useLocation();
   const [services, setServices] = useState();
-  const [workers, setWorkers] = useState(null);
+  const [workers, setWorkers] = useState();
   const state = location.state;
 
   useEffect(()=>{

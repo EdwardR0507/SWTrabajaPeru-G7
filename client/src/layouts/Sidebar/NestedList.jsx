@@ -1,7 +1,6 @@
 import React from "react";
 import { useHistory, useLocation } from "react-router";
 import { makeStyles } from "@material-ui/core/styles";
-import Link from "@material-ui/core/Link";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -61,18 +60,16 @@ export default function NestedList() {
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           <ListItem button className={classes.nested} onClick={() => {
-                history.push({
-                  pathname: '/manageservices',
-                  search: `?id=${state.user.us_id}`,
-                  state: {user: state.user}
-                })
+            history.push({
+              pathname: '/manageservices',
+              search: `?id=${state.user.us_id}`,
+              state: { user: state.user }
+            })
           }}>
             <ListItemIcon>
               <SettingsIcon />
             </ListItemIcon>
-            <Link>
-              <ListItemText primary="Mis Servicios" />
-            </Link>
+            <ListItemText primary="Mis Servicios" />
           </ListItem>
         </List>
       </Collapse>

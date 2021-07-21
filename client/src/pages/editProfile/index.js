@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import { useLocation } from "react-router";
 import NavBar from "../../layouts/NavBar";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
@@ -50,6 +51,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function EditProfile() {
   const classes = useStyles();
+  const location = useLocation();
+  const state = location.state
 
   const locations = useLocations();
 
@@ -94,7 +97,7 @@ export default function EditProfile() {
 
   return (
     <>
-      <NavBar></NavBar>
+      <NavBar user={state.user} />
       <StyledContainer>
         <form className={classes.form} noValidate>
           <Grid container spacing={6}>
@@ -195,38 +198,6 @@ export default function EditProfile() {
 
             <Grid container item xs={6} spacing={3}>
               <Input id="imput7" label="Número de teléfono" />
-            </Grid>
-
-            <Grid container item xs={6} spacing={3}></Grid>
-
-            <Grid container item xs={6} spacing={3}>
-              <Input
-                id="imput8"
-                variant="filled"
-                required
-                fullWidth
-                name="password"
-                label="Contraseña"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-              />
-            </Grid>
-
-            <Grid container item xs={6} spacing={3}></Grid>
-
-            <Grid container item xs={6} spacing={3}>
-              <Input
-                id="imput9"
-                variant="filled"
-                required
-                fullWidth
-                name="password"
-                label="Confirmar Contraseña"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-              />
             </Grid>
 
             <Grid container justify="center" item xs={12} spacing={3}>

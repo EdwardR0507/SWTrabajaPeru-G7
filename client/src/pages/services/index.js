@@ -38,7 +38,7 @@ const ManageServices = () => {
   const [data, setData] = useState(arrObj);
   return (
     <>
-      {state ? <NavBar user={state.user} /> : <NavBar />}
+      <NavBar user={state.user} />
       <HeadingBar before={"TRABAJADOR"} after={"MIS SERVICIOS"}></HeadingBar>
       <StyledContainer>
         <StyledTypography>Mis Servicios</StyledTypography>
