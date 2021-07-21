@@ -2,14 +2,17 @@ import React from "react";
 import { Link as RouterLink, useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import GlobalEnv from "../../GlobalEnv"
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Link from "@material-ui/core/Link";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
-import TextField from "@material-ui/core/TextField";
+import {
+  CssBaseline,
+  Link,
+  Grid,
+  Typography,
+  Container,
+  TextField,
+  makeStyles,
+  withStyles,
+} from "@material-ui/core/";
+import GlobalEnv from "../../GlobalEnv";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import NavBar from "../../layouts/NavBar";
 
@@ -82,7 +85,7 @@ export default function SignIn() {
         <CssBaseline />
         <div className={classes.paper}>
           <StyledTypography>Iniciar Sesión</StyledTypography>
-          <form className={classes.form} noValidate >
+          <form className={classes.form} noValidate>
             <Grid container align="center" spacing={3}>
               <Grid item xs={12}>
                 <TextField

@@ -1,19 +1,21 @@
 import React from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useInput } from "../../hooks/useInput";
-import { useHistory } from "react-router-dom";
 import axios from "axios";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import Link from "@material-ui/core/Link";
-import Grid from "@material-ui/core/Grid";
-import InputLabel from "@material-ui/core/InputLabel";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
-import TextField from "@material-ui/core/TextField";
+import {
+  Link,
+  Grid,
+  InputLabel,
+  FormControl,
+  Select,
+  Typography,
+  Container,
+  TextField,
+  makeStyles,
+  withStyles,
+} from "@material-ui/core/";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import SecondaryButton from "../../components/Buttons/SecondaryButton";
 import NavBar from "../../layouts/NavBar";

@@ -2,15 +2,18 @@ import React from "react";
 import axios from "axios";
 import { useLocation } from "react-router";
 import NavBar from "../../layouts/NavBar";
-import Container from "@material-ui/core/Container";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import {
+  Container,
+  Typography,
+  makeStyles,
+  withStyles,
+  Grid,
+  InputLabel,
+  FormControl,
+  Select,
+} from "@material-ui/core/Container";
 import { useInput } from "../../hooks/useInput";
 import useLocations from "../../hooks/useLocations";
-import Grid from "@material-ui/core/Grid";
-import InputLabel from "@material-ui/core/InputLabel";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import Input from "../../components/TextFields/Input";
 import SecondaryButton from "../../components/Buttons/SecondaryButton";
@@ -59,7 +62,7 @@ export default function EditProfile() {
   const { value: departamento, bind: bindDepatamento } = useInput("");
   const { value: provincia, bind: bindProvincia } = useInput("");
   const { value: distrito, bind: bindDistrito } = useInput("");
-  
+
   const [filteredProvincias, filteredDistritos] = useFilterSelect(
     departamento,
     provincia
@@ -67,9 +70,7 @@ export default function EditProfile() {
 
   const handleSubmit = async (evt) => {
     evt.preventDefault();
-    let profileEdit = {
-
-    };
+    let profileEdit = {};
     await axios
       .post("http://localhost:4000/editProfile", {
         command: "EDIT_PROFILE",
@@ -80,7 +81,6 @@ export default function EditProfile() {
         return res;
       });
   };
-
 
   /*const [state, setState] = React.useState({
     age: '',
