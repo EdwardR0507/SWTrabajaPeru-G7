@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router";
 import axios from "axios";
-import GlobalEnv from "../../GlobalEnv"
+import GlobalEnv from "../../GlobalEnv";
 import { withStyles } from "@material-ui/styles";
 import { Container, Link, Typography, IconButton } from "@material-ui/core/";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
@@ -59,38 +59,32 @@ export default function Home() {
   const [workers, setWorkers] = useState(null);
   const state = location.state;
 
-  useEffect(()=>{
+  useEffect(() => {
     //Cambiar post por get cuando se arregle
     axios
       .post(`${GlobalEnv.host}/service`, {
-        command: "GET_HOME_SERVICES"
+        command: "GET_HOME_SERVICES",
       })
-      .then(res => {setServices(res.data); console.log(res.data)})
-  }, [])
+      .then((res) => {
+        setServices(res.data);
+        console.log(res.data);
+      });
+  }, []);
 
   useEffect(() => {
     //Cambiar post por get cuando se arregle
     axios
       .post(`${GlobalEnv.host}/user`, {
-        command: "GET_USERS"
+        command: "GET_USERS",
       })
-      .then(res => {
-        setWorkers(res.data)
-      }) 
-  }, [])
+      .then((res) => {
+        setWorkers(res.data);
+      });
+  }, []);
 
-<<<<<<< HEAD
   return workers && services ? (
-    <>{
-      state ?
-        <NavBar user={state.user}/>
-      : <NavBar />
-    }
-=======
-  return (
     <>
       {state ? <NavBar user={state.user} /> : <NavBar />}
->>>>>>> EdwardRamos_Front
       <Container>
         <StyledContentContainer>
           <StyledH2 variant="h2">Servicios</StyledH2>
@@ -122,13 +116,16 @@ export default function Home() {
           <StyledIconButton>
             <NavigateBeforeIcon />
           </StyledIconButton>
-          {workers.map((worker)=><WorkerCard worker={worker} />)} 
+          {workers.map((worker) => (
+            <WorkerCard worker={worker} />
+          ))}
           <StyledIconButton>
             <NavigateNextIcon />
           </StyledIconButton>
         </StyledCardContainer>
       </Container>
     </>
-  )
-  :(<div>Cargando...</div>);
+  ) : (
+    <div>Cargando...</div>
+  );
 }
