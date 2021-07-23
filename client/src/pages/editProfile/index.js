@@ -11,7 +11,7 @@ import {
   InputLabel,
   FormControl,
   Select,
-} from "@material-ui/core/Container";
+} from "@material-ui/core/";
 import { useInput } from "../../hooks/useInput";
 import useLocations from "../../hooks/useLocations";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
 export default function EditProfile() {
   const classes = useStyles();
   const location = useLocation();
-  const state = location.state
+  const state = location.state;
 
   const locations = useLocations();
 
