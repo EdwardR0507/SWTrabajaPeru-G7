@@ -1,31 +1,31 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router";
-import logo from "../assets/Trabaja peru.png"
+import logo from "../assets/Trabaja peru.png";
 import { withStyles } from "@material-ui/core/styles";
 import { Link as RouterLink } from "react-router-dom";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Link from "@material-ui/core/Link";
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
 import SearchField from "../components/TextFields/SearchField";
 import IconButton from "@material-ui/core/IconButton";
-import EditIcon from '@material-ui/icons/Edit';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import NotificationsIcon from "@material-ui/icons/Notifications";
+import EditIcon from "@material-ui/icons/Edit";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import Avatar from "@material-ui/core/Avatar";
 import theme from "../themes/themes";
 import SideBar from "../layouts/Sidebar/SideBar";
+import ContactModal from "../components/Modals/ContactModal";
 
 const StyledNavBar = withStyles({
   root: {
     background: theme.palette.primary.main,
-    display: 'flex',
+    display: "flex",
     position: "sticky",
-    justifyContent: 'space-around',
+    justifyContent: "space-around",
     height: "14.5%",
     lineHeight: "24px",
     letterSpacing: "0.18px",
@@ -35,43 +35,41 @@ const StyledNavBar = withStyles({
 
 const StyledToolbar = withStyles({
   root: {
-    display: 'flex',
-    justifyContent: 'space-between'
-  }
-})(Toolbar)
+    display: "flex",
+    justifyContent: "space-between",
+  },
+})(Toolbar);
 
-const StyledMenu = withStyles({
-
-})((props) => (
+const StyledMenu = withStyles({})((props) => (
   <Menu
     elevation={0}
     getContentAnchorEl={null}
     anchorOrigin={{
-      vertical: 'bottom',
-      horizontal: 'center',
+      vertical: "bottom",
+      horizontal: "center",
     }}
     transformOrigin={{
-      vertical: 'top',
-      horizontal: 'center',
+      vertical: "top",
+      horizontal: "center",
     }}
     {...props}
   />
-))
+));
 
 const StyledTypography = withStyles({
   root: {
-    display: 'inline',
+    display: "inline",
     color: theme.colorLetter.primary.main,
     textDecoration: "none",
     marginRight: "40px",
-    marginLeft: "25px"
+    marginLeft: "25px",
   },
 })(Typography);
 
 const StyledIconButton = withStyles({
   root: {
     color: theme.colorLetter.primary.main,
-    marginRight: '50px'
+    marginRight: "50px",
   },
 })(IconButton);
 
@@ -91,7 +89,7 @@ const NavBar = (props) => {
   return (
     <StyledNavBar>
       <StyledToolbar>
-        {props.user ?
+        {props.user ? (
           <>
             <>
               <SideBar />
@@ -100,7 +98,7 @@ const NavBar = (props) => {
             <SearchField placeholder="Buscar Cliente o Servicio" />
             <>
               <StyledIconButton>
-                <NotificationsIcon fontSize="large" />
+                <ContactModal name={"Daniel Cifuentes Michuy"} />
               </StyledIconButton>
               <IconButton onClick={handleClick}>
                 <Avatar />
@@ -112,17 +110,19 @@ const NavBar = (props) => {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={()=>{
-                  history.push({
-                    pathname: '/editProfile',
-                    search: `?id=${props.user.us_id}`,
-                    state: { user: props.user }
-                  })
-                }}>
+                <MenuItem
+                  onClick={() => {
+                    history.push({
+                      pathname: "/editProfile",
+                      search: `?id=${props.user.us_id}`,
+                      state: { user: props.user },
+                    });
+                  }}
+                >
                   <ListItemIcon>
                     <EditIcon />
                   </ListItemIcon>
-                    <ListItemText primary="Editar Perfil" />
+                  <ListItemText primary="Editar Perfil" />
                 </MenuItem>
                 <MenuItem>
                   <ListItemIcon>
@@ -132,11 +132,13 @@ const NavBar = (props) => {
                 </MenuItem>
               </StyledMenu>
               <Link>
-                <StyledTypography variant="h5">{props.user.us_nombres}</StyledTypography>
+                <StyledTypography variant="h5">
+                  {props.user.us_nombres}
+                </StyledTypography>
               </Link>
             </>
           </>
-          :
+        ) : (
           <>
             <img src={logo} alt="logo" width="60px" height="50px" />
             <div>
@@ -148,7 +150,7 @@ const NavBar = (props) => {
               </Link>
             </div>
           </>
-        }
+        )}
       </StyledToolbar>
     </StyledNavBar>
   );

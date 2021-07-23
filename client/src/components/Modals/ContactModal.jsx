@@ -15,22 +15,22 @@ import theme from "../../themes/themes";
 const useStyles = makeStyles(() => ({
   //Estilos para la customización del modal
   modal: {
-    position: "absolute",
-    left: 0,
-    top: 0,
     display: "flex",
     alignContent: "center",
     justifyContent: "center",
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
+    position: "absolute",
+    left: "45%",
+    top: "13%",
     display: "flex",
     justifyContent: "space-evenly",
     borderRadius: "4px",
     boxShadow: theme.shadows[5],
     padding: "10px",
-    width: "25vw",
-    height: "15vh",
+    width: "28vw",
+    height: "20vh",
   },
   containerImage: {
     width: "50%",
@@ -48,7 +48,7 @@ const useStyles = makeStyles(() => ({
   },
   title: {
     width: "100%",
-    fontSize: "0.8125em",
+    fontSize: "0.8125rem",
     lineHeigth: "2.25em",
     fontStyle: "normal",
     fontWeigth: "400",
@@ -90,7 +90,7 @@ const ContactModal = ({ name }) => {
   return (
     <>
       <IconButton aria-label="notifications" onClick={handleOpen}>
-        <NotificationsIcon />
+        <NotificationsIcon fontSize="large" style={{ color: "#FFF" }} />
       </IconButton>
 
       <Modal
@@ -106,7 +106,7 @@ const ContactModal = ({ name }) => {
         }}
       >
         <Fade in={open}>
-          <article className={classes.paper}>
+          <Container className={classes.paper}>
             <Container className={classes.containerImage}>
               <></>
               {/*<img src={imgUser} alt={"Usuario"} className={classes.image} />*/}
@@ -134,7 +134,7 @@ const ContactModal = ({ name }) => {
                 </Button>
               </div>
             </Container>
-          </article>
+          </Container>
         </Fade>
       </Modal>
     </>
