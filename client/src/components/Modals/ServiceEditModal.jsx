@@ -1,4 +1,5 @@
 import { React, useState } from "react";
+import { useForm } from "react-hook-form";
 import {
   makeStyles,
   Container,
@@ -106,6 +107,12 @@ const useStyles = makeStyles(() => ({
 }));
 
 const ServiceEditModal = ({ service, serviceDescription, handleEdit }) => {
+  const {
+    handleSubmit,
+    register,
+    reset,
+    formState: { errors },
+  } = useForm();
   const classes = useStyles();
   const [open, setOpen] = useState(false);
 
@@ -113,13 +120,16 @@ const ServiceEditModal = ({ service, serviceDescription, handleEdit }) => {
     setOpen(true);
   };
 
-  //Función que edita el componente InfoService
-  const handleEditService = () => {
+  const handleClose = () => {
     setOpen(false);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  //Función que edita el componente InfoService
+  const onSubmit = (datos, e) => {
+    handleClose();
+    e.preventDefault();
+    handleClose();
+    reset();
   };
 
   return (
@@ -149,15 +159,11 @@ const ServiceEditModal = ({ service, serviceDescription, handleEdit }) => {
           <div className={classes.paper}>
             <Typography className={classes.title}>Editar Servicio</Typography>
             {/* Formulario donde se llenarán los datos para crear un nuevo servicio */}
-            <form className={classes.form}>
+            <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
               <Container className={classes.container}>
                 <Container className={classes.containerData}>
                   <Container className={classes.containerService}>
-                    <InputLabel
-                      id="imput6"
-                      htmlFor="filled-age-native-simple"
-                      color="primary"
-                    >
+                    <InputLabel id="demo-simple-select-required-label">
                       Nombre del Servicio
                     </InputLabel>
                     <Select
@@ -175,11 +181,14 @@ const ServiceEditModal = ({ service, serviceDescription, handleEdit }) => {
                     id="filled-multiline-flexible"
                     label="Descripción"
                     multiline
-                    rowsMax={3}
+                    name="description"
+                    {...register("description", { maxLength: 300 })}
                     defaultValue={serviceDescription}
                     onChange={handleEdit}
+                    rowsMax={3}
                     variant="filled"
                   />
+                  {errors.description && "Ingrese máximo 300 caracteres"}
                 </Container>
                 {/*Aquí irá la imagen del servicio, primero importamos la imagen y luego la colocamos dentro del src, no olvidar poner el alt */}
                 <Container className={classes.containerImage}>
@@ -193,10 +202,10 @@ const ServiceEditModal = ({ service, serviceDescription, handleEdit }) => {
                 <Container className={classes.wrapp}>
                   <PrimaryButton
                     type="submit"
-                    className={classes.create}
+                    className={classes.submit}
                     variant="contained"
                     name="ACEPTAR"
-                    onClick={handleEditService}
+                    onClick={handleSubmit(onSubmit)}
                   ></PrimaryButton>
                 </Container>
                 <SecondaryButton

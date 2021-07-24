@@ -25,9 +25,9 @@ const StyledContainer = withStyles({
 
 const arrObj = [
   {
-    id: "1",
-    name: "Albañilería",
-    description: "Albañil",
+    id: null,
+    name: "",
+    description: "",
   },
 ];
 
@@ -36,6 +36,7 @@ const ManageServices = () => {
   const state = location.state;
 
   const [data, setData] = useState(arrObj);
+
   return (
     <>
       <NavBar user={state.user} />
@@ -45,7 +46,11 @@ const ManageServices = () => {
         <ServiceModal data={data} setData={setData} />
       </StyledContainer>
       {data.map((el) => {
-        return <InfoService key={el.id} {...el} />;
+        if (el.id === null) {
+          return null;
+        } else {
+          return <InfoService key={el.id} {...el} />;
+        }
       })}
     </>
   );

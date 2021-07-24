@@ -7,7 +7,6 @@ import {
   Modal,
   Backdrop,
   Fade,
-  IconButton,
 } from "@material-ui/core/";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import theme from "../../themes/themes";
@@ -89,10 +88,11 @@ const ContactModal = ({ name }) => {
 
   return (
     <>
-      <IconButton aria-label="notifications" onClick={handleOpen}>
-        <NotificationsIcon fontSize="large" style={{ color: "#FFF" }} />
-      </IconButton>
-
+      <NotificationsIcon
+        fontSize="large"
+        style={{ color: "#FFF" }}
+        onClick={handleOpen}
+      />
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
