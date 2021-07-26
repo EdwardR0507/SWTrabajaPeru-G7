@@ -67,7 +67,6 @@ export default function Home() {
       })
       .then((res) => {
         setServices(res.data);
-        console.log(res.data);
       });
   }, []);
 

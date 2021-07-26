@@ -1,6 +1,7 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import { render } from '@testing-library/react';
+import axios from 'axios';
+import { render, cleanup } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Router, Route } from 'react-router-dom'
 import Home from './index';
@@ -44,4 +45,19 @@ test('renders Home for user not logged or registered', () => {
     )
     component.getByText("Registrarse");
     component.getByText("Iniciar Sesión");
+})
+
+test('show workers from axios', () => {
+    const history = createMemoryHistory();
+    const workerName = "Arian Zambrano";
+    beforeEach(() => {
+        axios.get = jest.fn(() => Promise.resolve({res: {data: worker}}))
+    });
+    afterEach(cleanup);
+    const component = render(
+        <Router history={history}>
+            <Home />
+        </Router>
+    )
+    component.getAllByText(workerName)
 })
