@@ -3,6 +3,7 @@ import { useLocation } from "react-router";
 import NavBar from "../../layouts/NavBar";
 import { Container, Typography, withStyles, Grid} from "@material-ui/core/";
 import ServiceDetailsCard from "../../components/Cards/ServiceDetailsCard";
+import ProfileCard from "../../components/Cards/ProfileCard";
 import WorkerDetailsCard from "../../components/Cards/WorkerDetailsCard";
 
 const StyledContainer = withStyles({
@@ -35,8 +36,10 @@ const ServiceDetails = () => {
          <ServiceDetailsCard />
       </Grid>
       <Grid container xs={12}  sm={4} spacing={12}>
-         <WorkerDetailsCard />
-      </Grid>
+
+          <WorkerDetailsCard />
+
+        </Grid>
       </StyledContainer>
     </>
   );
