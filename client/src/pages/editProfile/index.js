@@ -1,3 +1,4 @@
+/*Importamos las librerias principales*/
 import React from "react";
 import axios from "axios";
 import { useLocation } from "react-router";
@@ -18,7 +19,8 @@ import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import Input from "../../components/TextFields/Input";
 import SecondaryButton from "../../components/Buttons/SecondaryButton";
 import useFilterSelect from "../../hooks/useFilterSelect";
-
+/*Declaramos los estilos que se van a usar por cada componente*/
+/*Declaramos el estilo de la letra*/ 
 const StyledTypography = withStyles({
   root: {
     fontSize: "34px",
@@ -27,7 +29,7 @@ const StyledTypography = withStyles({
     fontWeigth: "400",
   },
 })(Typography);
-
+/*Declaramos el estilo del container*/ 
 const StyledContainer = withStyles({
   root: {
     marginTop: "0.9em",
@@ -36,7 +38,7 @@ const StyledContainer = withStyles({
     alignItems: "center",
   },
 })(Container);
-
+/*Declaramos el estilo de la letra*/ 
 const useStyles = makeStyles((theme) => ({
   formControl: {
     height: "100%",
@@ -51,8 +53,9 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(0),
   },
 }));
-
+/*Declaramos la función principal*/ 
 export default function EditProfile() {
+  /*Declaramos la función principal*/ 
   const classes = useStyles();
   const location = useLocation();
   const state = location.state;
@@ -94,12 +97,14 @@ export default function EditProfile() {
       [name]: event.target.value,
     });
   };*/
-
+/*Declaramos lo que nos va a retornar la funcion*/ 
   return (
     <>
+      
       <NavBar user={state.user} />
       <StyledContainer>
         <form className={classes.form} noValidate>
+          /*Usamos grid para dividir las vistas*/ 
           <Grid container spacing={6}>
             <Grid container item xs={12} spacing={1}></Grid>
 

@@ -1,3 +1,4 @@
+/*Importamos las librerias principales*/
 import React from "react";
 import { withStyles } from "@material-ui/styles";
 import Card from "@material-ui/core/Card";
@@ -18,7 +19,8 @@ import { useTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-
+/*Declaramos los estilos que se van a usar por cada componente*/
+/*Declaramos el estilo del botón*/ 
 const StyledIconButton = withStyles({
   root: {
     height: "50px",
@@ -30,7 +32,7 @@ const StyledIconButton = withStyles({
     },
   },
 })(IconButton);
-
+/*Declaramos el estilo del card*/ 
 
 const StyledCard = withStyles({
   root: {
@@ -38,40 +40,14 @@ const StyledCard = withStyles({
     margin: "20px auto",
   },
 })(Card);
-
+/*Declaramos el estilo del card media*/ 
 const StyledCardMedia = withStyles({
   root: {
     height: "0",
     paddingTop: "41%",
   },
 })(CardMedia);
-
-const StyledCardActions = withStyles({
-  root: {
-    display: "flex",
-    justifyContent: "space-between",
-  },
-})(CardActions);
-
-const StyledButton = withStyles({
-  root: {
-    color: theme.palette.primary.main,
-  },
-})(Button);
-
-const StyledBody2 = withStyles({
-  root: {
-    color: theme.cardLetter.primary.main,
-  },
-})(Typography);
-
-const StyledCaption = withStyles({
-  root: {
-    marginRight: "5%",
-    color: theme.cardLetter.primary.main,
-  },
-})(Typography);
-
+/*Declaramos el estilo de la letra*/ 
 const StyledBody3 = withStyles({
   root: {
     color:theme.palette.primary.main,
@@ -107,14 +83,14 @@ TabPanel.propTypes = {
   index: PropTypes.number.isRequired,
   value: PropTypes.number.isRequired,
 };
-
+/*Funcion del tab panel para que  se desplace*/ 
 function a11yProps(index) {
   return {
     id: `full-width-tab-${index}`,
     'aria-controls': `full-width-tabpanel-${index}`,
   };
 }
-
+/*Declaramos la función principal*/ 
 const ServiceDetailsCard = () => {
   const [valuestar, setValuestart] = React.useState(2);
   const [value, setValue] = React.useState(0);
@@ -126,6 +102,7 @@ const ServiceDetailsCard = () => {
   const handleChangeIndex = (index) => {
     setValue(index);
   };
+/*Declaramos lo que nos va a retornar la funcion*/ 
   return (
     <StyledCard>
       {/*Cambiar los datos por informaciónde la bd*/}
@@ -140,7 +117,8 @@ const ServiceDetailsCard = () => {
           </StyledBody3>
           </Box>
           </Grid>        
-      </Grid>     
+      </Grid>
+      {/*declaramos sivider para dal estilo al borde*/}
       <Divider /><Divider />
       <Grid container spacing={12} sm={12} alignItems='flex-end' justifyContent='center' >
           <Grid container xs={12}  sm={9}  alignItems='flex-end' >
