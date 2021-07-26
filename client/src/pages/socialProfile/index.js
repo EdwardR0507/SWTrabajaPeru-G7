@@ -10,7 +10,7 @@ import { makeStyles, withStyles } from "@material-ui/core/styles";
 const StyledContainer = withStyles({
   root: {
     marginTop: "0.9em",
-    paddingLeft: "9.4em",
+    paddingLeft: "2.4em",
     display: "flex",
     alignItems: "center",
   },
@@ -22,8 +22,8 @@ export default function socialProfile() {
       <NavBar></NavBar>
       <StyledContainer>
         <Grid container item xs={12} spacing={3}>
-          <Grid item xs={4} >
-            <ProfileCard></ProfileCard>
+          <Grid item xs={4}>
+              <ProfileCard></ProfileCard>
           </Grid>
           <Grid item xs={8} spacing={3}>
             <Box>
