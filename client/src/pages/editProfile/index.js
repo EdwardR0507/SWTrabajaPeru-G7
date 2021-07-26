@@ -1,6 +1,8 @@
 import React from "react";
 import axios from "axios";
+import GlobalEnv from "../../GlobalEnv";
 import { useLocation } from "react-router";
+import { useForm } from "react-hook-form";
 import NavBar from "../../layouts/NavBar";
 import {
   Container,
@@ -10,12 +12,13 @@ import {
   Grid,
   InputLabel,
   FormControl,
+  TextField,
   Select,
 } from "@material-ui/core/";
 import { useInput } from "../../hooks/useInput";
 import useLocations from "../../hooks/useLocations";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
-import Input from "../../components/TextFields/Input";
+import FormError from "../../components/Errors/FormError";
 import SecondaryButton from "../../components/Buttons/SecondaryButton";
 import useFilterSelect from "../../hooks/useFilterSelect";
 
@@ -54,12 +57,17 @@ const useStyles = makeStyles((theme) => ({
 
 export default function EditProfile() {
   const classes = useStyles();
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm();
   const location = useLocation();
   const state = location.state;
 
   const locations = useLocations();
 
-  const { value: departamento, bind: bindDepatamento } = useInput("");
+  const { value: departamento, bind: bindDepartamento } = useInput("");
   const { value: provincia, bind: bindProvincia } = useInput("");
   const { value: distrito, bind: bindDistrito } = useInput("");
 
@@ -68,7 +76,17 @@ export default function EditProfile() {
     provincia
   );
 
-  const handleSubmit = async (evt) => {
+  const onSubmit = async(userEdited, event) => {
+    event.preventDefault();
+    console.log(userEdited)
+    await axios.post(`${GlobalEnv.host}/user-auth`, {
+      command: "EDIT_USER",
+      transaction: userEdited
+    })
+    .then(res => console.log(res))
+  }
+
+  /*const handleSubmit = async (evt) => {
     evt.preventDefault();
     let profileEdit = {};
     await axios
@@ -108,12 +126,24 @@ export default function EditProfile() {
             </Grid>
 
             <Grid container item xs={6} spacing={3}>
-              <Input id="imput1" label="Usuario" />
+            <TextField
+                  variant="filled"
+                  fullWidth
+                  label="Nombres y Apellidos"
+                  defaultValue={state.user.us_nombres}
+                  name="us_nombres"
+                  type="text"
+                  {...register("us_nombres", { required: true, maxLength: 40 })}
+                />
+                <FormError condition={errors.us_nombres?.type === "required"}
+                           content="Ingrese nombres y apellidos" />
+                <FormError condition={errors.us_nombres?.type === "maxLength"}
+                           content="Nombre no válido" />
             </Grid>
 
             <Grid container item xs={6} spacing={3}>
               <FormControl variant="filled" className={classes.formControl}>
-                <InputLabel id="imput2" htmlFor="filled-age-native-simple">
+                <InputLabel>
                   Departamento
                 </InputLabel>
                 <Select
@@ -121,23 +151,53 @@ export default function EditProfile() {
                 onChange={handleChange}*/
                   native
                   inputProps={{
-                    name: "departamento",
+                    name: "us_departamento",
                     id: "filled-departamento-native-simple",
                   }}
-                  {...bindDepatamento}
+                  {...register("us_departamento", { required: true })}
+                  {...bindDepartamento}
                 >
-                  <option hidden />
-                  {locations.departamentos.map((dept) => (
-                    <option value={dept.name} key={dept.id}>
-                      {dept.name}
-                    </option>
-                  ))}
+                    {locations.departamentos.map((dept) => {
+                      if (dept.name === state.user.us_departamento){
+                        return (
+                          <option value={dept.name} key={dept.id} selected>
+                            {dept.name}
+                          </option>
+                        )
+                      }
+                    })}
+                    {locations.departamentos.map((dept) => {
+                      if (dept.name != state.user.us_departamento){
+                        return (
+                          <option value={dept.name} key={dept.id}>
+                            {dept.name}
+                          </option>
+                        )
+                      }
+                    })}
                 </Select>
+                <FormError condition={errors.us_departamento?.type === "required"}
+                             content="Ingrese departamento"/>
               </FormControl>
             </Grid>
 
             <Grid container item xs={6} spacing={3}>
-              <Input id="imput3" label="Nombres y apellidos" />
+            <TextField
+                  fullWidth
+                  variant="filled"
+                  id="phoneNumber"
+                  label="Teléfono"
+                  name="us_celular"
+                  value={state.user.us_celular}
+                  {...register("us_celular", {
+                    required: true,
+                    pattern: /^^9\d{8}$/,
+                  })}
+                />
+                <FormError condition={errors.us_celular?.type === "required"}
+                           content="Ingrese celular"/>                
+                <FormError condition={errors.us_correo?.type === "pattern"}
+                           content="Número de celular no válido"/>   
             </Grid>
 
             <Grid container item xs={6} spacing={3}>
@@ -150,24 +210,28 @@ export default function EditProfile() {
                 onChange={handleChange}*/
                   native
                   inputProps={{
-                    name: "provincia",
+                    name: "us_provincia",
                     id: "filled-provincia-native-simple",
                   }}
+                  {...register("us_provincia", { required: true })}
                   {...bindProvincia}
                 >
                   <option hidden />
-                  {filteredProvincias &&
-                    filteredProvincias.map((prov) => (
-                      <option value={prov.name} key={prov.id}>
-                        {prov.name}
-                      </option>
-                    ))}
+                    {filteredProvincias && filteredProvincias.map((prov) => (
+                          <option value={prov.name} key={prov.id}>
+                            {prov.name}
+                          </option>
+                        ))}
                 </Select>
+                <FormError condition={errors.us_provincia?.type === "required"}
+                             content="Ingrese provincia"/>
               </FormControl>
             </Grid>
 
             <Grid container item xs={6} spacing={3}>
-              <Input id="imput5" label="Correo electrònico" />
+              <div>
+                {/*Espacio vacío*/}
+              </div>
             </Grid>
 
             <Grid container item xs={6} spacing={3}>
@@ -180,9 +244,10 @@ export default function EditProfile() {
                 onChange={handleChange}*/
                   native
                   inputProps={{
-                    name: "distrito",
+                    name: "us_distrito",
                     id: "filled-distrito-native-simple",
                   }}
+                  {...register("us_distrito", { required: true })}
                   {...bindDistrito}
                 >
                   <option hidden />
@@ -193,11 +258,9 @@ export default function EditProfile() {
                       </option>
                     ))}
                 </Select>
+                <FormError condition={errors.us_distrito?.type === "required"}
+                             content="Ingrese distrito"/>
               </FormControl>
-            </Grid>
-
-            <Grid container item xs={6} spacing={3}>
-              <Input id="imput7" label="Número de teléfono" />
             </Grid>
 
             <Grid container justify="center" item xs={12} spacing={3}>
@@ -217,6 +280,7 @@ export default function EditProfile() {
                   color="primary"
                   className={classes.submit}
                   name="GUARDAR PERFIL"
+                  onClick={handleSubmit(onSubmit)}
                 ></PrimaryButton>
               </Grid>
             </Grid>

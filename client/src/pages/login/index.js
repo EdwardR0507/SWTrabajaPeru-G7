@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link as RouterLink, useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
@@ -58,7 +58,7 @@ export default function SignIn() {
     handleSubmit,
   } = useForm();
 
-  let user;
+  const [user, setUser] = useState();
 
   const onSubmit = async (getUser, evt) => {
     evt.preventDefault();
@@ -68,8 +68,8 @@ export default function SignIn() {
         transaction: getUser,
       })
       .then((res) => {
-        user = res.data.transaction;
-        console.log(user);
+        setUser(res.data.transaction);
+        console.log(res);
         history.push({
           pathname: "/",
           search: `?id=${user.us_id}`,
