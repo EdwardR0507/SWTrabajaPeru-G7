@@ -9,9 +9,8 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import Rating from '@material-ui/lab/Rating';
-import IconButton from "@material-ui/core/IconButton";
 import theme from "../../themes/themes";
-import { Divider, Grid, Box } from "@material-ui/core";
+import { Divider, Grid, Box, IconButton } from "@material-ui/core";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import PropTypes from 'prop-types';
@@ -21,6 +20,17 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
+const StyledIconButton = withStyles({
+  root: {
+    height: "50px",
+    margin: "auto 0",
+    backgroundColor: theme.palette.secondary.main,
+    color: "white",
+    "&:hover": {
+      backgroundColor: theme.palette.secondary.main,
+    },
+  },
+})(IconButton);
 
 
 const StyledCard = withStyles({
@@ -121,10 +131,10 @@ const ServiceDetailsCard = () => {
     <StyledCard>
       {/*Cambiar los datos por informaciónde la bd*/}
       <Grid container spacing={12} sm={12} alignItems='flex-end' justifyContent='center'>
-          <Grid container xs={12}  sm={8} spacing={12}>
+          <Grid container xs={12}  sm={8} >
           <CardHeader title="TÍTULO DEL SERVICIO" />
           </Grid>
-          <Grid container xs={12}  sm={4} spacing={12} alignItems='flex-end' justifyContent='space-evenly'>
+          <Grid container xs={12}  sm={4} alignItems='flex-end' justifyContent='space-evenly'>
           <Box mb={2}>
           <StyledBody3 >
           S/. 120.00
@@ -134,12 +144,12 @@ const ServiceDetailsCard = () => {
       </Grid>     
       <Divider /><Divider />
       <Grid container spacing={12} sm={12} alignItems='flex-end' justifyContent='center' >
-          <Grid container xs={12}  sm={9} spacing={12}  alignItems='flex-end' >
+          <Grid container xs={12}  sm={9}  alignItems='flex-end' >
                 <Box ml={1}>
                  <Rating name="read-only" value={valuestar} readOnly />                 
                 </Box>
           </Grid>
-          <Grid container xs={12}  sm={3} marginTop= "10%" alignItems='flex-end'>
+          <Grid container xs={12}  sm={3}  alignItems='flex-end'>
                 <Box mt={1}>
                 <PrimaryButton
                   variant="contained"
@@ -149,15 +159,19 @@ const ServiceDetailsCard = () => {
                 </Box>
           </Grid>
       </Grid>  
-      <Grid container spacing={12} sm={10} justifyContent='center'>
-          <Grid container xs={12}  sm={3} spacing={12}  justifyContent='flex-end' >
-             <NavigateBeforeIcon />
+      <Grid container spacing={12} sm={10} justifyContent="center" alignItems="center" >
+          <Grid container xs={3}  sm={2}  justifyContent='flex-end' >
+             <StyledIconButton>
+             <NavigateBeforeIcon />  
+             </StyledIconButton>
           </Grid>
-          <Grid container xs={12}  sm={6} spacing={12}  justifyContent='center' >
+          <Grid container xs={6}  sm={8}  justifyContent="center" alignItems="center" >
              <StyledCardMedia image="../../assets/CardTest.jpeg" />
           </Grid>
-          <Grid container xs={12}  sm={3} spacing={12}  justifyContent='flex-start' >
-             <NavigateNextIcon />
+          <Grid container xs={3}  sm={2}  justifyContent='flex-start' >
+             <StyledIconButton>
+              <NavigateNextIcon />              
+             </StyledIconButton>
           </Grid>                    
       </Grid>
       <Grid container spacing={12} sm={12} justifyContent='center'>
