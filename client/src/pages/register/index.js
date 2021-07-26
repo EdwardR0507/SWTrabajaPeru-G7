@@ -28,6 +28,7 @@ import useLocations from "../../hooks/useLocations";
 import useFilterSelect from "../../hooks/useFilterSelect";
 import theme from "../../themes/themes"
 
+/*Declaramos el estilo de la letra*/ 
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -39,14 +40,16 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
   },
+  //Estilo envio
   form: {
     width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
+  //Estilo envio
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
-
+  //Estilo form control
   formControl: {
     height: "100%",
     overflow: "hidden",
@@ -112,12 +115,14 @@ const SignUp = () => {
   return (
     <>
       <NavBar></NavBar>
+      {/* Contenedor Principal del formulario de registro */}
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <div className={classes.paper}>
           <StyledTypography>Registro</StyledTypography>
           <form className={classes.form} noValidate>
             <Grid container spacing={2}>
+              {/* Contenedor Campo de Nombres y Apellidos */}
               <Grid item xs={12}>
                 <TextField
                   variant="filled"
@@ -132,7 +137,7 @@ const SignUp = () => {
                 <FormError condition={errors.us_nombres?.type === "maxLength"}
                   content="Nombre no válido" />
               </Grid>
-
+              {/* Contenedor Campo de Correo Electronico */}
               <Grid item xs={12}>
                 <TextField
                   fullWidth
@@ -152,6 +157,8 @@ const SignUp = () => {
                 <FormError condition={errors.us_correo?.type === "pattern"}
                   content="Dirección de correo no válido" />
               </Grid>
+              {/* Fin Campo de Correo Electronico */}
+              {/* Contenedor Campo de Numero Telfónico */}
               <Grid item xs={12}>
                 <TextField
                   fullWidth
@@ -169,7 +176,8 @@ const SignUp = () => {
                 <FormError condition={errors.us_correo?.type === "pattern"}
                   content="Número de celular no válido" />
               </Grid>
-
+              {/* Fin Campo de Numero Telfónico */}
+              {/* Contenedor Campo de Contraseña */}
               <Grid item xs={12}>
                 <TextField
                   fullWidth
@@ -191,7 +199,7 @@ const SignUp = () => {
                 <FormError condition={errors.us_contrasena?.type === "maxLength"}
                   content="Ingrese como máximo 14 caracteres" />
               </Grid>
-
+              {/* Contenedor Campo de Confirmar Contraseña*/}
               <Grid item xs={12}>
                 <TextField
                   fullWidth
@@ -204,7 +212,8 @@ const SignUp = () => {
                 {errors.passwordConfirm?.type === "required" &&
                   "Ingrese contraseña"}
               </Grid>
-
+              {/* Fin Campo de Confirmar Contraseña*/}
+              {/* Contenedor Campo de Departamento*/}
               <Grid container item xs={12}>
                 <FormControl variant="filled" className={classes.formControl}>
                   <InputLabel id="imput2" htmlFor="filled-age-native-simple">
@@ -227,7 +236,8 @@ const SignUp = () => {
                     content="Ingrese departamento" />
                 </FormControl>
               </Grid>
-
+              {/* Fin Campo de Departamento*/}
+              {/* Contenedor Campo Provincia*/}       
               <Grid container item xs={12}>
                 <FormControl variant="filled" className={classes.formControl}>
                   <InputLabel id="imput4" htmlFor="filled-age-native-simple">
@@ -251,7 +261,8 @@ const SignUp = () => {
                     content="Ingrese provincia" />
                 </FormControl>
               </Grid>
-
+              {/* Fin Campo Provincia*/}  
+              {/* Contenedor Campo Distrito*/}  
               <Grid container item xs={12}>
                 <FormControl variant="filled" className={classes.formControl}>
                   <InputLabel id="imput6" htmlFor="filled-age-native-simple">
@@ -275,7 +286,8 @@ const SignUp = () => {
                     content="Ingrese distrito" />
                 </FormControl>
               </Grid>
-
+              {/* Fin Campo Distrito*/}  
+              {/* Contenedor Campo Distrito*/}  
               <Grid item xs={6} sm={6}>
                 <SecondaryButton
                   fullWidth
@@ -295,10 +307,12 @@ const SignUp = () => {
                   onClick={handleSubmit(onSubmit)}
                 />
               </Grid>
-
+              {/* Redirecciones finales*/}  
+              {/* Redireccion ¿YA TIENES UNA CUENTA?*/}  
               <Grid item xs={6} sm={6} align="center" fontWeight="bold">
                 ¿YA TIENES UNA CUENTA?
               </Grid>
+              {/* Redireccion INICIAR SESION*/}  
               <Grid item xs={6} sm={6}>
                 <Link variant="body2" component={RouterLink} to="/signin">
                   INICIA SESIÓN
@@ -325,6 +339,7 @@ const SignUp = () => {
           </form>
         </div>
       </Container>
+      {/*Fin formulario de registro */}
     </>
   );
 };
