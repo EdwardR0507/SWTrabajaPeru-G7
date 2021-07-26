@@ -58,7 +58,7 @@ export default function SignIn() {
     handleSubmit,
   } = useForm();
 
-  const [user, setUser] = useState();
+  let user
 
   const onSubmit = async (getUser, evt) => {
     evt.preventDefault();
@@ -68,7 +68,7 @@ export default function SignIn() {
         transaction: getUser,
       })
       .then((res) => {
-        setUser(res.data.transaction);
+        user = res.data.transaction;
         console.log(res);
         history.push({
           pathname: "/",
