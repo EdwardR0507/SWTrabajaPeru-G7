@@ -7,6 +7,8 @@ import SignUp from "./pages/register";
 import EditProfile from "./pages/editProfile"
 import ManageServices from "./pages/services";
 import socialProfile from "./pages/socialProfile";
+import ServiceDetails from "./pages/serviceDetails"
+
 const GlobalStyles = withStyles({
   "@global": {
     "html, body": {
@@ -29,6 +31,7 @@ function App() {
           <Route path="/editProfile" component={EditProfile}/>
           <Route path="/manageservices" component={ManageServices} />
           <Route path="/socialprofile" component={socialProfile} />
+          <Route path="/servicedetails" component={ServiceDetails} />
           <Route path="*" component={() => <h1>404 NOT FOUND</h1>} />
         </Switch>
       </BrowserRouter>
