@@ -1,3 +1,4 @@
+/*Importamos las librerias principales*/
 import React, { useState } from "react";
 import { Link as RouterLink, useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -15,7 +16,7 @@ import {
 import GlobalEnv from "../../GlobalEnv";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import NavBar from "../../layouts/NavBar";
-
+/*Declaramos los estilos que se van a usar por cada componente*/
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -31,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
 }));
-/**/
+/*Declaramos el estilo de la letra*/
 const StyledTypography = withStyles({
   root: {
     fontSize: "34px",
@@ -40,14 +41,14 @@ const StyledTypography = withStyles({
     fontWeigth: "400",
   },
 })(Typography);
-
+/*Declaramos el estilo de la letra*/
 const StyledErrorSpan = withStyles({
   root: {
     color: "#FF4D4D",
     float: "left",
   },
 })(Typography);
-
+/*Declaramos la función principal*/ 
 export default function SignIn() {
   const classes = useStyles();
 
