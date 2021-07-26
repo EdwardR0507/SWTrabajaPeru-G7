@@ -6,7 +6,7 @@ import { shallow } from 'enzyme';
 describe("<EditProfile></EditProfile>", () => {
   it('should have the `EditProfile` in "IniciarSesión"', () => {
     const wrapper = shallow(<EditProfile />);
-    expect(wrapper.containsMatchingElement(<NavBar></NavBar>)).toBe(false);
+    expect(wrapper.containsMatchingElement(<NavBar></NavBar>)).toBe(true);
   });
   
 });

@@ -1,10 +1,10 @@
-import  ServiceDetailsCard from "../../components/Cards/ ServiceDetailsCard";
+import  WorkerDetailsCard from "../../components/Cards/WorkerDetailsCard";
 import React from "react";
 import { shallow } from "enzyme";
 
-describe("< ServiceDetailsCard></ ServiceDetailsCard>", () => {
-    it('render " ServiceDetailsCard"', () => {
-        const wrapper = shallow(<ServiceDetailsCard />);
+describe("<WorkerDetailsCard></WorkerDetailsCard>", () => {
+    it('render "WorkerDetailsCard"', () => {
+        const wrapper = shallow(<WorkerDetailsCard />);
         expect(wrapper).toMatchSnapshot()
       });
 });
