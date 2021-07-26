@@ -11,4 +11,4 @@ describe("<SocialProfile></SocialProfile>", () => {
     const wrapper = shallow(<SocialProfile />);
     expect(wrapper.contains(<ProfileCard></ProfileCard>)).toBe(true);
   });
-});  
+});

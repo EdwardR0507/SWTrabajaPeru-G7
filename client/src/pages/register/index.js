@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link as RouterLink, useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useInput } from "../../hooks/useInput";
 import axios from "axios";
+import GlobalEnv from "../../GlobalEnv";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import {
   Link,
@@ -13,15 +14,21 @@ import {
   Typography,
   Container,
   TextField,
+  Snackbar,
+  IconButton,
   makeStyles,
-  withStyles,
+  withStyles
 } from "@material-ui/core/";
+import CloseIcon from '@material-ui/icons/Close';
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import SecondaryButton from "../../components/Buttons/SecondaryButton";
+import FormError from "../../components/Errors/FormError";
 import NavBar from "../../layouts/NavBar";
 import useLocations from "../../hooks/useLocations";
 import useFilterSelect from "../../hooks/useFilterSelect";
+import theme from "../../themes/themes"
 
+/*Declaramos el estilo de la letra*/ 
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -33,14 +40,16 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
   },
+  //Estilo envio
   form: {
     width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
+  //Estilo envio
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
-
+  //Estilo form control
   formControl: {
     height: "100%",
     overflow: "hidden",
@@ -58,14 +67,10 @@ const StyledTypography = withStyles({
   },
 })(Typography);
 
-const StyledErrorSpan = withStyles({
-  root: {
-    color: "#FF4D4D",
-  },
-})(Typography);
-
 const SignUp = () => {
   const classes = useStyles();
+
+  const [open, setOpen] = useState(false);
   const locations = useLocations();
 
   const {
@@ -84,13 +89,24 @@ const SignUp = () => {
     provincia
   );
 
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
+
   const onSubmit = async (user, evt) => {
     evt.preventDefault();
-    console.log(user);
-    await axios.post("http://localhost:4000/user", {
+    await axios.post(`${GlobalEnv.host}/user`, {
       command: "REGISTER_USER",
       transaction: user,
-    });
+    })
+      .then(() => {
+        console.log(user);
+        setOpen(true);
+      })
     //.then((res) => {
     //history.push(`/home/:${res.data.transaction.us_id}`)
     //})
@@ -99,12 +115,14 @@ const SignUp = () => {
   return (
     <>
       <NavBar></NavBar>
+      {/* Contenedor Principal del formulario de registro */}
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <div className={classes.paper}>
           <StyledTypography>Registro</StyledTypography>
           <form className={classes.form} noValidate>
             <Grid container spacing={2}>
+              {/* Contenedor Campo de Nombres y Apellidos */}
               <Grid item xs={12}>
                 <TextField
                   variant="filled"
@@ -114,16 +132,12 @@ const SignUp = () => {
                   type="text"
                   {...register("us_nombres", { required: true, maxLength: 40 })}
                 />
-                <StyledErrorSpan>
-                  {errors.us_nombres?.type === "required" &&
-                    "Ingrese nombres y apellidos"}
-                </StyledErrorSpan>
-                <StyledErrorSpan>
-                  {errors.us_nombres?.type === "maxLength" &&
-                    "Nombre no válido"}
-                </StyledErrorSpan>
+                <FormError condition={errors.us_nombres?.type === "required"}
+                  content="Ingrese nombres y apellidos" />
+                <FormError condition={errors.us_nombres?.type === "maxLength"}
+                  content="Nombre no válido" />
               </Grid>
-
+              {/* Contenedor Campo de Correo Electronico */}
               <Grid item xs={12}>
                 <TextField
                   fullWidth
@@ -138,15 +152,13 @@ const SignUp = () => {
                     pattern: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
                   })}
                 />
-                <StyledErrorSpan>
-                  {errors.us_correo?.type === "required" &&
-                    "Ingrese correo electrónico"}
-                </StyledErrorSpan>
-                <StyledErrorSpan>
-                  {errors.us_correo?.type === "pattern" &&
-                    "Dirección de correo no válido"}
-                </StyledErrorSpan>
+                <FormError condition={errors.us_correo?.type === "required"}
+                  content="Ingrese correo electrónico" />
+                <FormError condition={errors.us_correo?.type === "pattern"}
+                  content="Dirección de correo no válido" />
               </Grid>
+              {/* Fin Campo de Correo Electronico */}
+              {/* Contenedor Campo de Numero Telfónico */}
               <Grid item xs={12}>
                 <TextField
                   fullWidth
@@ -159,15 +171,13 @@ const SignUp = () => {
                     pattern: /^^9\d{8}$/,
                   })}
                 />
-                <StyledErrorSpan>
-                  {errors.us_celular?.type === "required" && "Ingrese celular"}
-                </StyledErrorSpan>
-                <StyledErrorSpan>
-                  {errors.us_celular?.type === "pattern" &&
-                    "Número de celular no válido"}
-                </StyledErrorSpan>
+                <FormError condition={errors.us_celular?.type === "required"}
+                  content="Ingrese celular" />
+                <FormError condition={errors.us_correo?.type === "pattern"}
+                  content="Número de celular no válido" />
               </Grid>
-
+              {/* Fin Campo de Numero Telfónico */}
+              {/* Contenedor Campo de Contraseña */}
               <Grid item xs={12}>
                 <TextField
                   fullWidth
@@ -182,20 +192,14 @@ const SignUp = () => {
                     maxLength: 14,
                   })}
                 />
-                <StyledErrorSpan>
-                  {errors.us_contrasena?.type === "required" &&
-                    "Ingrese contraseña"}
-                </StyledErrorSpan>
-                <StyledErrorSpan>
-                  {errors.us_contrasena?.type === "minLength" &&
-                    "Ingrese como mínimo 8 caracteres"}
-                </StyledErrorSpan>
-                <StyledErrorSpan>
-                  {errors.us_contrasena?.type === "maxLength" &&
-                    "Ingrese como máximo 14 caracteres"}
-                </StyledErrorSpan>
+                <FormError condition={errors.us_contrasena?.type === "required"}
+                  content="Ingrese contraseña" />
+                <FormError condition={errors.us_contrasena?.type === "minLength"}
+                  content="Ingrese como mínimo 8 caracteres" />
+                <FormError condition={errors.us_contrasena?.type === "maxLength"}
+                  content="Ingrese como máximo 14 caracteres" />
               </Grid>
-
+              {/* Contenedor Campo de Confirmar Contraseña*/}
               <Grid item xs={12}>
                 <TextField
                   fullWidth
@@ -208,7 +212,8 @@ const SignUp = () => {
                 {errors.passwordConfirm?.type === "required" &&
                   "Ingrese contraseña"}
               </Grid>
-
+              {/* Fin Campo de Confirmar Contraseña*/}
+              {/* Contenedor Campo de Departamento*/}
               <Grid container item xs={12}>
                 <FormControl variant="filled" className={classes.formControl}>
                   <InputLabel id="imput2" htmlFor="filled-age-native-simple">
@@ -227,13 +232,12 @@ const SignUp = () => {
                       </option>
                     ))}
                   </Select>
-                  <StyledErrorSpan>
-                    {errors.us_departamento?.type === "required" &&
-                      "Ingrese departamento"}
-                  </StyledErrorSpan>
+                  <FormError condition={errors.us_departamento?.type === "required"}
+                    content="Ingrese departamento" />
                 </FormControl>
               </Grid>
-
+              {/* Fin Campo de Departamento*/}
+              {/* Contenedor Campo Provincia*/}       
               <Grid container item xs={12}>
                 <FormControl variant="filled" className={classes.formControl}>
                   <InputLabel id="imput4" htmlFor="filled-age-native-simple">
@@ -253,13 +257,12 @@ const SignUp = () => {
                         </option>
                       ))}
                   </Select>
-                  <StyledErrorSpan>
-                    {errors.us_provincia?.type === "required" &&
-                      "Ingrese provincia"}
-                  </StyledErrorSpan>
+                  <FormError condition={errors.us_provincia?.type === "required"}
+                    content="Ingrese provincia" />
                 </FormControl>
               </Grid>
-
+              {/* Fin Campo Provincia*/}  
+              {/* Contenedor Campo Distrito*/}  
               <Grid container item xs={12}>
                 <FormControl variant="filled" className={classes.formControl}>
                   <InputLabel id="imput6" htmlFor="filled-age-native-simple">
@@ -279,13 +282,12 @@ const SignUp = () => {
                         </option>
                       ))}
                   </Select>
-                  <StyledErrorSpan>
-                    {errors.us_distrito?.type === "required" &&
-                      "Ingrese distrito"}
-                  </StyledErrorSpan>
+                  <FormError condition={errors.us_distrito?.type === "required"}
+                    content="Ingrese distrito" />
                 </FormControl>
               </Grid>
-
+              {/* Fin Campo Distrito*/}  
+              {/* Contenedor Campo Distrito*/}  
               <Grid item xs={6} sm={6}>
                 <SecondaryButton
                   fullWidth
@@ -305,19 +307,39 @@ const SignUp = () => {
                   onClick={handleSubmit(onSubmit)}
                 />
               </Grid>
-
+              {/* Redirecciones finales*/}  
+              {/* Redireccion ¿YA TIENES UNA CUENTA?*/}  
               <Grid item xs={6} sm={6} align="center" fontWeight="bold">
                 ¿YA TIENES UNA CUENTA?
               </Grid>
+              {/* Redireccion INICIAR SESION*/}  
               <Grid item xs={6} sm={6}>
                 <Link variant="body2" component={RouterLink} to="/signin">
                   INICIA SESIÓN
                 </Link>
               </Grid>
             </Grid>
+            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center'
+              }}
+              message="Usuario correctamente registrado"
+              action={<React.Fragment>
+                <IconButton
+                  aria-label="close"
+                  color="inherit"
+                  className={classes.close}
+                  onClick={handleClose}
+                >
+                  <CloseIcon />
+                </IconButton>
+              </React.Fragment>}
+            />
           </form>
         </div>
       </Container>
+      {/*Fin formulario de registro */}
     </>
   );
 };
