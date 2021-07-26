@@ -1,95 +1,213 @@
 import React from "react";
-import {
-  Box,
-  Typography,
-  Card,
-  CardHeader,
-  Avatar,
-  Divider,
-  Grid, 
-} from "@material-ui/core";
-import CardContent from "@material-ui/core/CardContent";
+import { withStyles } from "@material-ui/styles";
+import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
 import CardMedia from "@material-ui/core/CardMedia";
-import { makeStyles} from "@material-ui/core/styles";
+import CardActions from "@material-ui/core/CardActions";
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
-import Rating from "@material-ui/lab/Rating";
+import Rating from '@material-ui/lab/Rating';
+import theme from "../../themes/themes";
+import { Divider, Grid, Box, IconButton } from "@material-ui/core";
+import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
+import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+import PropTypes from 'prop-types';
+import SwipeableViews from 'react-swipeable-views';
+import { useTheme } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 
-const useStyles = makeStyles((theme) => ({
+const StyledIconButton = withStyles({
   root: {
-    paddingBottom: theme.spacing(3),
+    height: "50px",
+    margin: "auto 0",
+    backgroundColor: theme.palette.secondary.main,
+    color: "white",
+    "&:hover": {
+      backgroundColor: theme.palette.secondary.main,
+    },
   },
-  media: {
-    height: 200,
-  },
-  title: {
-    fontWeight: "bold",
-    paddingBottom: theme.spacing(1),
-  },
-  description: {
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
-  },
-  button: {
-    paddingTop: theme.spacing(3),
-  },
-}));
+})(IconButton);
 
-export default function ServiceDetailsCard() {
-  const classes = useStyles();
-  const [value, setValue] = React.useState(2);
+
+const StyledCard = withStyles({
+  root: {
+    width: "90% ",
+    margin: "20px auto",
+  },
+})(Card);
+
+const StyledCardMedia = withStyles({
+  root: {
+    height: "0",
+    paddingTop: "41%",
+  },
+})(CardMedia);
+
+const StyledCardActions = withStyles({
+  root: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
+})(CardActions);
+
+const StyledButton = withStyles({
+  root: {
+    color: theme.palette.primary.main,
+  },
+})(Button);
+
+const StyledBody2 = withStyles({
+  root: {
+    color: theme.cardLetter.primary.main,
+  },
+})(Typography);
+
+const StyledCaption = withStyles({
+  root: {
+    marginRight: "5%",
+    color: theme.cardLetter.primary.main,
+  },
+})(Typography);
+
+const StyledBody3 = withStyles({
+  root: {
+    color:theme.palette.primary.main,
+    fontSize: '1.5rem',
+    fontWeight: 'bold',
+    justifyContent:'space-around'
+  },
+})(Typography);
+
+/*Configuración componentes */
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
   return (
-    <Box className={classes.root}>
-      <Card>
-        <CardHeader
-          avatar={<Avatar></Avatar>}
-          title="Kori Antunez Palomino"
-          subheader="Fecha de publicación del servicio"
-        />
-        <CardContent>
-          <Typography className={classes.title} variant="h6" component="p">
-            TÍTULO DEL SERVICIO
-          </Typography>
-          <Divider></Divider>
-          <Typography
-            className={classes.description}
-            variant="body2"
-            component="p"
-          >
-            Descripción del servicio
-          </Typography>
-
-          <CardMedia
-            className={classes.media}
-            image="https://www.azulweb.net/wp-content/uploads/2020/07/El-camino-para-ser-un-desarrollador-web-profesional.jpg"
-            style={{ borderRadius: 10 }}
-            title="Contemplative Reptile"
-          />
-          <Grid container item xs={12} spacing={1}>
-            <Grid item xs={6} spacing={1}>
-              <Typography className={classes.title} variant="h6" component="p">
-                S/100.00
-              </Typography>
-              <Rating
-                name="simple-controlled"
-                value={value}
-                onChange={(event, newValue) => {
-                  setValue(newValue);
-                }}
-              />
-            </Grid>
-            <Grid item xs={6} spacing={1}>
-              <Box className={classes.button}>
-                <PrimaryButton
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  name="CONTACTAR"
-                ></PrimaryButton>
-              </Box>
-            </Grid>
-          </Grid>
-        </CardContent>
-      </Card>
-    </Box>
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`full-width-tabpanel-${index}`}
+      aria-labelledby={`full-width-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
   );
 }
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
+};
+
+function a11yProps(index) {
+  return {
+    id: `full-width-tab-${index}`,
+    'aria-controls': `full-width-tabpanel-${index}`,
+  };
+}
+
+const ServiceDetailsCard = () => {
+  const [valuestar, setValuestart] = React.useState(2);
+  const [value, setValue] = React.useState(0);
+  const theme = useTheme();
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  const handleChangeIndex = (index) => {
+    setValue(index);
+  };
+  return (
+    <StyledCard>
+      {/*Cambiar los datos por informaciónde la bd*/}
+      <Grid container spacing={12} sm={12} alignItems='flex-end' justifyContent='center'>
+          <Grid container xs={12}  sm={8} >
+          <CardHeader title="TÍTULO DEL SERVICIO" />
+          </Grid>
+          <Grid container xs={12}  sm={4} alignItems='flex-end' justifyContent='space-evenly'>
+          <Box mb={2}>
+          <StyledBody3 >
+          S/. 120.00
+          </StyledBody3>
+          </Box>
+          </Grid>        
+      </Grid>     
+      <Divider /><Divider />
+      <Grid container spacing={12} sm={12} alignItems='flex-end' justifyContent='center' >
+          <Grid container xs={12}  sm={9}  alignItems='flex-end' >
+                <Box ml={1}>
+                 <Rating name="read-only" value={valuestar} readOnly />                 
+                </Box>
+          </Grid>
+          <Grid container xs={12}  sm={3}  alignItems='flex-end'>
+                <Box mt={1}>
+                <PrimaryButton
+                  variant="contained"
+                  color="primary"
+                  name="+SOLICITAR"
+                ></PrimaryButton>
+                </Box>
+          </Grid>
+      </Grid>  
+      <Grid container spacing={12} sm={10} justifyContent="center" alignItems="center" >
+          <Grid container xs={3}  sm={2}  justifyContent='flex-end' >
+             <StyledIconButton>
+             <NavigateBeforeIcon />  
+             </StyledIconButton>
+          </Grid>
+          <Grid container xs={6}  sm={8}  justifyContent="center" alignItems="center" >
+             <StyledCardMedia image="../../assets/CardTest.jpeg" />
+          </Grid>
+          <Grid container xs={3}  sm={2}  justifyContent='flex-start' >
+             <StyledIconButton>
+              <NavigateNextIcon />              
+             </StyledIconButton>
+          </Grid>                    
+      </Grid>
+      <Grid container spacing={12} sm={12} justifyContent='center'>
+    <Box sx={{ bgcolor: 'background.paper', width: 650}}>
+      <AppBar position="static">
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          indicatorColor="secondary"
+          textColor="inherit"
+          variant="fullWidth"
+          aria-label="full width tabs example"
+        >
+          <Tab label="Descripción" {...a11yProps(0)} />
+          <Tab label="Ubicación" {...a11yProps(1)} />
+        </Tabs>
+      </AppBar>
+      <SwipeableViews
+        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+        index={value}
+        onChangeIndex={handleChangeIndex}
+      >
+        <TabPanel value={value} index={0} dir={theme.direction}>
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quas culpa
+          maxime mollitia velit sunt, rem sint, nam iusto placeat ratione quae
+          omnis qui? Veritatis fugit maxime sed repellendus. Quibusdam, quis!
+        </TabPanel>
+        <TabPanel value={value} index={1} dir={theme.direction}>
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quas culpa
+          maxime mollitia velit sunt, rem sint, nam iusto placeat ratione quae
+          omnis qui? Veritatis fugit maxime sed repellendus. Quibusdam, quis!
+        </TabPanel>
+      </SwipeableViews>
+    </Box>                  
+      </Grid>      
+    </StyledCard>
+  );
+};
+
+export default ServiceDetailsCard;

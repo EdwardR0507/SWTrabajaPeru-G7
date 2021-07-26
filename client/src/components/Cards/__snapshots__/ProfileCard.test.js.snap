@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ProfileCard></ProfileCard> render "ProfileCard" 1`] = `ShallowWrapper {}`;
+
+exports[`ProfileCard render "InputField" 1`] = `ShallowWrapper {}`;

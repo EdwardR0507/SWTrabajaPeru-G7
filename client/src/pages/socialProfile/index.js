@@ -3,9 +3,9 @@ import { Box } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
 import ProfileCard from "../../components/Cards/ProfileCard";
 import { Container } from "@material-ui/core";
-import DetailsServiceCard from "../../components/Cards/ServiceDetailsCard";
+import ProfileServiceCard from "../../components/Cards/ProfileServiceCard";
 import NavBar from "../../layouts/NavBar";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 
 const StyledContainer = withStyles({
   root: {
@@ -15,6 +15,7 @@ const StyledContainer = withStyles({
     alignItems: "center",
   },
 })(Container);
+
 
 export default function socialProfile() {
   return (
@@ -27,10 +28,10 @@ export default function socialProfile() {
           </Grid>
           <Grid item xs={8} spacing={3}>
             <Box>
-              <DetailsServiceCard></DetailsServiceCard>
+              <ProfileServiceCard></ProfileServiceCard>
             </Box>
             <Box>
-              <DetailsServiceCard></DetailsServiceCard>
+              <ProfileServiceCard></ProfileServiceCard>
             </Box>
           </Grid>
         </Grid>
