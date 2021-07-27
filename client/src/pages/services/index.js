@@ -43,7 +43,7 @@ const ManageServices = () => {
       <HeadingBar before={"TRABAJADOR"} after={"MIS SERVICIOS"}></HeadingBar>
       <StyledContainer>
         <StyledTypography>Mis Servicios</StyledTypography>
-        <ServiceModal data={data} setData={setData} />
+        <ServiceModal data={data} setData={setData} mood="Agregar" />
       </StyledContainer>
       {data.map((el) => {
         if (el.id === null) {

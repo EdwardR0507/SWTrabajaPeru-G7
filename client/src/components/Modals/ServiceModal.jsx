@@ -13,8 +13,10 @@ import {
   Fade,
   FormControl,
   MenuItem,
+  IconButton,
 } from "@material-ui/core/";
 import AddIcon from "@material-ui/icons/Add";
+import CreateIcon from "@material-ui/icons/Create";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import PrimaryButton from "../Buttons/PrimaryButton";
 import SecondaryButton from "../Buttons/SecondaryButton";
@@ -106,8 +108,16 @@ const useStyles = makeStyles(() => ({
     width: "214px",
   },
 }));
-
-const ServiceModal = ({ data, setData }) => {
+/*Props: objeto, setter del objeto, modo que tomará el modal que se va a renderizar (agregar o editar, basta con pasarle Agregar), nombre del servicio, descripción del servicio, método para poder editar el servicio*/
+const ServiceModal = ({
+  data,
+  setData,
+  mood,
+  service,
+  serviceDescription,
+  handleEdit,
+}) => {
+  // Hook useForm para almacenar los datos de los forms
   const {
     handleSubmit,
     register,
@@ -115,49 +125,81 @@ const ServiceModal = ({ data, setData }) => {
     formState: { errors },
   } = useForm();
 
+  // Variable para customizar los componentes
   const classes = useStyles();
+  // Estado para controlar la apertura y cierre de los modales
   const [open, setOpen] = useState(false);
+  // Estado para controlar el nombre del servicio
   const [name, setName] = useState("");
+  // Estado para controlar la descripción del servicio
   const [description, setDescription] = useState("");
 
+  // Función para abrir el modal
   const handleOpen = () => {
     setName("");
     setOpen(true);
   };
 
+  // Función para cerrar el modal
   const handleClose = () => {
     setName("");
     setOpen(false);
   };
 
+  // Función para capturar lo que se escriba la descripción
   const handleDescription = (e) => {
     setDescription(e.target.value);
   };
 
+  // Función para capturar lo que se escriba el nombre
   const handleSelect = (e) => {
     setName(e.target.value);
   };
 
-  //Función que crea un nuevo componente InfoService
+  //Función que crea un nuevo componente InfoService y envía datos al backend
   const onSubmit = (datos, e) => {
     e.preventDefault();
+    console.log(datos);
     handleClose();
     setDescription("");
     setData([...data, { id: data[data.length - 1].id + 1, name, description }]);
     reset();
   };
 
+  // Función para editar un servicio
+  const onSubmitEdit = (datos, e) => {
+    e.preventDefault();
+    console.log(datos);
+    handleClose();
+    reset();
+  };
+
+  // Función para comprobar la existencia de un nombre por defecto en el select que se encuentra deshabilitado (en editModal)
+  const existName = (e) => (e ? e : "");
   return (
+    // Renderizado condicional para diferenciar entre el boton Agregar y el botón Editar
     <>
-      <Button
-        variant="contained"
-        color="primary"
-        className={classes.button}
-        onClick={handleOpen}
-        endIcon={<AddIcon />}
-      >
-        Agregar
-      </Button>
+      {mood === "Agregar" ? (
+        <Button
+          variant="contained"
+          color="primary"
+          className={classes.button}
+          onClick={handleOpen}
+          endIcon={<AddIcon />}
+        >
+          Agregar
+        </Button>
+      ) : (
+        <Button
+          variant="contained"
+          color="primary"
+          className={classes.button}
+          onClick={handleOpen}
+          endIcon={<CreateIcon />}
+        >
+          Editar
+        </Button>
+      )}
 
       <Modal
         aria-labelledby="transition-modal-title"
@@ -173,68 +215,139 @@ const ServiceModal = ({ data, setData }) => {
       >
         <Fade in={open}>
           <div className={classes.paper}>
-            <Typography className={classes.title}>Nuevo Servicio</Typography>
-            {/* Formulario donde se llenarán los datos para crear un nuevo servicio */}
-            <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
-              <Container className={classes.container}>
-                <Container className={classes.containerData}>
-                  <Container className={classes.containerService}>
-                    <FormControl className={classes.formControl}>
+            {/* Renderizado condicional para diferenciar entre el título Nuevo o Editar*/}
+            {mood === "Agregar" ? (
+              <Typography className={classes.title}>Nuevo Servicio</Typography>
+            ) : (
+              <Typography className={classes.title}>Editar Servicio</Typography>
+            )}
+            {/*Renderizado condicional para los formularios*/}
+            {mood === "Agregar" ? (
+              /* Formulario donde se llenarán los datos para crear un nuevo servicio */
+              <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
+                <Container className={classes.container}>
+                  <Container className={classes.containerData}>
+                    <Container className={classes.containerService}>
+                      <FormControl className={classes.formControl}>
+                        <InputLabel id="demo-simple-select-required-label">
+                          Nombre del Servicio
+                        </InputLabel>
+                        <Select
+                          labelId="demo-simple-select-required-label"
+                          id="demo-simple-select-required"
+                          name="services"
+                          value={existName(name)}
+                          {...register("services", {
+                            required: true,
+                          })}
+                          onChange={handleSelect}
+                          className={classes.selectEmpty}
+                        >
+                          <MenuItem value="Albañilería">Albañilería</MenuItem>
+                          <MenuItem value="Gasfitería">Gasfitería</MenuItem>
+                        </Select>
+                        {errors.services && "Debe seleccionar un servicio"}
+                      </FormControl>
+                    </Container>
+
+                    <TextField
+                      id="filled-multiline-flexible"
+                      label="Descripción"
+                      multiline
+                      name="description"
+                      {...register("description", { maxLength: 300 })}
+                      onChange={handleDescription}
+                      rowsMax={3}
+                      variant="filled"
+                    />
+                    {errors.description && "Ingrese máximo 300 caracteres"}
+                  </Container>
+                  {/*Aquí irá la imagen del servicio, primero importamos la imagen y luego la colocamos dentro del src, no olvidar poner el alt */}
+                  <Container className={classes.containerImage}>
+                    <IconButton aria-label="add" className={classes.addIcon}>
+                      <AddCircleIcon />
+                    </IconButton>
+                    {/*<img src={imgService} alt={"Servicio"} className={classes.image} />*/}
+                  </Container>
+                </Container>
+                <Container className={classes.containerButton}>
+                  <Container className={classes.wrapp}>
+                    <PrimaryButton
+                      type="submit"
+                      name="ACEPTAR"
+                      className={classes.submit}
+                      onClick={handleSubmit(onSubmit)}
+                    ></PrimaryButton>
+                  </Container>
+                  <SecondaryButton
+                    variant="contained"
+                    name="CANCELAR"
+                    onClick={handleClose}
+                  ></SecondaryButton>
+                </Container>
+              </form>
+            ) : (
+              /* Formulario donde se llenarán los datos para editar un servicio */
+              <form
+                className={classes.form}
+                onSubmit={handleSubmit(onSubmitEdit)}
+              >
+                <Container className={classes.container}>
+                  <Container className={classes.containerData}>
+                    <Container className={classes.containerService}>
                       <InputLabel id="demo-simple-select-required-label">
                         Nombre del Servicio
                       </InputLabel>
                       <Select
-                        labelId="demo-simple-select-required-label"
-                        id="demo-simple-select-required"
-                        name="services"
-                        value={name ? name : ""}
-                        {...register("services", {
-                          required: true,
-                        })}
-                        onChange={handleSelect}
-                        className={classes.selectEmpty}
+                        native
+                        disabled
+                        inputProps={{
+                          name: "servicio",
+                          id: "filled-servicio-native-simple",
+                        }}
                       >
-                        <MenuItem value="Albañilería">Albañilería</MenuItem>
-                        <MenuItem value="Gasfitería">Gasfitería</MenuItem>
+                        <option>{service}</option>
                       </Select>
-                      {errors.services && "Debe seleccionar un servicio"}
-                    </FormControl>
+                    </Container>
+                    <TextField
+                      id="filled-multiline-flexible"
+                      label="Descripción"
+                      multiline
+                      name="description"
+                      {...register("description", { maxLength: 300 })}
+                      defaultValue={serviceDescription}
+                      onChange={handleEdit}
+                      rowsMax={3}
+                      variant="filled"
+                    />
+                    {errors.description && "Ingrese máximo 300 caracteres"}
                   </Container>
-
-                  <TextField
-                    id="filled-multiline-flexible"
-                    label="Descripción"
-                    multiline
-                    name="description"
-                    {...register("description", { maxLength: 300 })}
-                    onChange={handleDescription}
-                    rowsMax={3}
-                    variant="filled"
-                  />
-                  {errors.description && "Ingrese máximo 300 caracteres"}
+                  {/*Aquí irá la imagen del servicio, primero importamos la imagen y luego la colocamos dentro del src, no olvidar poner el alt */}
+                  <Container className={classes.containerImage}>
+                    <IconButton aria-label="add" className={classes.addIcon}>
+                      <AddCircleIcon />
+                    </IconButton>
+                    {/*<img src={imgService} alt={"Servicio"} className={classes.image} />*/}
+                  </Container>
                 </Container>
-                {/*Aquí irá la imagen del servicio, primero importamos la imagen y luego la colocamos dentro del src, no olvidar poner el alt */}
-                <Container className={classes.containerImage}>
-                  <AddCircleIcon className={classes.addIcon} />
-                  {/*<img src={imgService} alt={"Servicio"} className={classes.image} />*/}
+                <Container className={classes.containerButton}>
+                  <Container className={classes.wrapp}>
+                    <PrimaryButton
+                      type="submit"
+                      className={classes.submit}
+                      variant="contained"
+                      name="ACEPTAR"
+                      onClick={handleSubmit(onSubmitEdit)}
+                    ></PrimaryButton>
+                  </Container>
+                  <SecondaryButton
+                    variant="contained"
+                    name="CANCELAR"
+                    onClick={handleClose}
+                  ></SecondaryButton>
                 </Container>
-              </Container>
-              <Container className={classes.containerButton}>
-                <Container className={classes.wrapp}>
-                  <PrimaryButton
-                    type="submit"
-                    name="ACEPTAR"
-                    className={classes.submit}
-                    onClick={handleSubmit(onSubmit)}
-                  ></PrimaryButton>
-                </Container>
-                <SecondaryButton
-                  variant="contained"
-                  name="CANCELAR"
-                  onClick={handleClose}
-                ></SecondaryButton>
-              </Container>
-            </form>
+              </form>
+            )}
           </div>
         </Fade>
       </Modal>
