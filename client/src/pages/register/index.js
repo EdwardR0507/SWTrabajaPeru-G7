@@ -103,13 +103,16 @@ const SignUp = () => {
       command: "REGISTER_USER",
       transaction: user,
     })
-      .then(() => {
-        console.log(user);
+      .then((res) => {
+        console.log(res);
         setOpen(true);
+        setTimeout(()=>{
+          setOpen(false);
+          history.push({
+            pathname: "/signin"
+          })
+        }, 3000)
       })
-    //.then((res) => {
-    //history.push(`/home/:${res.data.transaction.us_id}`)
-    //})
   };
 
   return (

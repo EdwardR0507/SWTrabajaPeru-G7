@@ -66,6 +66,7 @@ export default function Home() {
         command: "GET_HOME_SERVICES",
       })
       .then((res) => {
+        console.log(res)
         setServices(res.data);
       });
   }, []);
@@ -115,7 +116,7 @@ export default function Home() {
           <StyledIconButton>
             <NavigateBeforeIcon />
           </StyledIconButton>
-          {workers.map((worker) => (
+          {workers?.map((worker) => (
             <WorkerCard worker={worker} />
           ))}
           <StyledIconButton>
