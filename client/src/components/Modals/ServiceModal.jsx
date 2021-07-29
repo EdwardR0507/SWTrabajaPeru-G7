@@ -20,6 +20,7 @@ import CreateIcon from "@material-ui/icons/Create";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import PrimaryButton from "../Buttons/PrimaryButton";
 import SecondaryButton from "../Buttons/SecondaryButton";
+import FormError from "../../components/Errors/FormError";
 import theme from "../../themes/themes";
 
 const useStyles = makeStyles(() => ({
@@ -247,7 +248,10 @@ const ServiceModal = ({
                           <MenuItem value="Albañilería">Albañilería</MenuItem>
                           <MenuItem value="Gasfitería">Gasfitería</MenuItem>
                         </Select>
-                        {errors.services && "Debe seleccionar un servicio"}
+                        <FormError
+                          condition={errors.services?.type === "required"}
+                          content="Debe seleccionar un servicio"
+                        />
                       </FormControl>
                     </Container>
 
@@ -261,7 +265,10 @@ const ServiceModal = ({
                       rowsMax={3}
                       variant="filled"
                     />
-                    {errors.description && "Ingrese máximo 300 caracteres"}
+                    <FormError
+                      condition={errors.description}
+                      content="Ingrese máximo 300 caracteres"
+                    />
                   </Container>
                   {/*Aquí irá la imagen del servicio, primero importamos la imagen y luego la colocamos dentro del src, no olvidar poner el alt */}
                   <Container className={classes.containerImage}>
@@ -321,7 +328,10 @@ const ServiceModal = ({
                       rowsMax={3}
                       variant="filled"
                     />
-                    {errors.description && "Ingrese máximo 300 caracteres"}
+                    <FormError
+                      condition={errors.description}
+                      content="Ingrese máximo 300 caracteres"
+                    />
                   </Container>
                   {/*Aquí irá la imagen del servicio, primero importamos la imagen y luego la colocamos dentro del src, no olvidar poner el alt */}
                   <Container className={classes.containerImage}>
