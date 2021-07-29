@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -5,7 +6,19 @@ import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 import theme from '../../themes/themes';
+=======
+//Importacion de Librerias
+import React from "react";
+import { withStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+import IconButton from "@material-ui/core/IconButton";
+import SearchIcon from "@material-ui/icons/Search";
+import theme from "../../themes/themes";
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+>>>>>>> Stashed changes
 
+//
 const StyledSearchField = withStyles({
     root:{
         width: '577px',
@@ -26,13 +39,40 @@ const StyledSearchField = withStyles({
     }
 })(Paper);
 
+/*
 const StyledInputBase = withStyles({
+<<<<<<< Updated upstream
     root: {
         width: '100%'
     }
 })(InputBase)
+=======
+  root: {
+    width: "100%",
+  },
+})(InputBase);
+*/
+>>>>>>> Stashed changes
 
+//Estilo de componente Autocomplete
+const StyledAutocomplete = withStyles({
+  root: {
+    width: "100%",
+    // paddingBottom: "2.4em",
+    marginTop: "16px",
+  },
+})(Autocomplete);
+
+
+const Prueba1 = [
+  { Name: 'Gianela Malqui', Servicio: "Secretaria" },
+  { Name: 'Gianela Malqui', Servicio: "Secretaria" },
+  { Name: 'Gianela Malqui', Servicio: "Secretaria" },
+];
+
+//
 const SearchField = (props) => {
+<<<<<<< Updated upstream
     return(
         <StyledSearchField>
             <IconButton>
@@ -44,4 +84,25 @@ const SearchField = (props) => {
     )
 };
 
+=======
+  return (
+    <StyledSearchField>
+      <IconButton>
+        <SearchIcon />
+      </IconButton>
+      <StyledAutocomplete
+
+        /*Mostrará info de service y user */
+        options={Prueba1.map((option) => option.Name)}
+
+        renderInput={(params) => (
+          <TextField {...params} width="577px"
+          />
+        )}
+      />
+    </StyledSearchField>
+  );
+};
+//Exportacion de elemento SearchField
+>>>>>>> Stashed changes
 export default SearchField;
