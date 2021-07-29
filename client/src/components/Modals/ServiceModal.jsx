@@ -207,6 +207,7 @@ const ServiceModal = ({
         className={classes.modal}
         open={open}
         onClose={handleClose}
+        disableScrollLock
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{

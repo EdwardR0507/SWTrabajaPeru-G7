@@ -97,6 +97,7 @@ const ContactModal = ({ name }) => {
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         className={classes.modal}
+        disableScrollLock
         open={open}
         onClose={handleClose}
         closeAfterTransition
