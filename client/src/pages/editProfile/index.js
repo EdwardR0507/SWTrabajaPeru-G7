@@ -1,5 +1,5 @@
 /*Importamos las librerias principales*/
-import React from "react";
+import React, { useState, useEffect} from "react";
 import axios from "axios";
 import GlobalEnv from "../../GlobalEnv";
 import { useLocation } from "react-router";
@@ -60,6 +60,7 @@ const useStyles = makeStyles((theme) => ({
 export default function EditProfile() {
   /*Declaramos la función principal*/ 
   const classes = useStyles();
+  const [user, setUser] = useState();
   const {
     register,
     formState: { errors },
@@ -79,12 +80,42 @@ export default function EditProfile() {
     provincia
   );
 
+  useEffect(() => {
+    console.log(state)
+    if (state?.token) {
+      //Cambiar post por get cuando se arregle
+      axios
+        .post(`${GlobalEnv.host}/user-auth`, {
+          command: "OBTAIN_USER"
+        }, {
+          headers: {
+            authorization: `Bearer ${state?.token}`
+          }
+        }
+        )
+        .then((res) => {
+          console.log(res)
+          setUser(res.data)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
+    else {
+      return
+    }
+  }, [])
+
   const onSubmit = async(userEdited, event) => {
     event.preventDefault();
     console.log(userEdited)
     await axios.post(`${GlobalEnv.host}/user-auth`, {
       command: "EDIT_USER",
       transaction: userEdited
+    }, {
+      headers: {
+        authorization: `Bearer ${state?.token}`
+      }
     })
     .then(res => console.log(res))
   }
@@ -116,10 +147,9 @@ export default function EditProfile() {
     });
   };*/
 /*Declaramos lo que nos va a retornar la funcion*/ 
-  return (
+  return user ? (
     <>
-      
-      <NavBar user={state.user} />
+      <NavBar user={user} />
       <StyledContainer>
         <form className={classes.form} noValidate>
           /*Usamos grid para dividir las vistas*/ 
@@ -135,7 +165,7 @@ export default function EditProfile() {
                   variant="filled"
                   fullWidth
                   label="Nombres y Apellidos"
-                  defaultValue={state.user.us_nombres}
+                  defaultValue={user.us_nombres}
                   name="us_nombres"
                   type="text"
                   {...register("us_nombres", { required: true, maxLength: 40 })}
@@ -163,7 +193,7 @@ export default function EditProfile() {
                   {...bindDepartamento}
                 >
                     {locations.departamentos.map((dept) => {
-                      if (dept.name === state.user.us_departamento){
+                      if (dept.name === user.us_departamento){
                         return (
                           <option value={dept.name} key={dept.id} selected>
                             {dept.name}
@@ -172,7 +202,7 @@ export default function EditProfile() {
                       }
                     })}
                     {locations.departamentos.map((dept) => {
-                      if (dept.name != state.user.us_departamento){
+                      if (dept.name != user.us_departamento){
                         return (
                           <option value={dept.name} key={dept.id}>
                             {dept.name}
@@ -193,7 +223,7 @@ export default function EditProfile() {
                   id="phoneNumber"
                   label="Teléfono"
                   name="us_celular"
-                  value={state.user.us_celular}
+                  value={user.us_celular}
                   {...register("us_celular", {
                     required: true,
                     pattern: /^^9\d{8}$/,
@@ -293,5 +323,7 @@ export default function EditProfile() {
         </form>
       </StyledContainer>
     </>
+  ):(
+    <div>Cargando...</div>
   );
 }

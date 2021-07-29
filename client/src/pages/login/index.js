@@ -59,7 +59,7 @@ export default function SignIn() {
     handleSubmit,
   } = useForm();
 
-  let user
+  let userInfo
 
   const onSubmit = async (getUser, evt) => {
     evt.preventDefault();
@@ -69,12 +69,11 @@ export default function SignIn() {
         transaction: getUser,
       })
       .then((res) => {
-        user = res.data.transaction;
+        userInfo = res.data;
         console.log(res);
         history.push({
           pathname: "/",
-          search: `?id=${user.us_id}`,
-          state: { user: user },
+          state: { token: userInfo.token },
         });
       });
   };
