@@ -1,5 +1,5 @@
 import ServiceDetailsCard from "./index";
-import WorkerDetailsCard from "../../components/Cards/WorkerDetailsCard";
+import ProfileCard from "../../components/Cards/ProfileCard";
 import React from "react";
 import { shallow, mount, render } from "enzyme";
 describe("<ServiceDetailsCard></ServiceDetailsCard>", () => {
@@ -7,8 +7,8 @@ describe("<ServiceDetailsCard></ServiceDetailsCard>", () => {
     const wrapper = shallow(<ServiceDetailsCard />);
     expect(wrapper).toMatchSnapshot()
   });
-  it('should have an `WorkerDetailsCard` element', () => {
-    const wrapper = shallow(<ServiceDetailsCard />);
-    expect(wrapper.contains(<WorkerDetailsCard></WorkerDetailsCard>)).toBe(false);
+  it('should have an `ProfileCard` element', () => {
+    const wrapper = shallow(<ProfileCard />);
+    expect(wrapper.contains(<ProfileCard></ProfileCard>)).toBe(false);
   });
 });

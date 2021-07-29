@@ -15,6 +15,7 @@ import {
   FormControl,
   TextField,
   Select,
+  Box
 } from "@material-ui/core/";
 import { useInput } from "../../hooks/useInput";
 import useLocations from "../../hooks/useLocations";
@@ -67,7 +68,6 @@ export default function EditProfile() {
   } = useForm();
   const location = useLocation();
   const state = location.state;
-
   const locations = useLocations();
 
   const { value: departamento, bind: bindDepartamento } = useInput("");
@@ -119,18 +119,19 @@ export default function EditProfile() {
   return (
     <>
       
-      <NavBar user={state.user} />
+      {state ? <NavBar user={state.user} /> : <NavBar />}
       <StyledContainer>
         <form className={classes.form} noValidate>
           /*Usamos grid para dividir las vistas*/ 
           <Grid container spacing={6}>
-            <Grid container item xs={12} spacing={1}></Grid>
-
-            <Grid container item xs={12} spacing={3}>
-              <StyledTypography>Editar Perfil</StyledTypography>
+           
+            <Grid item xs={12} >
+              <Box mt={1}>
+              <StyledTypography>Editar Perfil</StyledTypography>  
+              </Box> 
             </Grid>
 
-            <Grid container item xs={6} spacing={3}>
+            <Grid item xs={6} >
             <TextField
                   variant="filled"
                   fullWidth
@@ -146,7 +147,7 @@ export default function EditProfile() {
                            content="Nombre no válido" />
             </Grid>
 
-            <Grid container item xs={6} spacing={3}>
+            <Grid item xs={6} >
               <FormControl variant="filled" className={classes.formControl}>
                 <InputLabel>
                   Departamento
@@ -186,7 +187,7 @@ export default function EditProfile() {
               </FormControl>
             </Grid>
 
-            <Grid container item xs={6} spacing={3}>
+            <Grid item xs={6}>
             <TextField
                   fullWidth
                   variant="filled"
@@ -205,7 +206,7 @@ export default function EditProfile() {
                            content="Número de celular no válido"/>   
             </Grid>
 
-            <Grid container item xs={6} spacing={3}>
+            <Grid item xs={6}>
               <FormControl variant="filled" className={classes.formControl}>
                 <InputLabel id="imput4" htmlFor="filled-age-native-simple">
                   Provincia
@@ -233,13 +234,13 @@ export default function EditProfile() {
               </FormControl>
             </Grid>
 
-            <Grid container item xs={6} spacing={3}>
+            <Grid item xs={6}>
               <div>
                 {/*Espacio vacío*/}
               </div>
             </Grid>
 
-            <Grid container item xs={6} spacing={3}>
+            <Grid item xs={6}>
               <FormControl variant="filled" className={classes.formControl}>
                 <InputLabel id="imput6" htmlFor="filled-age-native-simple">
                   Distrito
@@ -268,8 +269,8 @@ export default function EditProfile() {
               </FormControl>
             </Grid>
 
-            <Grid container justify="center" item xs={12} spacing={3}>
-              <Grid container item xs={3} spacing={3}>
+            <Grid item  justify="center"  xs={12}>
+              <Grid item xs={3} >
                 <SecondaryButton
                   type="submit"
                   variant="contained"
@@ -278,7 +279,7 @@ export default function EditProfile() {
                   name="CANCELAR"
                 ></SecondaryButton>
               </Grid>
-              <Grid container item xs={3} spacing={3}>
+              <Grid item xs={3} >
                 <PrimaryButton
                   type="submit"
                   variant="contained"
