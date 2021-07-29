@@ -1,7 +1,9 @@
+/*Importamos las librerias principales*/
+import React from "react";
 import SocialProfile from "./index";
 import ProfileCard from "../../components/Cards/ProfileCard";
-import React from "react";
-import { shallow, mount, render } from "enzyme";
+import { shallow } from "enzyme";
+/*Renderizado de la vista Social Profile*/
 describe("<SocialProfile></SocialProfile>", () => {
   it('render `ProfileCard`', () => {
     const wrapper = shallow(<SocialProfile />);

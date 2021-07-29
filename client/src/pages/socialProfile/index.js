@@ -1,12 +1,10 @@
 /*Importamos las librerias principales*/
 import React from "react";
-import { Box } from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
+import { Container, Grid, Box } from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
 import ProfileCard from "../../components/Cards/ProfileCard";
-import { Container } from "@material-ui/core";
 import ProfileServiceCard from "../../components/Cards/ProfileServiceCard";
 import NavBar from "../../layouts/NavBar";
-import { withStyles } from "@material-ui/core/styles";
 /*Declaramos los estilos que se van a usar por cada componente*/
 /*Declaramos el estilo del container*/ 
 const StyledContainer = withStyles({
