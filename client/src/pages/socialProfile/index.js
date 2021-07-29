@@ -1,3 +1,4 @@
+/*Importamos las librerias principales*/
 import React from "react";
 import { Box } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
@@ -6,7 +7,8 @@ import { Container } from "@material-ui/core";
 import ProfileServiceCard from "../../components/Cards/ProfileServiceCard";
 import NavBar from "../../layouts/NavBar";
 import { withStyles } from "@material-ui/core/styles";
-
+/*Declaramos los estilos que se van a usar por cada componente*/
+/*Declaramos el estilo del container*/ 
 const StyledContainer = withStyles({
   root: {
     marginTop: "0.9em",
@@ -15,8 +17,7 @@ const StyledContainer = withStyles({
     alignItems: "center",
   },
 })(Container);
-
-
+/*Declaramos la función principal*/
 export default function socialProfile() {
   return (
     <>

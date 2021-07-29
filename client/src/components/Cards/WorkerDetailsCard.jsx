@@ -1,14 +1,11 @@
-/*Importamos las librerias principales*/
 import { Box, Card, CardHeader, Avatar, ListItem, ListItemAvatar, ListItemText } from "@material-ui/core";
 import CardContent from "@material-ui/core/CardContent";
 import PhoneAndroidIcon from "@material-ui/icons/PhoneAndroid";
 import MailIcon from "@material-ui/icons/Mail";
 import RoomIcon from "@material-ui/icons/Room";
-/*Declaramos la función principal*/ 
-export default function WorkerDetailsCard() {
-  /*Declaramos lo que nos va a retornar la funcion*/ 
+
+export default function ProfileCard() {
   return (
-    /*Card para dar el efecto de un cuadro*/
       <Card>
         <Box
           style={{
@@ -26,7 +23,7 @@ export default function WorkerDetailsCard() {
             }
           />
         </Box>
-      {/*El encabezado*/}
+
         <CardHeader
           title="Kori Antunez Palomino"
           style={{ textAlign: "center" }}
@@ -61,7 +58,7 @@ export default function WorkerDetailsCard() {
               primary="Ubicación"
               secondary="Lima/Lima/Jesús María"
             />
-          </ListItem>
+          </ListItem>          
         </CardContent>
       </Card>
   );
