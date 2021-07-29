@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { withStyles } from "@material-ui/styles";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -52,14 +52,20 @@ const StyledCaption = withStyles({
   },
 })(Typography);
 
-const ServiceCard = () => {
-  return (
+const ServiceCard = (props) => {
+  const [service, setService] = useState();
+
+  useEffect(()=>{
+    setService(props.service)
+  }, [])
+
+  return service ? (
     <StyledCard>
       {/*Cambiar los datos por informaciónde la bd*/}
       <CardHeader
         avatar={<Avatar></Avatar>}
-        title="Título del servicio"
-        subheader="Juan Alejandro"
+        title={service.cat_nombre}
+        subheader={service.us_nombres}
         action={
           <IconButton aria-label="share">
             <ShareIcon />
@@ -69,16 +75,15 @@ const ServiceCard = () => {
       <StyledCardMedia image="src/assets/CardTest.jpeg" />
       <CardContent>
         <StyledBody2 variant="body2">
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quas culpa
-          maxime mollitia velit sunt, rem sint, nam iusto placeat ratione quae
-          omnis qui? Veritatis fugit maxime sed repellendus. Quibusdam, quis!
+          {service.ser_descripcion}
         </StyledBody2>
       </CardContent>
       <StyledCardActions>
         <StyledButton>Ver Más</StyledButton>
-        <StyledCaption variant="caption">Fecha</StyledCaption>
       </StyledCardActions>
     </StyledCard>
+  ):(
+    <div>Cargando...</div>
   );
 };
 

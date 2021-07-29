@@ -99,9 +99,9 @@ export default function Home() {
           <StyledIconButton>
             <NavigateBeforeIcon />
           </StyledIconButton>
-          <ServiceCard />
-          <ServiceCard />
-          <ServiceCard />
+          {services?.map((service) => (
+            <ServiceCard service={service} />
+          ))}
           <StyledIconButton>
             <NavigateNextIcon />
           </StyledIconButton>
