@@ -17,18 +17,17 @@ import {
   Snackbar,
   IconButton,
   makeStyles,
-  withStyles
+  withStyles,
 } from "@material-ui/core/";
-import CloseIcon from '@material-ui/icons/Close';
+import CloseIcon from "@material-ui/icons/Close";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import SecondaryButton from "../../components/Buttons/SecondaryButton";
 import FormError from "../../components/Errors/FormError";
 import NavBar from "../../layouts/NavBar";
 import useLocations from "../../hooks/useLocations";
 import useFilterSelect from "../../hooks/useFilterSelect";
-import theme from "../../themes/themes"
 
-/*Declaramos el estilo de la letra*/ 
+/*Declaramos el estilo de la letra*/
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -77,6 +76,7 @@ const SignUp = () => {
     register,
     formState: { errors },
     handleSubmit,
+    getValues,
   } = useForm();
   const history = useHistory();
 
@@ -90,7 +90,7 @@ const SignUp = () => {
   );
 
   const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
 
@@ -99,17 +99,21 @@ const SignUp = () => {
 
   const onSubmit = async (user, evt) => {
     evt.preventDefault();
-    await axios.post(`${GlobalEnv.host}/user`, {
-      command: "REGISTER_USER",
-      transaction: user,
-    })
-      .then(() => {
-        console.log(user);
-        setOpen(true);
+    await axios
+      .post(`${GlobalEnv.host}/user`, {
+        command: "REGISTER_USER",
+        transaction: user,
       })
-    //.then((res) => {
-    //history.push(`/home/:${res.data.transaction.us_id}`)
-    //})
+      .then((res) => {
+        console.log(res);
+        setOpen(true);
+        setTimeout(() => {
+          setOpen(false);
+          history.push({
+            pathname: "/signin",
+          });
+        }, 3000);
+      });
   };
 
   return (
@@ -132,10 +136,14 @@ const SignUp = () => {
                   type="text"
                   {...register("us_nombres", { required: true, maxLength: 40 })}
                 />
-                <FormError condition={errors.us_nombres?.type === "required"}
-                  content="Ingrese nombres y apellidos" />
-                <FormError condition={errors.us_nombres?.type === "maxLength"}
-                  content="Nombre no válido" />
+                <FormError
+                  condition={errors.us_nombres?.type === "required"}
+                  content="Ingrese nombres y apellidos"
+                />
+                <FormError
+                  condition={errors.us_nombres?.type === "maxLength"}
+                  content="Nombre no válido"
+                />
               </Grid>
               {/* Contenedor Campo de Correo Electronico */}
               <Grid item xs={12}>
@@ -152,10 +160,14 @@ const SignUp = () => {
                     pattern: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
                   })}
                 />
-                <FormError condition={errors.us_correo?.type === "required"}
-                  content="Ingrese correo electrónico" />
-                <FormError condition={errors.us_correo?.type === "pattern"}
-                  content="Dirección de correo no válido" />
+                <FormError
+                  condition={errors.us_correo?.type === "required"}
+                  content="Ingrese correo electrónico"
+                />
+                <FormError
+                  condition={errors.us_correo?.type === "pattern"}
+                  content="Dirección de correo no válido"
+                />
               </Grid>
               {/* Fin Campo de Correo Electronico */}
               {/* Contenedor Campo de Numero Telfónico */}
@@ -171,10 +183,14 @@ const SignUp = () => {
                     pattern: /^^9\d{8}$/,
                   })}
                 />
-                <FormError condition={errors.us_celular?.type === "required"}
-                  content="Ingrese celular" />
-                <FormError condition={errors.us_correo?.type === "pattern"}
-                  content="Número de celular no válido" />
+                <FormError
+                  condition={errors.us_celular?.type === "required"}
+                  content="Ingrese celular"
+                />
+                <FormError
+                  condition={errors.us_correo?.type === "pattern"}
+                  content="Número de celular no válido"
+                />
               </Grid>
               {/* Fin Campo de Numero Telfónico */}
               {/* Contenedor Campo de Contraseña */}
@@ -192,12 +208,18 @@ const SignUp = () => {
                     maxLength: 14,
                   })}
                 />
-                <FormError condition={errors.us_contrasena?.type === "required"}
-                  content="Ingrese contraseña" />
-                <FormError condition={errors.us_contrasena?.type === "minLength"}
-                  content="Ingrese como mínimo 8 caracteres" />
-                <FormError condition={errors.us_contrasena?.type === "maxLength"}
-                  content="Ingrese como máximo 14 caracteres" />
+                <FormError
+                  condition={errors.us_contrasena?.type === "required"}
+                  content="Ingrese contraseña"
+                />
+                <FormError
+                  condition={errors.us_contrasena?.type === "minLength"}
+                  content="Ingrese como mínimo 8 caracteres"
+                />
+                <FormError
+                  condition={errors.us_contrasena?.type === "maxLength"}
+                  content="Ingrese como máximo 14 caracteres"
+                />
               </Grid>
               {/* Contenedor Campo de Confirmar Contraseña*/}
               <Grid item xs={12}>
@@ -208,9 +230,22 @@ const SignUp = () => {
                   label="Confirmar Contraseña"
                   type="password"
                   id="passwordConfirm"
+                  {...register("passwordConfirm", {
+                    required: true,
+                    minLength: 8,
+                    maxLength: 14,
+                  })}
                 />
-                {errors.passwordConfirm?.type === "required" &&
-                  "Ingrese contraseña"}
+                <FormError
+                  condition={errors.us_contrasena?.type === "required"}
+                  content="Ingrese contraseña"
+                />
+                <FormError
+                  condition={
+                    getValues("passwordConfirm") !== getValues("us_contrasena")
+                  }
+                  content="Contraseñas diferentes"
+                />
               </Grid>
               {/* Fin Campo de Confirmar Contraseña*/}
               {/* Contenedor Campo de Departamento*/}
@@ -232,12 +267,14 @@ const SignUp = () => {
                       </option>
                     ))}
                   </Select>
-                  <FormError condition={errors.us_departamento?.type === "required"}
-                    content="Ingrese departamento" />
+                  <FormError
+                    condition={errors.us_departamento?.type === "required"}
+                    content="Ingrese departamento"
+                  />
                 </FormControl>
               </Grid>
               {/* Fin Campo de Departamento*/}
-              {/* Contenedor Campo Provincia*/}       
+              {/* Contenedor Campo Provincia*/}
               <Grid container item xs={12}>
                 <FormControl variant="filled" className={classes.formControl}>
                   <InputLabel id="imput4" htmlFor="filled-age-native-simple">
@@ -257,12 +294,14 @@ const SignUp = () => {
                         </option>
                       ))}
                   </Select>
-                  <FormError condition={errors.us_provincia?.type === "required"}
-                    content="Ingrese provincia" />
+                  <FormError
+                    condition={errors.us_provincia?.type === "required"}
+                    content="Ingrese provincia"
+                  />
                 </FormControl>
               </Grid>
-              {/* Fin Campo Provincia*/}  
-              {/* Contenedor Campo Distrito*/}  
+              {/* Fin Campo Provincia*/}
+              {/* Contenedor Campo Distrito*/}
               <Grid container item xs={12}>
                 <FormControl variant="filled" className={classes.formControl}>
                   <InputLabel id="imput6" htmlFor="filled-age-native-simple">
@@ -282,12 +321,14 @@ const SignUp = () => {
                         </option>
                       ))}
                   </Select>
-                  <FormError condition={errors.us_distrito?.type === "required"}
-                    content="Ingrese distrito" />
+                  <FormError
+                    condition={errors.us_distrito?.type === "required"}
+                    content="Ingrese distrito"
+                  />
                 </FormControl>
               </Grid>
-              {/* Fin Campo Distrito*/}  
-              {/* Contenedor Campo Distrito*/}  
+              {/* Fin Campo Distrito*/}
+              {/* Contenedor Campo Distrito*/}
               <Grid item xs={6} sm={6}>
                 <SecondaryButton
                   fullWidth
@@ -307,34 +348,39 @@ const SignUp = () => {
                   onClick={handleSubmit(onSubmit)}
                 />
               </Grid>
-              {/* Redirecciones finales*/}  
-              {/* Redireccion ¿YA TIENES UNA CUENTA?*/}  
+              {/* Redirecciones finales*/}
+              {/* Redireccion ¿YA TIENES UNA CUENTA?*/}
               <Grid item xs={6} sm={6} align="center" fontWeight="bold">
                 ¿YA TIENES UNA CUENTA?
               </Grid>
-              {/* Redireccion INICIAR SESION*/}  
+              {/* Redireccion INICIAR SESION*/}
               <Grid item xs={6} sm={6}>
                 <Link variant="body2" component={RouterLink} to="/signin">
                   INICIA SESIÓN
                 </Link>
               </Grid>
             </Grid>
-            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}
+            <Snackbar
+              open={open}
+              autoHideDuration={6000}
+              onClose={handleClose}
               anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'center'
+                vertical: "bottom",
+                horizontal: "center",
               }}
               message="Usuario correctamente registrado"
-              action={<React.Fragment>
-                <IconButton
-                  aria-label="close"
-                  color="inherit"
-                  className={classes.close}
-                  onClick={handleClose}
-                >
-                  <CloseIcon />
-                </IconButton>
-              </React.Fragment>}
+              action={
+                <React.Fragment>
+                  <IconButton
+                    aria-label="close"
+                    color="inherit"
+                    className={classes.close}
+                    onClick={handleClose}
+                  >
+                    <CloseIcon />
+                  </IconButton>
+                </React.Fragment>
+              }
             />
           </form>
         </div>

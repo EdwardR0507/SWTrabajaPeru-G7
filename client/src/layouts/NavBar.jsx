@@ -114,8 +114,7 @@ const NavBar = (props) => {
                   onClick={() => {
                     history.push({
                       pathname: "/editProfile",
-                      search: `?id=${props.user.us_id}`,
-                      state: { user: props.user },
+                      state: { token: props.token },
                     });
                   }}
                 >

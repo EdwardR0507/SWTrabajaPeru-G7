@@ -4,10 +4,9 @@ import theme from "./themes/themes";
 import Home from "./pages/Home";
 import SignIn from "./pages/login";
 import SignUp from "./pages/register";
-import EditProfile from "./pages/editProfile"
+import EditProfile from "./pages/editProfile";
 import ManageServices from "./pages/services";
-import socialProfile from "./pages/socialProfile";
-import ServiceDetails from "./pages/serviceDetails"
+import ServiceDetails from "./pages/serviceDetails";
 
 const GlobalStyles = withStyles({
   "@global": {
@@ -28,9 +27,8 @@ function App() {
           <Route exact path="/" component={Home} />
           <Route exact path="/signin" component={SignIn} />
           <Route exact path="/signup" component={SignUp} />
-          <Route path="/editProfile" component={EditProfile}/>
+          <Route path="/editProfile" component={EditProfile} />
           <Route path="/manageservices" component={ManageServices} />
-          <Route path="/socialprofile" component={socialProfile} />
           <Route path="/servicedetails" component={ServiceDetails} />
           <Route path="*" component={() => <h1>404 NOT FOUND</h1>} />
         </Switch>
