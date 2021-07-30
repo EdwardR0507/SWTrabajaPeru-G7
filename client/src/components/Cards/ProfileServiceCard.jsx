@@ -1,19 +1,12 @@
+/*Importamos las librerias principales*/
 import React from "react";
-import {
-  Box,
-  Typography,
-  Card,
-  CardHeader,
-  Avatar,
-  Divider,
-  Grid, 
-} from "@material-ui/core";
+import {Box,Typography,Card,CardHeader,Avatar,Divider,Grid} from "@material-ui/core";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import { makeStyles} from "@material-ui/core/styles";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import Rating from "@material-ui/lab/Rating";
-
+/*Declaramos los estilos que se van a usar por cada componente*/
 const useStyles = makeStyles((theme) => ({
   root: {
     paddingBottom: theme.spacing(3),
@@ -33,10 +26,11 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(3),
   },
 }));
-
+/*Declaramos la función principal*/ 
 export default function ProfileServiceCard() {
   const classes = useStyles();
   const [value, setValue] = React.useState(2);
+  /*Declaramos lo que nos va a retornar la funcion*/ 
   return (
     <Box className={classes.root}>
       <Card>

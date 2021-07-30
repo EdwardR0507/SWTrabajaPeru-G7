@@ -1,12 +1,12 @@
-import EditProfile from './index';
-import NavBar from "./index"
+/*Importamos las librerias principales*/
 import React from 'react';
 import { shallow } from 'enzyme';
-
+import {EditProfile} from './index';
+/*Renderizado de la vista EditProfile*/
 describe("<EditProfile></EditProfile>", () => {
-  it('should have the `EditProfile` in "IniciarSesión"', () => {
+  it('render "EditProfile"', () => {
     const wrapper = shallow(<EditProfile />);
-    expect(wrapper.containsMatchingElement(<NavBar></NavBar>)).toBe(true);
+    expect(wrapper).toMatchSnapshot()
   });
   
 });
