@@ -1,4 +1,6 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
+import axios from "axios";
+import GlobalEnv from "../../GlobalEnv";
 import { useLocation } from "react-router";
 import NavBar from "../../layouts/NavBar";
 import HeadingBar from "../../layouts/HeadingBar/HeadingBar";
@@ -35,11 +37,32 @@ const ManageServices = () => {
   const location = useLocation();
   const state = location.state;
 
+  const [user, setUser] = useState();
   const [data, setData] = useState(arrObj);
+
+  useEffect(() => {
+    //Cambiar post por get cuando se arregle
+    axios
+      .post(`${GlobalEnv.host}/user-auth`, {
+        command: "OBTAIN_USER"
+      }, {
+        headers: {
+          authorization: `Bearer ${state?.token}`
+        }
+      }
+      )
+      .then((res) => {
+        console.log(res)
+        setUser(res.data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }, [])
 
   return (
     <>
-      <NavBar user={state.user} />
+      <NavBar user={user} />
       <HeadingBar before={"TRABAJADOR"} after={"MIS SERVICIOS"}></HeadingBar>
       <StyledContainer>
         <StyledTypography>Mis Servicios</StyledTypography>

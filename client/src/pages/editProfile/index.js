@@ -86,32 +86,27 @@ export default function EditProfile() {
 
   useEffect(() => {
     console.log(state)
-    if (state?.token) {
-      //Cambiar post por get cuando se arregle
-      axios
-        .post(`${GlobalEnv.host}/user-auth`, {
-          command: "OBTAIN_USER"
-        }, {
-          headers: {
-            authorization: `Bearer ${state?.token}`
-          }
+    //Cambiar post por get cuando se arregle
+    axios
+      .post(`${GlobalEnv.host}/user-auth`, {
+        command: "OBTAIN_USER"
+      }, {
+        headers: {
+          authorization: `Bearer ${state?.token}`
         }
-        )
-        .then((res) => {
-          console.log(res);
-          setUser(res.data);
-          reset({
-            us_nombres: user.us_nombres,
-            us_celular: user.us_celular
-          })
+      }
+      )
+      .then((res) => {
+        console.log(res);
+        setUser(res.data);
+        reset({
+          us_nombres: user.us_nombres,
+          us_celular: user.us_celular
         })
-        .catch((err) => {
-          console.log(err)
-        })
-    }
-    else {
-      return
-    }
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }, [reset])
 
   const onSubmit = async (userEdited, event) => {
@@ -168,19 +163,19 @@ export default function EditProfile() {
             </Grid>
 
             <Grid container item xs={6} spacing={3}>
-            <TextField
-                  variant="filled"
-                  fullWidth
-                  label="Nombres y Apellidos"
-                  name="us_nombres"
-                  defaultValue={user.us_nombres}
-                  type="text"
-                  {...register("us_nombres", { required: true, maxLength: 40 })}
-                />
-                <FormError condition={errors.us_nombres?.type === "required"}
-                           content="Ingrese nombres y apellidos" />
-                <FormError condition={errors.us_nombres?.type === "maxLength"}
-                           content="Nombre no válido" />
+              <TextField
+                variant="filled"
+                fullWidth
+                label="Nombres y Apellidos"
+                name="us_nombres"
+                defaultValue={user.us_nombres}
+                type="text"
+                {...register("us_nombres", { required: true, maxLength: 40 })}
+              />
+              <FormError condition={errors.us_nombres?.type === "required"}
+                content="Ingrese nombres y apellidos" />
+              <FormError condition={errors.us_nombres?.type === "maxLength"}
+                content="Nombre no válido" />
             </Grid>
 
             <Grid container item xs={6} spacing={3}>
@@ -284,6 +279,7 @@ export default function EditProfile() {
                 <Select
                   /*value={state.age}
                 onChange={handleChange}*/
+                  defaultValue={user.user_distrito}
                   native
                   inputProps={{
                     name: "us_distrito",

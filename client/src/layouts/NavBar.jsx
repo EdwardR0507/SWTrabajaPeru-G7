@@ -13,6 +13,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import SearchField from "../components/TextFields/SearchField";
 import IconButton from "@material-ui/core/IconButton";
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import EditIcon from "@material-ui/icons/Edit";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import Avatar from "@material-ui/core/Avatar";
@@ -110,6 +111,19 @@ const NavBar = (props) => {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
+                <MenuItem
+                  onClick={() => {
+                    history.push({
+                      pathname: "/myAccount",
+                      state: { token: props.token },
+                    });
+                  }}
+                >
+                  <ListItemIcon>
+                    <AccountCircleIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Mi Perfil" />
+                </MenuItem>
                 <MenuItem
                   onClick={() => {
                     history.push({

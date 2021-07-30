@@ -1,13 +1,15 @@
 /*Importamos las librerias principales*/
+import React, { useState, useEffect } from "react";
 import { Box, Card, CardHeader, Avatar, ListItem, ListItemAvatar, ListItemText } from "@material-ui/core";
 import CardContent from "@material-ui/core/CardContent";
 import PhoneAndroidIcon from "@material-ui/icons/PhoneAndroid";
 import MailIcon from "@material-ui/icons/Mail";
 import RoomIcon from "@material-ui/icons/Room";
 /*Declaramos la función principal*/ 
-export default function ProfileCard() {
+export default function ProfileCard(props) {
   /*Declaramos lo que nos va a retornar la funcion*/ 
-  return (
+
+  return props.user ? (
       <Card>
         <Box
           style={{
@@ -27,7 +29,7 @@ export default function ProfileCard() {
         </Box>
 
         <CardHeader
-          title="Kori Antunez Palomino"
+          title={props.user.us_nombres}
           subheader="Especialista"
           style={{ textAlign: "center" }}
         />
@@ -38,7 +40,7 @@ export default function ProfileCard() {
                 <PhoneAndroidIcon />
               </Avatar>
             </ListItemAvatar>
-            <ListItemText primary="Teléfono / Celular" secondary="923585728" />
+            <ListItemText primary="Teléfono / Celular" secondary={props.user.us_celular} />
           </ListItem>
           <ListItem>
             <ListItemAvatar>
@@ -48,7 +50,7 @@ export default function ProfileCard() {
             </ListItemAvatar>
             <ListItemText
               primary="Correo electrónico"
-              secondary="kori.antunez@gmail.com"
+              secondary={props.user.us_correo}
             />
           </ListItem>
           <ListItem>
@@ -59,10 +61,12 @@ export default function ProfileCard() {
             </ListItemAvatar>
             <ListItemText
               primary="Ubicación"
-              secondary="Lima/Lima/Jesús María"
+              secondary={`${props.user.us_departamento}/${props.user.us_provincia}/${props.user.us_distrito}`}
             />
           </ListItem>
         </CardContent>
       </Card>
+  ):(
+    <div>Cargando...</div>
   );
 }
