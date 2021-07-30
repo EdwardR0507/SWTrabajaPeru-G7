@@ -70,11 +70,9 @@ export default function SignIn() {
       })
       .then((res) => {
         user = res.data.transaction;
-        console.log(res);
         history.push({
           pathname: "/",
-          search: `?id=${user.us_id}`,
-          state: { user: user },
+          state: { token: res.data.token },
         });
       });
   };
