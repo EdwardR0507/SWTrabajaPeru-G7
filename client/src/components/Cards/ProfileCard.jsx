@@ -1,4 +1,5 @@
 /*Importamos las librerias principales*/
+import React from "react";
 import { Box, Card, CardHeader, Avatar, ListItem, ListItemAvatar, ListItemText } from "@material-ui/core";
 import CardContent from "@material-ui/core/CardContent";
 import PhoneAndroidIcon from "@material-ui/icons/PhoneAndroid";
