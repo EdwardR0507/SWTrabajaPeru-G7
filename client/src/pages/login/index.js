@@ -48,10 +48,10 @@ const StyledErrorSpan = withStyles({
     float: "left",
   },
 })(Typography);
-/*Declaramos la función principal*/ 
+/*Declaramos la función principal*/
 export default function SignIn() {
   const classes = useStyles();
-  /*Creamos constantes*/ 
+  /*Creamos constantes*/
   const history = useHistory();
   const {
     register,
@@ -59,7 +59,7 @@ export default function SignIn() {
     handleSubmit,
   } = useForm();
   /*Obtener el id del usuario logueado*/
-  let user
+  let user;
 
   const onSubmit = async (getUser, evt) => {
     evt.preventDefault();
@@ -69,6 +69,7 @@ export default function SignIn() {
         transaction: getUser,
       })
       .then((res) => {
+        localStorage.setItem("User_session", JSON.stringify(res.data));
         user = res.data.transaction;
         history.push({
           pathname: "/",
@@ -76,7 +77,7 @@ export default function SignIn() {
         });
       });
   };
-/* Renderizado de la vista de Inicio de Sesión */
+  /* Renderizado de la vista de Inicio de Sesión */
   return (
     <>
       <NavBar></NavBar>

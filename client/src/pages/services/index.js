@@ -43,27 +43,51 @@ const ManageServices = () => {
   useEffect(() => {
     //Cambiar post por get cuando se arregle
     axios
-      .post(`${GlobalEnv.host}/user-auth`, {
-        command: "OBTAIN_USER"
-      }, {
-        headers: {
-          authorization: `Bearer ${state?.token}`
+      .post(
+        `${GlobalEnv.host}/user-auth`,
+        {
+          command: "OBTAIN_USER",
+        },
+        {
+          headers: {
+            authorization: `Bearer ${state?.token}`,
+          },
         }
-      }
       )
       .then((res) => {
-        console.log(res)
-        setUser(res.data)
+        setUser(res.data);
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
+      });
+  }, []);
+
+  useEffect(() => {
+    //Cambiar post por get cuando se arregle
+    axios
+      .post(
+        `${GlobalEnv.host}/service-auth`,
+        {
+          command: "GET_MY_SERVICES",
+        },
+        {
+          headers: {
+            authorization: `Bearer ${state?.token}`,
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res.data[0]);
       })
-  }, [])
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   return (
     <>
       <NavBar user={user} />
-      <HeadingBar before={"TRABAJADOR"} after={"MIS SERVICIOS"}></HeadingBar>
+      <HeadingBar before={"TRABAJADOR"} after={"MIS SERVICIOS"} />
       <StyledContainer>
         <StyledTypography>Mis Servicios</StyledTypography>
         <ServiceModal data={data} setData={setData} mood="Agregar" />
