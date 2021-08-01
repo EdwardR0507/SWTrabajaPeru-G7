@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import {
   makeStyles,
@@ -22,6 +22,8 @@ import PrimaryButton from "../Buttons/PrimaryButton";
 import SecondaryButton from "../Buttons/SecondaryButton";
 import FormError from "../../components/Errors/FormError";
 import theme from "../../themes/themes";
+import axios from "axios";
+import GlobalEnv from "../../GlobalEnv";
 
 const useStyles = makeStyles(() => ({
   //Estilos para la customización del modal
@@ -135,15 +137,49 @@ const ServiceModal = ({
   // Estado para controlar la descripción del servicio
   const [description, setDescription] = useState("");
 
+  const [selectName, setSelectName] = useState("");
+
+  const [list, setList] = useState([
+    {
+      cat_id: null,
+      cat_name: "",
+    },
+  ]);
+
+  const token = JSON.parse(localStorage.getItem("User_session")).token;
+
+  // Añadir lista de servicios
+  useEffect(() => {
+    //Cambiar post por get cuando se arregle
+    axios
+      .post(
+        `${GlobalEnv.host}/service`,
+        {
+          command: "GET_CATEGORIES",
+        },
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((res) => {
+        setList(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   // Función para abrir el modal
   const handleOpen = () => {
-    setName("");
+    setSelectName("");
     setOpen(true);
   };
 
   // Función para cerrar el modal
   const handleClose = () => {
-    setName("");
+    setSelectName("");
     setOpen(false);
   };
 
@@ -152,15 +188,34 @@ const ServiceModal = ({
     setDescription(e.target.value);
   };
 
-  // Función para capturar lo que se escriba el nombre
+  // Función para capturar lo que se seleccione(setSelectName) y a su vez agregar el nombre que se mostrará en el componente InfoService (setName)
   const handleSelect = (e) => {
-    setName(e.target.value);
+    const newName = list[e.target.value - 1].cat_nombre;
+    setName(newName);
+    setSelectName(e.target.value);
   };
 
   //Función que crea un nuevo componente InfoService y envía datos al backend
-  const onSubmit = (datos, e) => {
-    e.preventDefault();
+  const onSubmit = async (datos, e) => {
     console.log(datos);
+    e.preventDefault();
+    await axios
+      .post(
+        `${GlobalEnv.host}/service-auth`,
+        {
+          command: "CREATE_SERVICE",
+          transaction: datos,
+        },
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+      });
+
     handleClose();
     setDescription("");
     setData([...data, { id: data[data.length - 1].id + 1, name, description }]);
@@ -168,9 +223,25 @@ const ServiceModal = ({
   };
 
   // Función para editar un servicio
-  const onSubmitEdit = (datos, e) => {
+  const onSubmitEdit = async (datos, e) => {
     e.preventDefault();
     console.log(datos);
+    await axios
+      .post(
+        `${GlobalEnv.host}/service-auth`,
+        {
+          command: "EDIT_SERVICE",
+          transaction: datos,
+        },
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+      });
     handleClose();
     reset();
   };
@@ -237,19 +308,22 @@ const ServiceModal = ({
                         <Select
                           labelId="demo-simple-select-required-label"
                           id="demo-simple-select-required"
-                          name="services"
-                          value={existName(name)}
-                          {...register("services", {
+                          name="cat_id"
+                          value={existName(selectName)}
+                          {...register("cat_id", {
                             required: true,
                           })}
                           onChange={handleSelect}
                           className={classes.selectEmpty}
                         >
-                          <MenuItem value="Albañilería">Albañilería</MenuItem>
-                          <MenuItem value="Gasfitería">Gasfitería</MenuItem>
+                          {list.map((el) => (
+                            <MenuItem key={el.cat_id} value={el.cat_id}>
+                              {el.cat_nombre}
+                            </MenuItem>
+                          ))}
                         </Select>
                         <FormError
-                          condition={errors.services?.type === "required"}
+                          condition={errors.cat_id?.type === "required"}
                           content="Debe seleccionar un servicio"
                         />
                       </FormControl>
@@ -259,14 +333,14 @@ const ServiceModal = ({
                       id="filled-multiline-flexible"
                       label="Descripción"
                       multiline
-                      name="description"
-                      {...register("description", { maxLength: 300 })}
+                      name="ser_descripcion"
+                      {...register("ser_descripcion", { maxLength: 300 })}
                       onChange={handleDescription}
                       rowsMax={3}
                       variant="filled"
                     />
                     <FormError
-                      condition={errors.description}
+                      condition={errors.ser_descripcion}
                       content="Ingrese máximo 300 caracteres"
                     />
                   </Container>
@@ -321,15 +395,15 @@ const ServiceModal = ({
                       id="filled-multiline-flexible"
                       label="Descripción"
                       multiline
-                      name="description"
-                      {...register("description", { maxLength: 300 })}
+                      name="ser_descripcion"
+                      {...register("ser_descripcion", { maxLength: 300 })}
                       defaultValue={serviceDescription}
                       onChange={handleEdit}
                       rowsMax={3}
                       variant="filled"
                     />
                     <FormError
-                      condition={errors.description}
+                      condition={errors.ser_descripcion}
                       content="Ingrese máximo 300 caracteres"
                     />
                   </Container>

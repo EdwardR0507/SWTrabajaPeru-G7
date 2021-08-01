@@ -62,8 +62,7 @@ export default function NestedList() {
           <ListItem button className={classes.nested} onClick={() => {
             history.push({
               pathname: '/manageservices',
-              search: `?id=${state.user.us_id}`,
-              state: { user: state.user }
+              state: { token: state.token }
             })
           }}>
             <ListItemIcon>

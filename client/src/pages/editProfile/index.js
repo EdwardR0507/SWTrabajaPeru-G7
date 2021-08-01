@@ -1,5 +1,5 @@
 /*Importamos las librerias principales*/
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import GlobalEnv from "../../GlobalEnv";
 import { useLocation } from "react-router";
@@ -23,7 +23,7 @@ import FormError from "../../components/Errors/FormError";
 import SecondaryButton from "../../components/Buttons/SecondaryButton";
 import useFilterSelect from "../../hooks/useFilterSelect";
 /*Declaramos los estilos que se van a usar por cada componente*/
-/*Declaramos el estilo de la letra*/ 
+/*Declaramos el estilo de la letra*/
 const StyledTypography = withStyles({
   root: {
     fontSize: "34px",
@@ -32,7 +32,7 @@ const StyledTypography = withStyles({
     fontWeigth: "400",
   },
 })(Typography);
-/*Declaramos el estilo del container*/ 
+/*Declaramos el estilo del container*/
 const StyledContainer = withStyles({
   root: {
     marginTop: "0.9em",
@@ -41,7 +41,7 @@ const StyledContainer = withStyles({
     alignItems: "center",
   },
 })(Container);
-/*Declaramos el estilo de la letra*/ 
+/*Declaramos el estilo de la letra*/
 const useStyles = makeStyles((theme) => ({
   formControl: {
     height: "100%",
@@ -56,16 +56,20 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(0),
   },
 }));
-/*Declaramos la función principal*/ 
+/*Declaramos la función principal*/
 export default function EditProfile() {
-  /*Declaramos la función principal*/ 
+  /*Declaramos la función principal*/
   const classes = useStyles();
   const [user, setUser] = useState();
   const {
     register,
     formState: { errors },
     handleSubmit,
-  } = useForm();
+    setValue,
+    reset
+  } = useForm({
+    defaultValues: {}
+  });
   const location = useLocation();
   const state = location.state;
 
@@ -82,31 +86,30 @@ export default function EditProfile() {
 
   useEffect(() => {
     console.log(state)
-    if (state?.token) {
-      //Cambiar post por get cuando se arregle
-      axios
-        .post(`${GlobalEnv.host}/user-auth`, {
-          command: "OBTAIN_USER"
-        }, {
-          headers: {
-            authorization: `Bearer ${state?.token}`
-          }
+    //Cambiar post por get cuando se arregle
+    axios
+      .post(`${GlobalEnv.host}/user-auth`, {
+        command: "OBTAIN_USER"
+      }, {
+        headers: {
+          authorization: `Bearer ${state?.token}`
         }
-        )
-        .then((res) => {
-          console.log(res)
-          setUser(res.data)
+      }
+      )
+      .then((res) => {
+        console.log(res);
+        setUser(res.data);
+        reset({
+          us_nombres: user.us_nombres,
+          us_celular: user.us_celular
         })
-        .catch((err) => {
-          console.log(err)
-        })
-    }
-    else {
-      return
-    }
-  }, [])
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }, [reset])
 
-  const onSubmit = async(userEdited, event) => {
+  const onSubmit = async (userEdited, event) => {
     event.preventDefault();
     console.log(userEdited)
     await axios.post(`${GlobalEnv.host}/user-auth`, {
@@ -117,7 +120,7 @@ export default function EditProfile() {
         authorization: `Bearer ${state?.token}`
       }
     })
-    .then(res => console.log(res))
+      .then(res => console.log(res))
   }
 
   /*const handleSubmit = async (evt) => {
@@ -146,13 +149,12 @@ export default function EditProfile() {
       [name]: event.target.value,
     });
   };*/
-/*Declaramos lo que nos va a retornar la funcion*/ 
+  /*Declaramos lo que nos va a retornar la funcion*/
   return user ? (
     <>
       <NavBar user={user} />
       <StyledContainer>
         <form className={classes.form} noValidate>
-          /*Usamos grid para dividir las vistas*/ 
           <Grid container spacing={6}>
             <Grid container item xs={12} spacing={1}></Grid>
 
@@ -161,19 +163,19 @@ export default function EditProfile() {
             </Grid>
 
             <Grid container item xs={6} spacing={3}>
-            <TextField
-                  variant="filled"
-                  fullWidth
-                  label="Nombres y Apellidos"
-                  defaultValue={user.us_nombres}
-                  name="us_nombres"
-                  type="text"
-                  {...register("us_nombres", { required: true, maxLength: 40 })}
-                />
-                <FormError condition={errors.us_nombres?.type === "required"}
-                           content="Ingrese nombres y apellidos" />
-                <FormError condition={errors.us_nombres?.type === "maxLength"}
-                           content="Nombre no válido" />
+              <TextField
+                variant="filled"
+                fullWidth
+                label="Nombres y Apellidos"
+                name="us_nombres"
+                defaultValue={user.us_nombres}
+                type="text"
+                {...register("us_nombres", { required: true, maxLength: 40 })}
+              />
+              <FormError condition={errors.us_nombres?.type === "required"}
+                content="Ingrese nombres y apellidos" />
+              <FormError condition={errors.us_nombres?.type === "maxLength"}
+                content="Nombre no válido" />
             </Grid>
 
             <Grid container item xs={6} spacing={3}>
@@ -192,47 +194,47 @@ export default function EditProfile() {
                   {...register("us_departamento", { required: true })}
                   {...bindDepartamento}
                 >
-                    {locations.departamentos.map((dept) => {
-                      if (dept.name === user.us_departamento){
-                        return (
-                          <option value={dept.name} key={dept.id} selected>
-                            {dept.name}
-                          </option>
-                        )
-                      }
-                    })}
-                    {locations.departamentos.map((dept) => {
-                      if (dept.name != user.us_departamento){
-                        return (
-                          <option value={dept.name} key={dept.id}>
-                            {dept.name}
-                          </option>
-                        )
-                      }
-                    })}
+                  {locations.departamentos.map((dept) => {
+                    if (dept.name === user.us_departamento) {
+                      return (
+                        <option value={dept.name} key={dept.id} selected>
+                          {dept.name}
+                        </option>
+                      )
+                    }
+                  })}
+                  {locations.departamentos.map((dept) => {
+                    if (dept.name != user.us_departamento) {
+                      return (
+                        <option value={dept.name} key={dept.id}>
+                          {dept.name}
+                        </option>
+                      )
+                    }
+                  })}
                 </Select>
                 <FormError condition={errors.us_departamento?.type === "required"}
-                             content="Ingrese departamento"/>
+                  content="Ingrese departamento" />
               </FormControl>
             </Grid>
 
             <Grid container item xs={6} spacing={3}>
-            <TextField
-                  fullWidth
-                  variant="filled"
-                  id="phoneNumber"
-                  label="Teléfono"
-                  name="us_celular"
-                  value={user.us_celular}
-                  {...register("us_celular", {
-                    required: true,
-                    pattern: /^^9\d{8}$/,
-                  })}
-                />
-                <FormError condition={errors.us_celular?.type === "required"}
-                           content="Ingrese celular"/>                
-                <FormError condition={errors.us_correo?.type === "pattern"}
-                           content="Número de celular no válido"/>   
+              <TextField
+                fullWidth
+                variant="filled"
+                id="phoneNumber"
+                label="Teléfono"
+                name="us_celular"
+                defaultValue={user.us_celular}
+                {...register("us_celular", {
+                  required: true,
+                  pattern: /^^9\d{8}$/,
+                })}
+              />
+              <FormError condition={errors.us_celular?.type === "required"}
+                content="Ingrese celular" />
+              <FormError condition={errors.us_correo?.type === "pattern"}
+                content="Número de celular no válido" />
             </Grid>
 
             <Grid container item xs={6} spacing={3}>
@@ -252,14 +254,14 @@ export default function EditProfile() {
                   {...bindProvincia}
                 >
                   <option hidden />
-                    {filteredProvincias && filteredProvincias.map((prov) => (
-                          <option value={prov.name} key={prov.id}>
-                            {prov.name}
-                          </option>
-                        ))}
+                  {filteredProvincias && filteredProvincias.map((prov) => (
+                    <option value={prov.name} key={prov.id}>
+                      {prov.name}
+                    </option>
+                  ))}
                 </Select>
                 <FormError condition={errors.us_provincia?.type === "required"}
-                             content="Ingrese provincia"/>
+                  content="Ingrese provincia" />
               </FormControl>
             </Grid>
 
@@ -277,6 +279,7 @@ export default function EditProfile() {
                 <Select
                   /*value={state.age}
                 onChange={handleChange}*/
+                  defaultValue={user.user_distrito}
                   native
                   inputProps={{
                     name: "us_distrito",
@@ -294,7 +297,7 @@ export default function EditProfile() {
                     ))}
                 </Select>
                 <FormError condition={errors.us_distrito?.type === "required"}
-                             content="Ingrese distrito"/>
+                  content="Ingrese distrito" />
               </FormControl>
             </Grid>
 
@@ -323,7 +326,7 @@ export default function EditProfile() {
         </form>
       </StyledContainer>
     </>
-  ):(
+  ) : (
     <div>Cargando...</div>
   );
 }

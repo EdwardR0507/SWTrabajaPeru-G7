@@ -6,6 +6,7 @@ import SignIn from "./pages/login";
 import SignUp from "./pages/register";
 import EditProfile from "./pages/editProfile";
 import ManageServices from "./pages/services";
+import SocialProfile from "./pages/socialProfile";
 import ServiceDetails from "./pages/serviceDetails";
 
 const GlobalStyles = withStyles({
@@ -30,6 +31,7 @@ function App() {
           <Route path="/editProfile" component={EditProfile} />
           <Route path="/manageservices" component={ManageServices} />
           <Route path="/servicedetails" component={ServiceDetails} />
+          <Route path="/myAccount" component={SocialProfile} />
           <Route path="*" component={() => <h1>404 NOT FOUND</h1>} />
         </Switch>
       </BrowserRouter>

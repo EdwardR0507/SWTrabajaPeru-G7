@@ -79,7 +79,6 @@ export default function Home() {
         command: "GET_USERS",
       })
       .then((res) => {
-        console.log(res)
         setWorkers(res.data);
       });
   }, []);
@@ -139,6 +138,8 @@ export default function Home() {
           <StyledLink href="#">
             <Typography variant="h5">VER TODO</Typography>
           </StyledLink>
+
+
         </StyledContentContainer>
         <StyledCardContainer>
           <StyledIconButton>
