@@ -13,6 +13,7 @@ test('renders Home content', () => {
             <Home />            
         </Router>    
     );
+    
     component.getByText("Servicios");
     component.getByText("Trabajadores");
 })
