@@ -22,9 +22,11 @@ const StyledContainer = withStyles({
 /*Declaramos la función principal*/
 export default function SocialProfile() {
   const [user, setUser] = useState();
+  const [services, setServices] = useState();
   const location = useLocation();
   const state = location.state
 
+  //Información del usuario
   useEffect(() => {
     console.log(state)
     //Cambiar post por get cuando se arregle
@@ -46,26 +48,40 @@ export default function SocialProfile() {
       })
   }, [])
 
-  return user ?(
+  useEffect(() => {
+    axios
+      .post(`${GlobalEnv.host}/service-auth`, {
+        command: "GET_MY_SERVICES"
+      }, {
+        headers: {
+          authorization: `Bearer ${state?.token}`
+        }
+      })
+      .then((res) => {
+        console.log(res);
+        setServices(res.data);
+      })
+  }, [])
+
+  return user && services ? (
     <>
-      <NavBar user={user} token={state?.token}/>
+      <NavBar user={user} token={state?.token} />
       <StyledContainer>
         <Grid container item xs={12} spacing={3}>
           <Grid item xs={4}>
             <ProfileCard user={user}></ProfileCard>
           </Grid>
           <Grid item xs={8} spacing={3}>
-            <Box>
-              <ProfileServiceCard></ProfileServiceCard>
-            </Box>
-            <Box>
-              <ProfileServiceCard></ProfileServiceCard>
-            </Box>
+            {services.map((service) => (
+              <Box>
+                <ProfileServiceCard service={service}></ProfileServiceCard>
+              </Box>
+            ))}
           </Grid>
         </Grid>
       </StyledContainer>
     </>
-  ):(
+  ) : (
     <div>Cargando...</div>
   );
 }

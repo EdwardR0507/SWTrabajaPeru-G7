@@ -69,7 +69,8 @@ export default function Home() {
       })
       .then((res) => {
         setServices(res.data);
-      });
+      })
+      .then(()=>console.log(services))
   }, []);
 
   useEffect(() => {
