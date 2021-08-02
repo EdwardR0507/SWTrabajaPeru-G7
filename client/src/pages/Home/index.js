@@ -11,7 +11,6 @@ import ServiceCard from "../../components/Cards/ServiceCard";
 import WorkerCard from "../../components/Cards/WorkerCard";
 import theme from "../../themes/themes";
 
-
 const StyledContentContainer = withStyles({
   root: {
     marginTop: "40px",
@@ -70,7 +69,7 @@ export default function Home() {
       .then((res) => {
         console.log(res.data);
         setServices(res.data);
-      })
+      });
   }, []);
 
   useEffect(() => {
@@ -82,33 +81,35 @@ export default function Home() {
       .then((res) => {
         console.log(res.data);
         setWorkers(res.data);
-      })
+      });
   }, []);
 
   useEffect(() => {
     if (state?.token) {
       //Cambiar post por get cuando se arregle
       axios
-        .post(`${GlobalEnv.host}/user-auth`, {
-          command: "OBTAIN_USER"
-        }, {
-          headers: {
-            authorization: `Bearer ${state?.token}`
+        .post(
+          `${GlobalEnv.host}/user-auth`,
+          {
+            command: "OBTAIN_USER",
+          },
+          {
+            headers: {
+              authorization: `Bearer ${state?.token}`,
+            },
           }
-        }
         )
         .then((res) => {
-          console.log(res)
-          setUser(res.data)
+          console.log(res);
+          setUser(res.data);
         })
         .catch((err) => {
-          console.log(err)
-        })
+          console.log(err);
+        });
+    } else {
+      return;
     }
-    else {
-      return
-    }
-  }, [])
+  }, []);
 
   return workers && services ? (
     <>
@@ -127,9 +128,20 @@ export default function Home() {
           <StyledIconButton>
             <NavigateBeforeIcon />
           </StyledIconButton>
-          {services?.map((service) => user ? (
-            <ServiceCard service={service} token={state.token} />
-          ):(<ServiceCard service={service} />))}
+          {services?.map((service) =>
+            user ? (
+              <ServiceCard
+                key={`${service.us_id}-${service.cat_id}`}
+                service={service}
+                token={state.token}
+              />
+            ) : (
+              <ServiceCard
+                key={`${service.us_id}-${service.cat_id}`}
+                service={service}
+              />
+            )
+          )}
           <StyledIconButton>
             <NavigateNextIcon />
           </StyledIconButton>

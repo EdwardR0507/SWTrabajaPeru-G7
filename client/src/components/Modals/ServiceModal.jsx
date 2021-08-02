@@ -137,7 +137,9 @@ const ServiceModal = ({
   // Estado para controlar la descripción del servicio
   const [description, setDescription] = useState("");
 
-  const [selectName, setSelectName] = useState("");
+  const [selectName, setSelectName] = useState([]);
+
+  const [catSelect, setCatSelect] = useState([]);
 
   const [list, setList] = useState([
     {
@@ -148,12 +150,11 @@ const ServiceModal = ({
 
   const token = JSON.parse(localStorage.getItem("User_session")).token;
 
-  // Añadir lista de servicios
-  useEffect(() => {
-    //Cambiar post por get cuando se arregle
+  // Función para abrir el modal
+  const handleOpen = () => {
     axios
       .post(
-        `${GlobalEnv.host}/service`,
+        `${GlobalEnv.host}/service-auth`,
         {
           command: "GET_CATEGORIES",
         },
@@ -169,12 +170,33 @@ const ServiceModal = ({
       .catch((err) => {
         console.log(err);
       });
-  }, []);
-
-  // Función para abrir el modal
-  const handleOpen = () => {
     setSelectName("");
     setOpen(true);
+  };
+
+  const handleOpenEdit = () => {
+    axios
+      .post(
+        `${GlobalEnv.host}/service-auth`,
+        {
+          command: "GET_MY_SERVICES",
+        },
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((res) => {
+        const cat = res.data.filter((el) =>
+          el.ser_descripcion === serviceDescription ? el.cat_id : ""
+        );
+        setCatSelect(cat);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    handleOpen();
   };
 
   // Función para cerrar el modal
@@ -190,7 +212,11 @@ const ServiceModal = ({
 
   // Función para capturar lo que se seleccione(setSelectName) y a su vez agregar el nombre que se mostrará en el componente InfoService (setName)
   const handleSelect = (e) => {
-    const newName = list[e.target.value - 1].cat_nombre;
+    console.log(list);
+    let cont = 0;
+    console.log(data.length);
+    const newName = list[e.target.value - data.length - 1 + cont].cat_nombre;
+    console.log(newName);
     setName(newName);
     setSelectName(e.target.value);
   };
@@ -218,7 +244,14 @@ const ServiceModal = ({
 
     handleClose();
     setDescription("");
-    setData([...data, { id: data[data.length - 1].id + 1, name, description }]);
+    setData([
+      ...data,
+      {
+        id: data[data.length - 1].id + 1,
+        cat_nombre: name,
+        ser_descripcion: description,
+      },
+    ]);
     reset();
   };
 
@@ -266,7 +299,7 @@ const ServiceModal = ({
           variant="contained"
           color="primary"
           className={classes.button}
-          onClick={handleOpen}
+          onClick={handleOpenEdit}
           endIcon={<CreateIcon />}
         >
           Editar
@@ -382,13 +415,15 @@ const ServiceModal = ({
                       </InputLabel>
                       <Select
                         native
-                        disabled
-                        inputProps={{
-                          name: "servicio",
-                          id: "filled-servicio-native-simple",
-                        }}
+                        name="cat_id"
+                        value={existName(selectName)}
+                        {...register("cat_id")}
                       >
-                        <option>{service}</option>
+                        {catSelect.map((el) => (
+                          <option key={el.cat_id} value={el.cat_id}>
+                            {service}
+                          </option>
+                        ))}
                       </Select>
                     </Container>
                     <TextField

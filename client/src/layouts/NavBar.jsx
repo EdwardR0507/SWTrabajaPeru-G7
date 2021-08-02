@@ -13,7 +13,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import SearchField from "../components/TextFields/SearchField";
 import IconButton from "@material-ui/core/IconButton";
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import EditIcon from "@material-ui/icons/Edit";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import Avatar from "@material-ui/core/Avatar";
@@ -108,6 +108,7 @@ const NavBar = (props) => {
                 id="customized-menu"
                 anchorEl={anchorEl}
                 keepMounted
+                disableScrollLock
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
@@ -140,9 +141,10 @@ const NavBar = (props) => {
                 <MenuItem
                   onClick={() => {
                     history.push({
-                      pathname: "/"
-                    })
-                  }}>
+                      pathname: "/",
+                    });
+                  }}
+                >
                   <ListItemIcon>
                     <ExitToAppIcon />
                   </ListItemIcon>

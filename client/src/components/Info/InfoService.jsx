@@ -63,11 +63,13 @@ const WrapContainer = withStyles({
   },
 })(Container);
 
-const InfoService = ({ name, description }) => {
+const InfoService = ({ cat_nombre, ser_descripcion }) => {
   const classes = useStyles();
 
-  const [descriptionService, setDescriptionService] = useState(description);
+  const [descriptionService, setDescriptionService] = useState(ser_descripcion);
   const [state, setState] = useState(true);
+
+  const token = JSON.parse(localStorage.getItem("User_session")).token;
 
   const handleDelete = () => {
     setState(false);
@@ -89,7 +91,7 @@ const InfoService = ({ name, description }) => {
             </StyledContainerImage>
             <Container className={classes.description}>
               <Typography color="primary" variant="subtitle1">
-                {name}
+                {cat_nombre}
               </Typography>
               <WrapContainer>
                 <Typography variant="body2">{descriptionService}</Typography>
@@ -98,7 +100,7 @@ const InfoService = ({ name, description }) => {
           </StyledContainerData>
           <StyledContainerButtons>
             <ServiceModal
-              service={name}
+              service={cat_nombre}
               serviceDescription={descriptionService}
               handleEdit={handleEdit}
             />

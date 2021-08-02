@@ -25,20 +25,12 @@ const StyledContainer = withStyles({
   },
 })(Container);
 
-const arrObj = [
-  {
-    id: null,
-    name: "",
-    description: "",
-  },
-];
-
 const ManageServices = () => {
   const location = useLocation();
   const state = location.state;
 
   const [user, setUser] = useState();
-  const [data, setData] = useState(arrObj);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     //Cambiar post por get cuando se arregle
@@ -77,7 +69,7 @@ const ManageServices = () => {
         }
       )
       .then((res) => {
-        console.log(res.data[0]);
+        setData(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -92,13 +84,10 @@ const ManageServices = () => {
         <StyledTypography>Mis Servicios</StyledTypography>
         <ServiceModal data={data} setData={setData} mood="Agregar" />
       </StyledContainer>
-      {data.map((el) => {
-        if (el.id === null) {
-          return null;
-        } else {
-          return <InfoService key={el.id} {...el} />;
-        }
-      })}
+      {data.length !== 0 &&
+        data.map((el) => {
+          return <InfoService key={el.cat_id} {...el} />;
+        })}
     </>
   );
 };
