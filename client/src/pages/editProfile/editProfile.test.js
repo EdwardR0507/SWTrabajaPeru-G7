@@ -1,5 +1,4 @@
-import EditProfile from './index';
-import NavBar from "./index"
+import { EditProfile, NavBar } from "./index";
 import React from 'react';
 import { shallow } from 'enzyme';
 
