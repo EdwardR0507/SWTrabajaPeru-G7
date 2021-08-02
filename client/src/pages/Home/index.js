@@ -68,9 +68,9 @@ export default function Home() {
         command: "GET_HOME_SERVICES",
       })
       .then((res) => {
+        console.log(res.data);
         setServices(res.data);
       })
-      .then(()=>console.log(services))
   }, []);
 
   useEffect(() => {
@@ -80,12 +80,12 @@ export default function Home() {
         command: "GET_USERS",
       })
       .then((res) => {
+        console.log(res.data);
         setWorkers(res.data);
-      });
+      })
   }, []);
 
   useEffect(() => {
-    console.log(state)
     if (state?.token) {
       //Cambiar post por get cuando se arregle
       axios
@@ -127,9 +127,9 @@ export default function Home() {
           <StyledIconButton>
             <NavigateBeforeIcon />
           </StyledIconButton>
-          {services?.map((service) => (
-            <ServiceCard service={service} />
-          ))}
+          {services?.map((service) => user ? (
+            <ServiceCard service={service} token={state.token} />
+          ):(<ServiceCard service={service} />))}
           <StyledIconButton>
             <NavigateNextIcon />
           </StyledIconButton>
@@ -139,8 +139,6 @@ export default function Home() {
           <StyledLink href="#">
             <Typography variant="h5">VER TODO</Typography>
           </StyledLink>
-
-
         </StyledContentContainer>
         <StyledCardContainer>
           <StyledIconButton>

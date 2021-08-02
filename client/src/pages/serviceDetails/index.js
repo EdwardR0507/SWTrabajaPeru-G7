@@ -1,5 +1,7 @@
 /*Importamos las librerias principales*/
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
+import axios from "axios";
+import GlobalEnv from "../../GlobalEnv";
 import { useLocation } from "react-router";
 import NavBar from "../../layouts/NavBar";
 import { Container, Typography, withStyles, Grid } from "@material-ui/core/";
@@ -27,13 +29,31 @@ const arrObj = [
 /*Declaramos la funcion principal*/
 const ServiceDetails = () => {
   const location = useLocation();
+  const [user, setUser] = useState();
   const state = location.state;
   const [data, setData] = useState(arrObj);
   /*Declaramos lo que nos va a retornar la funcion*/
-  return (
+
+  useEffect(() => {
+    console.log(location)
+    axios
+      .post(`${GlobalEnv.host}/user-auth`, {
+        command: "OBTAIN_USER"
+      }, {
+        headers: {
+          authorization: `Bearer ${state?.token}`
+        }
+      }
+      )
+    .then((res)=>{
+      setUser(res.data)
+    })
+  }, [])
+
+  return user ? (
     <>
       {/*Declaramos el navbar que es el encabezado de la page*/}
-      <NavBar />
+      <NavBar user={user}/>
       <StyledContainer>
         {/*Usamos grid para dividir las vistas*/}
         <Grid container xs={12} sm={8} spacing={12}>
@@ -44,6 +64,8 @@ const ServiceDetails = () => {
         </Grid>
       </StyledContainer>
     </>
+  ):(
+    <div>Cargando...</div>
   );
 };
 export default ServiceDetails;

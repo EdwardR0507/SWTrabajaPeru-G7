@@ -4,8 +4,7 @@ import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
-import IconButton from "@material-ui/core/IconButton";
-import StarBorderIcon from "@material-ui/icons/StarBorder";
+import Rating from "@material-ui/lab/Rating";
 import Typography from "@material-ui/core/Typography";
 
 const StyledCard = withStyles({
@@ -19,6 +18,7 @@ const StyledCardMedia = withStyles({
   root: {
     height: "0",
     paddingTop: "41%",
+    marginBottom: "10%"
   },
 })(CardMedia);
 
@@ -41,21 +41,16 @@ const WorkerCard = (props) => {
         </Typography>
       </CardContent>
       <CardActions>
-        <IconButton>
-          <StarBorderIcon fontSize="small" style={{ padding: 0 }} />
-        </IconButton>
-        <IconButton>
-          <StarBorderIcon fontSize="small" style={{ padding: 0 }} />
-        </IconButton>
-        <IconButton>
-          <StarBorderIcon fontSize="small" />
-        </IconButton>
-        <IconButton>
-          <StarBorderIcon fontSize="small" />
-        </IconButton>
-        <IconButton>
-          <StarBorderIcon fontSize="small" />
-        </IconButton>
+        {worker.calificacion ? (
+          <Rating
+          name="read-only"
+          value={worker.calificacion}
+          readOnly
+        />):(
+          <Typography variant="body2">
+            Sin Calificación
+          </Typography>
+        )}
       </CardActions>
     </StyledCard>
   ): (<div>Cargando... </div>)
