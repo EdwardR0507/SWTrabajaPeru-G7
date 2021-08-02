@@ -150,9 +150,8 @@ const ServiceModal = ({
 
   const token = JSON.parse(localStorage.getItem("User_session")).token;
 
-  // Añadir lista de servicios
-  useEffect(() => {
-    //Cambiar post por get cuando se arregle
+  // Función para abrir el modal
+  const handleOpen = () => {
     axios
       .post(
         `${GlobalEnv.host}/service-auth`,
@@ -171,10 +170,6 @@ const ServiceModal = ({
       .catch((err) => {
         console.log(err);
       });
-  }, []);
-
-  // Función para abrir el modal
-  const handleOpen = () => {
     setSelectName("");
     setOpen(true);
   };
@@ -220,7 +215,7 @@ const ServiceModal = ({
     console.log(list);
     let cont = 0;
     console.log(data.length);
-    const newName = list[e.target.value - data.length + cont].cat_nombre;
+    const newName = list[e.target.value - data.length - 1 + cont].cat_nombre;
     console.log(newName);
     setName(newName);
     setSelectName(e.target.value);
