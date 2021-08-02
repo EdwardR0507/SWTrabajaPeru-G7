@@ -86,7 +86,7 @@ const ManageServices = () => {
 
   return (
     <>
-      <NavBar user={user} />
+      <NavBar user={user} token={state?.token}/>
       <HeadingBar before={"TRABAJADOR"} after={"MIS SERVICIOS"} />
       <StyledContainer>
         <StyledTypography>Mis Servicios</StyledTypography>

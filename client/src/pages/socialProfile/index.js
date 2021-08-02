@@ -46,9 +46,9 @@ export default function SocialProfile() {
       })
   }, [])
 
-  return (
+  return user ?(
     <>
-      <NavBar user={user} />
+      <NavBar user={user} token={state?.token}/>
       <StyledContainer>
         <Grid container item xs={12} spacing={3}>
           <Grid item xs={4}>
@@ -65,5 +65,7 @@ export default function SocialProfile() {
         </Grid>
       </StyledContainer>
     </>
+  ):(
+    <div>Cargando...</div>
   );
 }
