@@ -45,9 +45,9 @@ const StyledAutocomplete = withStyles({
 })(Autocomplete);
 
 const Prueba1 = [
-  { Name: 'Gianela Malqui', Servicio: "Secretaria" },
-  { Name: 'Gianela Malqui', Servicio: "Secretaria" },
-  { Name: 'Gianela Malqui', Servicio: "Secretaria" },
+  { Name: 'Arian Zambrano', Servicio: "Albañilería" },
+  { Name: 'Gianela Malqui', Servicio: "Secretaría" },
+  { Name: 'Jose Caicedo', Servicio: "Limpieza" },
 ];
 
 

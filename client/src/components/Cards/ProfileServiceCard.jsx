@@ -76,16 +76,6 @@ export default function ProfileServiceCard(props) {
               }
 
             </Grid>
-            <Grid item xs={6} spacing={1}>
-              <Box className={classes.button}>
-                <PrimaryButton
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  name="CONTACTAR"
-                ></PrimaryButton>
-              </Box>
-            </Grid>
           </Grid>
         </CardContent>
       </Card>

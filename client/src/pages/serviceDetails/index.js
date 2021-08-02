@@ -25,7 +25,7 @@ const ServiceDetails = () => {
   const location = useLocation();
   const [user, setUser] = useState();
   const state = location.state;
-  const [data, setData] = useState(arrObj);
+  const [data, setData] = useState();
   /*Declaramos lo que nos va a retornar la funcion*/
 
   useEffect(() => {
