@@ -4,11 +4,7 @@ import { useLocation } from "react-router";
 import NavBar from "../../layouts/NavBar";
 import { Container, withStyles, Grid} from "@material-ui/core/";
 import ServiceDetailsCard from "../../components/Cards/ServiceDetailsCard";
-<<<<<<< Updated upstream
-import ProfileCard from "../../components/Cards/ProfileCard";
-=======
 import WorkerCard from "../../components/Cards/WorkerCard";
->>>>>>> Stashed changes
 /*Declaramos los estilos que se van a usar por cada componente*/
 
 /*Declaramos el estilo del container*/ 
@@ -30,22 +26,13 @@ const ServiceDetails = () => {
       {/*Declaramos el navbar que es el encabezado de la page*/}
       <NavBar />
       <StyledContainer>
-        {/*Usamos grid para dividir las vistas*/}
-<<<<<<< Updated upstream
-      <Grid item xs={12}  sm={8} spacing={12}>
-         <ServiceDetailsCard />
-      </Grid>
-      <Grid item xs={12}  sm={4} spacing={12}>
-          <ProfileCard />
-      </Grid>
-=======
+        {/*Usamos grid para dividir las los dos cards*/}
         <Grid container xs={12} sm={8} spacing={12}>
           <ServiceDetailsCard />
         </Grid>
         <Grid container xs={12} sm={4} spacing={12}>
           <WorkerCard/>
         </Grid>
->>>>>>> Stashed changes
       </StyledContainer>
     </>
   );
