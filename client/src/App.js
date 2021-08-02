@@ -1,4 +1,4 @@
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Switch, Route, Router } from "react-router-dom";
 import { MuiThemeProvider, withStyles } from "@material-ui/core/styles";
 import theme from "./themes/themes";
 import Home from "./pages/Home";
@@ -32,6 +32,7 @@ function App() {
           <Route path="/manageservices" component={ManageServices} />
           <Route path="/servicedetails" component={ServiceDetails} />
           <Route path="/myAccount" component={SocialProfile} />
+          <Route path="/serviceDetails" component={ServiceDetails} />
           <Route path="*" component={() => <h1>404 NOT FOUND</h1>} />
         </Switch>
       </BrowserRouter>

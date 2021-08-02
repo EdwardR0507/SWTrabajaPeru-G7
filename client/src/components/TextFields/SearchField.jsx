@@ -5,6 +5,9 @@ import InputBase from "@material-ui/core/InputBase";
 import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from "@material-ui/icons/Search";
 import theme from "../../themes/themes";
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+
 
 const StyledSearchField = withStyles({
   root: {
@@ -32,13 +35,38 @@ const StyledInputBase = withStyles({
   },
 })(InputBase);
 
+//Estilo de componente Autocomplete
+const StyledAutocomplete = withStyles({
+  root: {
+    width: "100%",
+    // paddingBottom: "2.4em",
+    marginTop: "16px",
+  },
+})(Autocomplete);
+
+const Prueba1 = [
+  { Name: 'Gianela Malqui', Servicio: "Secretaria" },
+  { Name: 'Gianela Malqui', Servicio: "Secretaria" },
+  { Name: 'Gianela Malqui', Servicio: "Secretaria" },
+];
+
+
 const SearchField = (props) => {
   return (
     <StyledSearchField>
       <IconButton>
         <SearchIcon />
       </IconButton>
-      <StyledInputBase placeholder={props.placeholder} />
+      <StyledAutocomplete
+
+        /*Mostrará info de service y user */
+        options={Prueba1.map((option) => option.Name)}
+        
+        renderInput={(params) => (
+          <TextField {...params} width="577px"
+          />
+        )}
+      />
     </StyledSearchField>
   );
 };

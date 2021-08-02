@@ -39,7 +39,12 @@ export default function NestedList() {
       aria-labelledby="nested-list-subheader"
       className={classes.root}
     >
-      <ListItem button>
+      <ListItem button onClick={()=>{
+        history.push({
+          pathname: "/",
+          state: {token: state?.token}
+        })
+      }}>
         <ListItemIcon>
           <HomeIcon />
         </ListItemIcon>

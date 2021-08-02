@@ -1,6 +1,5 @@
 /*Importación de librerias y paquetes necesarios*/
-import SignIn from './index';
-import NavBar from "./index"
+import {SignIn, NavBar} from './index';
 import React from 'react';
 import { shallow } from 'enzyme';
 /*Renderizado de la vista Login*/

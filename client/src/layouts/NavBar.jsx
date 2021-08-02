@@ -137,7 +137,12 @@ const NavBar = (props) => {
                   </ListItemIcon>
                   <ListItemText primary="Editar Perfil" />
                 </MenuItem>
-                <MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    history.push({
+                      pathname: "/"
+                    })
+                  }}>
                   <ListItemIcon>
                     <ExitToAppIcon />
                   </ListItemIcon>

@@ -1,9 +1,9 @@
 /*Importamos las librerias principales*/
-import React from "react";
-import {Box,Typography,Card,CardHeader,Avatar,Divider,Grid} from "@material-ui/core";
+import React, { useState, useEffect } from "react";
+import { Box, Typography, Card, CardHeader, Avatar, Divider, Grid } from "@material-ui/core";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
-import { makeStyles} from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import Rating from "@material-ui/lab/Rating";
 /*Declaramos los estilos que se van a usar por cada componente*/
@@ -26,22 +26,23 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(3),
   },
 }));
-/*Declaramos la función principal*/ 
-export default function ProfileServiceCard() {
+/*Declaramos la función principal*/
+export default function ProfileServiceCard(props) {
   const classes = useStyles();
-  const [value, setValue] = React.useState(2);
-  /*Declaramos lo que nos va a retornar la funcion*/ 
-  return (
+  //const [value, setValue] = useState(2);
+  const [service, setService] = useState();
+
+  useEffect(() => {
+    setService(props.service)
+  }, [])
+
+  /*Declaramos lo que nos va a retornar la funcion*/
+  return service ? (
     <Box className={classes.root}>
       <Card>
-        <CardHeader
-          avatar={<Avatar></Avatar>}
-          title="Kori Antunez Palomino"
-          subheader="Fecha de publicación del servicio"
-        />
         <CardContent>
           <Typography className={classes.title} variant="h6" component="p">
-            TÍTULO DEL SERVICIO
+            {service.cat_nombre}
           </Typography>
           <Divider></Divider>
           <Typography
@@ -49,7 +50,7 @@ export default function ProfileServiceCard() {
             variant="body2"
             component="p"
           >
-            Descripción del servicio
+            {service.ser_descripcion}
           </Typography>
 
           <CardMedia
@@ -63,13 +64,17 @@ export default function ProfileServiceCard() {
               <Typography className={classes.title} variant="h6" component="p">
                 S/100.00
               </Typography>
-              <Rating
-                name="simple-controlled"
-                value={value}
-                onChange={(event, newValue) => {
-                  setValue(newValue);
-                }}
-              />
+              {service.ser_calificacion ?
+                (<Rating
+                  name="read-only"
+                  value={service.ser_calificacion}
+                  readOnly
+                />) :
+                (<Typography className={classes.title} variant="body1">
+                  Sin Calificación
+                </Typography>)
+              }
+
             </Grid>
             <Grid item xs={6} spacing={1}>
               <Box className={classes.button}>
@@ -85,5 +90,7 @@ export default function ProfileServiceCard() {
         </CardContent>
       </Card>
     </Box>
+  ) : (
+    <div>Cargando...</div>
   );
 }

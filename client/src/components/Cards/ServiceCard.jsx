@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router";
 import { withStyles } from "@material-ui/styles";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -54,9 +55,10 @@ const StyledCaption = withStyles({
 
 const ServiceCard = (props) => {
   const [service, setService] = useState();
+  const history = useHistory();
 
   useEffect(()=>{
-    setService(props.service)
+    setService(props.service);
   }, [])
 
   return service ? (
@@ -79,7 +81,13 @@ const ServiceCard = (props) => {
         </StyledBody2>
       </CardContent>
       <StyledCardActions>
-        <StyledButton>Ver Más</StyledButton>
+        <StyledButton onClick={()=>{
+          history.push({
+            pathname: "/serviceDetails",
+            search: `user=${service.us_correo.split('@')}&?service=${service.cat_id}`,
+            state: {token: props.token} 
+          })
+        }}>Ver Más</StyledButton>
       </StyledCardActions>
     </StyledCard>
   ):(
