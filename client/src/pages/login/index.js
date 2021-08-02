@@ -58,8 +58,6 @@ export default function SignIn() {
     formState: { errors },
     handleSubmit,
   } = useForm();
-  /*Obtener el id del usuario logueado*/
-  let user;
 
   const onSubmit = async (getUser, evt) => {
     evt.preventDefault();
@@ -70,7 +68,6 @@ export default function SignIn() {
       })
       .then((res) => {
         localStorage.setItem("User_session", JSON.stringify(res.data));
-        user = res.data.transaction;
         history.push({
           pathname: "/",
           state: { token: res.data.token },

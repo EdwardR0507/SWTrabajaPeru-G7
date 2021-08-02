@@ -137,7 +137,9 @@ const ServiceModal = ({
   // Estado para controlar la descripción del servicio
   const [description, setDescription] = useState("");
 
-  const [selectName, setSelectName] = useState("");
+  const [selectName, setSelectName] = useState([]);
+
+  const [catSelect, setCatSelect] = useState([]);
 
   const [list, setList] = useState([
     {
@@ -153,7 +155,7 @@ const ServiceModal = ({
     //Cambiar post por get cuando se arregle
     axios
       .post(
-        `${GlobalEnv.host}/service`,
+        `${GlobalEnv.host}/service-auth`,
         {
           command: "GET_CATEGORIES",
         },
@@ -175,6 +177,31 @@ const ServiceModal = ({
   const handleOpen = () => {
     setSelectName("");
     setOpen(true);
+  };
+
+  const handleOpenEdit = () => {
+    axios
+      .post(
+        `${GlobalEnv.host}/service-auth`,
+        {
+          command: "GET_MY_SERVICES",
+        },
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((res) => {
+        const cat = res.data.filter((el) =>
+          el.ser_descripcion === serviceDescription ? el.cat_id : ""
+        );
+        setCatSelect(cat);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    handleOpen();
   };
 
   // Función para cerrar el modal
@@ -266,7 +293,7 @@ const ServiceModal = ({
           variant="contained"
           color="primary"
           className={classes.button}
-          onClick={handleOpen}
+          onClick={handleOpenEdit}
           endIcon={<CreateIcon />}
         >
           Editar
@@ -382,13 +409,15 @@ const ServiceModal = ({
                       </InputLabel>
                       <Select
                         native
-                        disabled
-                        inputProps={{
-                          name: "servicio",
-                          id: "filled-servicio-native-simple",
-                        }}
+                        name="cat_id"
+                        value={existName(selectName)}
+                        {...register("cat_id")}
                       >
-                        <option>{service}</option>
+                        {catSelect.map((el) => (
+                          <option key={el.cat_id} value={el.cat_id}>
+                            {service}
+                          </option>
+                        ))}
                       </Select>
                     </Container>
                     <TextField
