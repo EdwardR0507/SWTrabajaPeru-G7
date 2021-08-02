@@ -1,14 +1,11 @@
-import ServiceDetailsCard from "./index";
-import ProfileCard from "../../components/Cards/ProfileCard";
+/*Importamos las librerias principales*/
 import React from "react";
-import { shallow, mount, render } from "enzyme";
-describe("<ServiceDetailsCard></ServiceDetailsCard>", () => {
-  it('render `ServiceDetailsCard`', () => {
-    const wrapper = shallow(<ServiceDetailsCard />);
+import ServiceDetails from "./index";
+import { shallow } from "enzyme";
+/*Renderizado de la vista Service Details*/
+describe("<ServiceDetails></ServiceDetails>", () => {
+  it('render `ServiceDetails`', () => {
+    const wrapper = shallow(<ServiceDetails />);
     expect(wrapper).toMatchSnapshot()
-  });
-  it('should have an `ProfileCard` element', () => {
-    const wrapper = shallow(<ProfileCard />);
-    expect(wrapper.contains(<ProfileCard></ProfileCard>)).toBe(false);
   });
 });

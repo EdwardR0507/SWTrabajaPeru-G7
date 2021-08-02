@@ -13,6 +13,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import SearchField from "../components/TextFields/SearchField";
 import IconButton from "@material-ui/core/IconButton";
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import EditIcon from "@material-ui/icons/Edit";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import Avatar from "@material-ui/core/Avatar";
@@ -113,9 +114,21 @@ const NavBar = (props) => {
                 <MenuItem
                   onClick={() => {
                     history.push({
+                      pathname: "/myAccount",
+                      state: { token: props.token },
+                    });
+                  }}
+                >
+                  <ListItemIcon>
+                    <AccountCircleIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Mi Perfil" />
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    history.push({
                       pathname: "/editProfile",
-                      search: `?id=${props.user.us_id}`,
-                      state: { user: props.user },
+                      state: { token: props.token },
                     });
                   }}
                 >
@@ -124,7 +137,12 @@ const NavBar = (props) => {
                   </ListItemIcon>
                   <ListItemText primary="Editar Perfil" />
                 </MenuItem>
-                <MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    history.push({
+                      pathname: "/"
+                    })
+                  }}>
                   <ListItemIcon>
                     <ExitToAppIcon />
                   </ListItemIcon>

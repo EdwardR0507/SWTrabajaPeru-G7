@@ -1,4 +1,6 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
+import axios from "axios";
+import GlobalEnv from "../../GlobalEnv";
 import { useLocation } from "react-router";
 import NavBar from "../../layouts/NavBar";
 import HeadingBar from "../../layouts/HeadingBar/HeadingBar";
@@ -35,15 +37,60 @@ const ManageServices = () => {
   const location = useLocation();
   const state = location.state;
 
+  const [user, setUser] = useState();
   const [data, setData] = useState(arrObj);
+
+  useEffect(() => {
+    //Cambiar post por get cuando se arregle
+    axios
+      .post(
+        `${GlobalEnv.host}/user-auth`,
+        {
+          command: "OBTAIN_USER",
+        },
+        {
+          headers: {
+            authorization: `Bearer ${state?.token}`,
+          },
+        }
+      )
+      .then((res) => {
+        setUser(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  useEffect(() => {
+    //Cambiar post por get cuando se arregle
+    axios
+      .post(
+        `${GlobalEnv.host}/service-auth`,
+        {
+          command: "GET_MY_SERVICES",
+        },
+        {
+          headers: {
+            authorization: `Bearer ${state?.token}`,
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res.data[0]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   return (
     <>
-      <NavBar user={state.user} />
-      <HeadingBar before={"TRABAJADOR"} after={"MIS SERVICIOS"}></HeadingBar>
+      <NavBar user={user} token={state?.token}/>
+      <HeadingBar before={"TRABAJADOR"} after={"MIS SERVICIOS"} />
       <StyledContainer>
         <StyledTypography>Mis Servicios</StyledTypography>
-        <ServiceModal data={data} setData={setData} />
+        <ServiceModal data={data} setData={setData} mood="Agregar" />
       </StyledContainer>
       {data.map((el) => {
         if (el.id === null) {

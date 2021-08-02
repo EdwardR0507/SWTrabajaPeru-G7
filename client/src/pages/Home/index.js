@@ -11,6 +11,7 @@ import ServiceCard from "../../components/Cards/ServiceCard";
 import WorkerCard from "../../components/Cards/WorkerCard";
 import theme from "../../themes/themes";
 
+
 const StyledContentContainer = withStyles({
   root: {
     marginTop: "40px",
@@ -57,6 +58,7 @@ export default function Home() {
   const location = useLocation();
   const [services, setServices] = useState();
   const [workers, setWorkers] = useState();
+  const [user, setUser] = useState();
   const state = location.state;
 
   useEffect(() => {
@@ -81,9 +83,35 @@ export default function Home() {
       });
   }, []);
 
+  useEffect(() => {
+    console.log(state)
+    if (state?.token) {
+      //Cambiar post por get cuando se arregle
+      axios
+        .post(`${GlobalEnv.host}/user-auth`, {
+          command: "OBTAIN_USER"
+        }, {
+          headers: {
+            authorization: `Bearer ${state?.token}`
+          }
+        }
+        )
+        .then((res) => {
+          console.log(res)
+          setUser(res.data)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
+    else {
+      return
+    }
+  }, [])
+
   return workers && services ? (
     <>
-      {state ? <NavBar user={state.user} /> : <NavBar />}
+      {user ? <NavBar user={user} token={state?.token} /> : <NavBar />}
       <Container>
         <StyledContentContainer>
           <StyledH2 variant="h2">Servicios</StyledH2>
@@ -98,9 +126,9 @@ export default function Home() {
           <StyledIconButton>
             <NavigateBeforeIcon />
           </StyledIconButton>
-          <ServiceCard />
-          <ServiceCard />
-          <ServiceCard />
+          {services?.map((service) => (
+            <ServiceCard service={service} />
+          ))}
           <StyledIconButton>
             <NavigateNextIcon />
           </StyledIconButton>
@@ -110,12 +138,14 @@ export default function Home() {
           <StyledLink href="#">
             <Typography variant="h5">VER TODO</Typography>
           </StyledLink>
+
+
         </StyledContentContainer>
         <StyledCardContainer>
           <StyledIconButton>
             <NavigateBeforeIcon />
           </StyledIconButton>
-          {workers.map((worker) => (
+          {workers?.map((worker) => (
             <WorkerCard worker={worker} />
           ))}
           <StyledIconButton>

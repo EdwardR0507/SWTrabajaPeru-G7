@@ -1,5 +1,5 @@
 /*Importamos las librerias principales*/
-import React, { useState } from "react";
+import React from "react";
 import { Link as RouterLink, useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
@@ -48,18 +48,18 @@ const StyledErrorSpan = withStyles({
     float: "left",
   },
 })(Typography);
-/*Declaramos la función principal*/ 
+/*Declaramos la función principal*/
 export default function SignIn() {
   const classes = useStyles();
-
+  /*Creamos constantes*/
   const history = useHistory();
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm();
-
-  let user
+  /*Obtener el id del usuario logueado*/
+  let user;
 
   const onSubmit = async (getUser, evt) => {
     evt.preventDefault();
@@ -69,16 +69,15 @@ export default function SignIn() {
         transaction: getUser,
       })
       .then((res) => {
+        localStorage.setItem("User_session", JSON.stringify(res.data));
         user = res.data.transaction;
-        console.log(res);
         history.push({
           pathname: "/",
-          search: `?id=${user.us_id}`,
-          state: { user: user },
+          state: { token: res.data.token },
         });
       });
   };
-
+  /* Renderizado de la vista de Inicio de Sesión */
   return (
     <>
       <NavBar></NavBar>

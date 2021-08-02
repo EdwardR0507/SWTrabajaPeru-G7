@@ -2,7 +2,7 @@ import { React, useState } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { Container, Button, Typography } from "@material-ui/core/";
 import DeleteIcon from "@material-ui/icons/Delete";
-import ServiceEditModal from "../Modals/ServiceEditModal";
+import ServiceModal from "../Modals/ServiceModal";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -97,7 +97,7 @@ const InfoService = ({ name, description }) => {
             </Container>
           </StyledContainerData>
           <StyledContainerButtons>
-            <ServiceEditModal
+            <ServiceModal
               service={name}
               serviceDescription={descriptionService}
               handleEdit={handleEdit}
