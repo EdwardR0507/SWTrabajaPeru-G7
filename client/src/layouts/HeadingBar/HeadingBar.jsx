@@ -2,6 +2,7 @@ import React from "react";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
+import theme from "../../themes/themes";
 import { withStyles } from "@material-ui/core/styles";
 
 const StyledNavigate = withStyles({
@@ -14,7 +15,7 @@ const StyledNavigate = withStyles({
 
 const StyledContainer = withStyles({
   root: {
-    backgroundColor: "#212121",
+    backgroundColor: theme.headingBar.primary.main,
     width: "80%",
     height: "50px",
     padding: "15px",
@@ -28,7 +29,7 @@ const StyledContainerContent = withStyles({
   root: {
     display: "flex",
     alignItems: "center",
-    color: "#ffffff",
+    color: theme.colorLetter.primary.main,
   },
 })(Container);
 
@@ -36,7 +37,7 @@ const StyledTypography = withStyles({
   root: {
     fontStyle: "normal",
     fontWeight: "500",
-    fontSize: "14px",
+    fontSize: "0.8em",
     lineHeight: "16px",
     letterSpacing: "1.25px",
     textTransform: "uppercase",
@@ -48,9 +49,9 @@ const HeadingBar = ({ before, after }) => {
     <>
       <StyledContainer>
         <StyledContainerContent>
-          <StyledTypography>TRABAJADOR </StyledTypography>
+          <StyledTypography>{before}</StyledTypography>
           <StyledNavigate></StyledNavigate>
-          <StyledTypography>MIS SERVICIOS </StyledTypography>
+          <StyledTypography>{after}</StyledTypography>
         </StyledContainerContent>
       </StyledContainer>
     </>

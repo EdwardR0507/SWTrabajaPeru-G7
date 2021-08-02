@@ -1,14 +1,22 @@
+/*Importamos las librerias principales*/
 import React from "react";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Link from "@material-ui/core/Link";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
-import { withStyles } from "@material-ui/core/styles";
+import { Link as RouterLink, useHistory } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import axios from "axios";
+import {
+  CssBaseline,
+  Link,
+  Grid,
+  Typography,
+  Container,
+  TextField,
+  makeStyles,
+  withStyles,
+} from "@material-ui/core/";
+import GlobalEnv from "../../GlobalEnv";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import NavBar from "../../layouts/NavBar";
-import Input from "../../components/TextFields/Input";
+/*Declaramos los estilos que se van a usar por cada componente*/
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -24,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
 }));
-/**/
+/*Declaramos el estilo de la letra*/
 const StyledTypography = withStyles({
   root: {
     fontSize: "34px",
@@ -33,25 +41,43 @@ const StyledTypography = withStyles({
     fontWeigth: "400",
   },
 })(Typography);
-
+/*Declaramos el estilo de la letra*/
+const StyledErrorSpan = withStyles({
+  root: {
+    color: "#FF4D4D",
+    float: "left",
+  },
+})(Typography);
+/*Declaramos la función principal*/
 export default function SignIn() {
   const classes = useStyles();
-  /*state={
-    form:{
-      username:'',
-      password:''
-    }
-  }
-  handleChange=e => {
-    this.setState({
-      form:{
-        ...this.state.form,
-        [e.target.name]: e.target.value
-      }
-    });
-    console.log(this.state.form)
-  }
-  */
+  /*Creamos constantes*/
+  const history = useHistory();
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm();
+  /*Obtener el id del usuario logueado*/
+  let user;
+
+  const onSubmit = async (getUser, evt) => {
+    evt.preventDefault();
+    await axios
+      .post(`${GlobalEnv.host}/user`, {
+        command: "LOGIN_USER",
+        transaction: getUser,
+      })
+      .then((res) => {
+        localStorage.setItem("User_session", JSON.stringify(res.data));
+        user = res.data.transaction;
+        history.push({
+          pathname: "/",
+          state: { token: res.data.token },
+        });
+      });
+  };
+  /* Renderizado de la vista de Inicio de Sesión */
   return (
     <>
       <NavBar></NavBar>
@@ -59,41 +85,70 @@ export default function SignIn() {
         <CssBaseline />
         <div className={classes.paper}>
           <StyledTypography>Iniciar Sesión</StyledTypography>
-          <form className={classes.form} noValidate maxWidth="xs">
+          <form className={classes.form} noValidate>
             <Grid container align="center" spacing={3}>
               <Grid item xs={12}>
-                <Input
-                  required
-                  id="username"
-                  name="username"
-                  label="Nombre de usuario"
-                  type="text"
-                  autoComplete="username"
-                  /*onChange={this.handleChange}*/
+                <TextField
+                  fullWidth
+                  variant="filled"
+                  id="email"
+                  name="us_correo"
+                  label="Correo electrónico"
+                  type="email"
+                  autoComplete="us_correo"
+                  {...register("us_correo", {
+                    required: true,
+                    pattern: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
+                  })}
                 />
+                <StyledErrorSpan>
+                  {errors.us_correo?.type === "required" && "Ingrese el correo"}
+                </StyledErrorSpan>
+                <StyledErrorSpan>
+                  {errors.us_correo?.type === "pattern" && "Correo no válido"}
+                </StyledErrorSpan>
               </Grid>
               <Grid item xs={12}>
-                <Input
-                  required
+                <TextField
+                  fullWidth
+                  variant="filled"
                   id="password"
-                  name="password"
+                  name="us_contrasena"
                   label="Contraseña"
                   type="password"
                   autoComplete="current-password"
+                  {...register("us_contrasena", {
+                    required: true,
+                    minLength: 8,
+                    maxLength: 14,
+                  })}
                 />
+                <StyledErrorSpan>
+                  {errors.us_contrasena?.type === "required" &&
+                    "Ingrese la contraseña"}
+                </StyledErrorSpan>
+                <StyledErrorSpan>
+                  {errors.us_contrasena?.type === "minLength" &&
+                    "Contraseña no válida"}
+                </StyledErrorSpan>
+                <StyledErrorSpan>
+                  {errors.us_contrasena?.type === "maxLength" &&
+                    "Contraseña no válida"}
+                </StyledErrorSpan>
               </Grid>
               <Grid item xs={12}>
                 <PrimaryButton
                   type="submit"
                   name="INICIAR SESIÓN"
                   className={classes.submit}
+                  onClick={handleSubmit(onSubmit)}
                 ></PrimaryButton>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={6} fontWeight="bold">
                 ¿NO TIENES CUENTA?
               </Grid>
               <Grid item xs={6}>
-                <Link href="" variant="body2">
+                <Link variant="body2" component={RouterLink} to="/signup">
                   {"¡REGISTRATE!"}
                 </Link>
               </Grid>

@@ -6,16 +6,14 @@ import Button from "@material-ui/core/Button";
 const StyledPrimaryButton = withStyles({
   root: {
     background: theme.palette.primary.main,
-    boxShadow:
-      "0px 4px 5px rgba(0, 0, 0, 0.14), 0px 1px 10px rgba(0, 0, 0, 0.12), 0px 2px 4px rgba(0, 0, 0, 0.2)",
+    boxShadow: theme.boxShadowButton.primary.main,
     borderRadius: "28px",
-    color: "#FFFFFF",
+    color: theme.colorLetter.primary.main,
     fontWeight: "500",
     fontSize: "14px",
     lineHeight: "16px",
     letterSpacing: "1.25px",
     textTransform: "uppercase",
-    width: "171px",
     height: "48px",
     "&:hover": {
       background: theme.palette.primary.main,
@@ -23,8 +21,12 @@ const StyledPrimaryButton = withStyles({
   },
 })(Button);
 
-const PrimaryButton = ({ name }) => {
-  return <StyledPrimaryButton>{name}</StyledPrimaryButton>;
+const PrimaryButton = ({ name, onClick }) => {
+  return (
+    <StyledPrimaryButton fullWidth onClick={onClick}>
+      {name}
+    </StyledPrimaryButton>
+  );
 };
 
 export default PrimaryButton;
