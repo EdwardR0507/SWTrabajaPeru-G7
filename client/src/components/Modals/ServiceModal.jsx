@@ -217,7 +217,11 @@ const ServiceModal = ({
 
   // Función para capturar lo que se seleccione(setSelectName) y a su vez agregar el nombre que se mostrará en el componente InfoService (setName)
   const handleSelect = (e) => {
-    const newName = list[e.target.value - 1].cat_nombre;
+    console.log(list);
+    let cont = 0;
+    console.log(data.length);
+    const newName = list[e.target.value - data.length + cont].cat_nombre;
+    console.log(newName);
     setName(newName);
     setSelectName(e.target.value);
   };
@@ -245,7 +249,14 @@ const ServiceModal = ({
 
     handleClose();
     setDescription("");
-    setData([...data, { id: data[data.length - 1].id + 1, name, description }]);
+    setData([
+      ...data,
+      {
+        id: data[data.length - 1].id + 1,
+        cat_nombre: name,
+        ser_descripcion: description,
+      },
+    ]);
     reset();
   };
 
