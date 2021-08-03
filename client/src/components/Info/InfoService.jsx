@@ -69,14 +69,14 @@ const InfoService = ({ cat_nombre, ser_descripcion }) => {
   const [descriptionService, setDescriptionService] = useState(ser_descripcion);
   const [state, setState] = useState(true);
 
-  const token = JSON.parse(localStorage.getItem("User_session")).token;
+  const [modalDescription, setModalDescription] = useState(ser_descripcion);
 
   const handleDelete = () => {
     setState(false);
   };
 
   const handleEdit = (e) => {
-    setDescriptionService(e.target.value);
+    setModalDescription(e.target.value);
   };
 
   return (
@@ -100,9 +100,10 @@ const InfoService = ({ cat_nombre, ser_descripcion }) => {
           </StyledContainerData>
           <StyledContainerButtons>
             <ServiceModal
-              service={cat_nombre}
               serviceDescription={descriptionService}
               handleEdit={handleEdit}
+              modalDescription={modalDescription}
+              setDescriptionService={setDescriptionService}
             />
             <Button
               variant="contained"

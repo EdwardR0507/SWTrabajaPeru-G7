@@ -116,9 +116,10 @@ const ServiceModal = ({
   data,
   setData,
   mood,
-  service,
   serviceDescription,
   handleEdit,
+  modalDescription,
+  setDescriptionService,
 }) => {
   // Hook useForm para almacenar los datos de los forms
   const {
@@ -257,6 +258,7 @@ const ServiceModal = ({
 
   // Función para editar un servicio
   const onSubmitEdit = async (datos, e) => {
+    setDescriptionService(modalDescription);
     e.preventDefault();
     console.log(datos);
     await axios
@@ -421,7 +423,7 @@ const ServiceModal = ({
                       >
                         {catSelect.map((el) => (
                           <option key={el.cat_id} value={el.cat_id}>
-                            {service}
+                            {el.cat_nombre}
                           </option>
                         ))}
                       </Select>
