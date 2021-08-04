@@ -24,44 +24,51 @@ export default function SocialProfile() {
   const [user, setUser] = useState();
   const [services, setServices] = useState();
   const location = useLocation();
-  const state = location.state
+  const state = location.state;
 
   //Información del usuario
   useEffect(() => {
-    console.log(state)
+    console.log(state);
     //Cambiar post por get cuando se arregle
     axios
-      .post(`${GlobalEnv.host}/user-auth`, {
-        command: "OBTAIN_USER"
-      }, {
-        headers: {
-          authorization: `Bearer ${state?.token}`
+      .post(
+        `${GlobalEnv.host}/user-auth`,
+        {
+          command: "GET_MY_USER",
+        },
+        {
+          headers: {
+            authorization: `Bearer ${state?.token}`,
+          },
         }
-      }
       )
       .then((res) => {
-        console.log(res)
-        setUser(res.data)
+        console.log(res);
+        setUser(res.data);
       })
       .catch((err) => {
-        console.log(err)
-      })
-  }, [])
+        console.log(err);
+      });
+  }, []);
 
   useEffect(() => {
     axios
-      .post(`${GlobalEnv.host}/service-auth`, {
-        command: "GET_MY_SERVICES"
-      }, {
-        headers: {
-          authorization: `Bearer ${state?.token}`
+      .post(
+        `${GlobalEnv.host}/service-auth`,
+        {
+          command: "GET_MY_SERVICES",
+        },
+        {
+          headers: {
+            authorization: `Bearer ${state?.token}`,
+          },
         }
-      })
+      )
       .then((res) => {
         console.log(res);
         setServices(res.data);
-      })
-  }, [])
+      });
+  }, []);
 
   return user && services ? (
     <>

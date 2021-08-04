@@ -38,7 +38,7 @@ const ManageServices = () => {
       .post(
         `${GlobalEnv.host}/user-auth`,
         {
-          command: "OBTAIN_USER",
+          command: "GET_MY_USER",
         },
         {
           headers: {
@@ -76,7 +76,7 @@ const ManageServices = () => {
       });
   }, []);
 
-  return (
+  return user ? (
     <>
       <NavBar user={user} token={state?.token} />
       <HeadingBar before={"TRABAJADOR"} after={"MIS SERVICIOS"} />
@@ -90,6 +90,8 @@ const ManageServices = () => {
           return <InfoService key={`${el.cat_id}-${el.cat_nombre}`} {...el} />;
         })}
     </>
+  ) : (
+    <div>Cargando...</div>
   );
 };
 export default ManageServices;

@@ -16,7 +16,7 @@ import {
   TextField,
   IconButton,
   Select,
-  Snackbar
+  Snackbar,
 } from "@material-ui/core/";
 import CloseIcon from "@material-ui/icons/Close";
 import { useInput } from "../../hooks/useInput";
@@ -69,9 +69,9 @@ export default function EditProfile() {
     register,
     formState: { errors },
     handleSubmit,
-    reset
+    reset,
   } = useForm({
-    defaultValues: user
+    defaultValues: user,
   });
   const location = useLocation();
   const state = location.state;
@@ -96,45 +96,53 @@ export default function EditProfile() {
   };
 
   useEffect(() => {
-    console.log(state)
+    console.log(state);
     //Cambiar post por get cuando se arregle
     axios
-      .post(`${GlobalEnv.host}/user-auth`, {
-        command: "OBTAIN_USER"
-      }, {
-        headers: {
-          authorization: `Bearer ${state?.token}`
+      .post(
+        `${GlobalEnv.host}/user-auth`,
+        {
+          command: "GET_MY_USER",
+        },
+        {
+          headers: {
+            authorization: `Bearer ${state?.token}`,
+          },
         }
-      }
       )
       .then((res) => {
         reset({
           us_nombres: res.data.us_nombres,
-          us_celular: res.data.us_celular
+          us_celular: res.data.us_celular,
         });
-        setUser(res.data)
+        setUser(res.data);
       })
       .catch((err) => {
-        console.log(err)
-      })
-  }, [reset])
+        console.log(err);
+      });
+  }, [reset]);
 
   const onSubmit = async (userEdited, event) => {
     event.preventDefault();
-    console.log(userEdited)
-    await axios.post(`${GlobalEnv.host}/user-auth`, {
-      command: "EDIT_USER",
-      transaction: userEdited
-    }, {
-      headers: {
-        authorization: `Bearer ${state?.token}`
-      }
-    })
-      .then(res => {
+    console.log(userEdited);
+    await axios
+      .post(
+        `${GlobalEnv.host}/user-auth`,
+        {
+          command: "EDIT_USER",
+          transaction: userEdited,
+        },
+        {
+          headers: {
+            authorization: `Bearer ${state?.token}`,
+          },
+        }
+      )
+      .then((res) => {
         setOpen(true);
-        console.log(res)
-      })
-  }
+        console.log(res);
+      });
+  };
 
   /*const handleSubmit = async (evt) => {
     evt.preventDefault();
@@ -185,17 +193,19 @@ export default function EditProfile() {
                 type="text"
                 {...register("us_nombres", { required: true, maxLength: 40 })}
               />
-              <FormError condition={errors.us_nombres?.type === "required"}
-                content="Ingrese nombres y apellidos" />
-              <FormError condition={errors.us_nombres?.type === "maxLength"}
-                content="Nombre no válido" />
+              <FormError
+                condition={errors.us_nombres?.type === "required"}
+                content="Ingrese nombres y apellidos"
+              />
+              <FormError
+                condition={errors.us_nombres?.type === "maxLength"}
+                content="Nombre no válido"
+              />
             </Grid>
 
             <Grid container item xs={6} spacing={3}>
               <FormControl variant="filled" className={classes.formControl}>
-                <InputLabel>
-                  Departamento
-                </InputLabel>
+                <InputLabel>Departamento</InputLabel>
                 <Select
                   /*value={state.age}
                 onChange={handleChange}*/
@@ -213,7 +223,7 @@ export default function EditProfile() {
                         <option value={dept.name} key={dept.id} selected>
                           {dept.name}
                         </option>
-                      )
+                      );
                     }
                   })}
                   {locations.departamentos.map((dept) => {
@@ -222,12 +232,14 @@ export default function EditProfile() {
                         <option value={dept.name} key={dept.id}>
                           {dept.name}
                         </option>
-                      )
+                      );
                     }
                   })}
                 </Select>
-                <FormError condition={errors.us_departamento?.type === "required"}
-                  content="Ingrese departamento" />
+                <FormError
+                  condition={errors.us_departamento?.type === "required"}
+                  content="Ingrese departamento"
+                />
               </FormControl>
             </Grid>
 
@@ -244,10 +256,14 @@ export default function EditProfile() {
                   pattern: /^^9\d{8}$/,
                 })}
               />
-              <FormError condition={errors.us_celular?.type === "required"}
-                content="Ingrese celular" />
-              <FormError condition={errors.us_correo?.type === "pattern"}
-                content="Número de celular no válido" />
+              <FormError
+                condition={errors.us_celular?.type === "required"}
+                content="Ingrese celular"
+              />
+              <FormError
+                condition={errors.us_correo?.type === "pattern"}
+                content="Número de celular no válido"
+              />
             </Grid>
 
             <Grid container item xs={6} spacing={3}>
@@ -267,21 +283,22 @@ export default function EditProfile() {
                   {...bindProvincia}
                 >
                   <option hidden />
-                  {filteredProvincias && filteredProvincias.map((prov) => (
-                    <option value={prov.name} key={prov.id}>
-                      {prov.name}
-                    </option>
-                  ))}
+                  {filteredProvincias &&
+                    filteredProvincias.map((prov) => (
+                      <option value={prov.name} key={prov.id}>
+                        {prov.name}
+                      </option>
+                    ))}
                 </Select>
-                <FormError condition={errors.us_provincia?.type === "required"}
-                  content="Ingrese provincia" />
+                <FormError
+                  condition={errors.us_provincia?.type === "required"}
+                  content="Ingrese provincia"
+                />
               </FormControl>
             </Grid>
 
             <Grid container item xs={6} spacing={3}>
-              <div>
-                {/*Espacio vacío*/}
-              </div>
+              <div>{/*Espacio vacío*/}</div>
             </Grid>
 
             <Grid container item xs={6} spacing={3}>
@@ -309,8 +326,10 @@ export default function EditProfile() {
                       </option>
                     ))}
                 </Select>
-                <FormError condition={errors.us_distrito?.type === "required"}
-                  content="Ingrese distrito" />
+                <FormError
+                  condition={errors.us_distrito?.type === "required"}
+                  content="Ingrese distrito"
+                />
               </FormControl>
             </Grid>
 

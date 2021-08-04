@@ -34,7 +34,7 @@ const ServiceDetails = () => {
       .post(
         `${GlobalEnv.host}/user-auth`,
         {
-          command: "OBTAIN_USER",
+          command: "GET_MY_USER",
         },
         {
           headers: {
