@@ -84,6 +84,7 @@ const ManageServices = () => {
         <StyledTypography>Mis Servicios</StyledTypography>
         <ServiceModal data={data} setData={setData} mood="Agregar" />
       </StyledContainer>
+      {console.log(data)}
       {data.length !== 0 &&
         data.map((el) => {
           return <InfoService key={`${el.cat_id}-${el.cat_nombre}`} {...el} />;

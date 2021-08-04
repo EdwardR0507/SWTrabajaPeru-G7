@@ -76,7 +76,7 @@ export default function Home() {
     //Cambiar post por get cuando se arregle
     axios
       .post(`${GlobalEnv.host}/user`, {
-        command: "GET_USERS",
+        command: "GET_HOME_USERS",
       })
       .then((res) => {
         console.log(res.data);

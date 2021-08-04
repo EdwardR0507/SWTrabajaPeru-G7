@@ -41,7 +41,7 @@ const DialogDelete = ({ setState, cat_id, cat_nombre }) => {
   };
 
   const handleDelete = () => {
-    console.log("Cataidi:");
+    console.log("Cat_id:");
     console.log(cat_id);
     //Cambiar post por get cuando se arregle
     axios
@@ -49,7 +49,7 @@ const DialogDelete = ({ setState, cat_id, cat_nombre }) => {
         `${GlobalEnv.host}/service-auth`,
         {
           command: "DELETE_SERVICE",
-          transaction: cat_id,
+          transaction: { cat_id: cat_id },
         },
         {
           headers: {
@@ -93,8 +93,9 @@ const DialogDelete = ({ setState, cat_id, cat_nombre }) => {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Al eliminar el servicio de {cat_nombre}, se eliminará toda la
-            información relacionada con este servicio
+            Al eliminar el servicio de {cat_nombre} será inaccesible toda la
+            información relacionada con este servicio. Para restablecer el
+            servicio deberá agregarlo nuevamente
           </DialogContentText>
         </DialogContent>
         <DialogActions>
