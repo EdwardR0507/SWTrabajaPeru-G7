@@ -14,8 +14,11 @@ import {
   InputLabel,
   FormControl,
   TextField,
+  IconButton,
   Select,
+  Snackbar
 } from "@material-ui/core/";
+import CloseIcon from "@material-ui/icons/Close";
 import { useInput } from "../../hooks/useInput";
 import useLocations from "../../hooks/useLocations";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
@@ -61,14 +64,14 @@ export default function EditProfile() {
   /*Declaramos la función principal*/
   const classes = useStyles();
   const [user, setUser] = useState();
+  const [open, setOpen] = useState(false);
   const {
     register,
     formState: { errors },
     handleSubmit,
-    setValue,
     reset
   } = useForm({
-    defaultValues: {}
+    defaultValues: user
   });
   const location = useLocation();
   const state = location.state;
@@ -84,6 +87,14 @@ export default function EditProfile() {
     provincia
   );
 
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+
   useEffect(() => {
     console.log(state)
     //Cambiar post por get cuando se arregle
@@ -97,12 +108,11 @@ export default function EditProfile() {
       }
       )
       .then((res) => {
-        console.log(res);
-        setUser(res.data);
         reset({
-          us_nombres: user.us_nombres,
-          us_celular: user.us_celular
-        })
+          us_nombres: res.data.us_nombres,
+          us_celular: res.data.us_celular
+        });
+        setUser(res.data)
       })
       .catch((err) => {
         console.log(err)
@@ -120,7 +130,10 @@ export default function EditProfile() {
         authorization: `Bearer ${state?.token}`
       }
     })
-      .then(res => console.log(res))
+      .then(res => {
+        setOpen(true);
+        console.log(res)
+      })
   }
 
   /*const handleSubmit = async (evt) => {
@@ -152,7 +165,7 @@ export default function EditProfile() {
   /*Declaramos lo que nos va a retornar la funcion*/
   return user ? (
     <>
-      <NavBar user={user} token={state?.token}/>
+      <NavBar user={user} token={state?.token} />
       <StyledContainer>
         <form className={classes.form} noValidate>
           <Grid container spacing={6}>
@@ -320,6 +333,28 @@ export default function EditProfile() {
                   name="GUARDAR PERFIL"
                   onClick={handleSubmit(onSubmit)}
                 ></PrimaryButton>
+                <Snackbar
+                  open={open}
+                  autoHideDuration={6000}
+                  onClose={handleClose}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "center",
+                  }}
+                  message="Perfil editado correctamente"
+                  action={
+                    <React.Fragment>
+                      <IconButton
+                        aria-label="close"
+                        color="inherit"
+                        className={classes.close}
+                        onClick={handleClose}
+                      >
+                        <CloseIcon />
+                      </IconButton>
+                    </React.Fragment>
+                  }
+                />
               </Grid>
             </Grid>
           </Grid>
