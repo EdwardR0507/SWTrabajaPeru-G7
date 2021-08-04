@@ -100,6 +100,7 @@ const InfoService = ({ cat_nombre, ser_descripcion }) => {
           </StyledContainerData>
           <StyledContainerButtons>
             <ServiceModal
+              cat_nombre={cat_nombre}
               serviceDescription={descriptionService}
               handleEdit={handleEdit}
               modalDescription={modalDescription}

@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import { React, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   makeStyles,
@@ -118,6 +118,7 @@ const ServiceModal = ({
   mood,
   serviceDescription,
   handleEdit,
+  cat_nombre,
   modalDescription,
   setDescriptionService,
 }) => {
@@ -138,14 +139,14 @@ const ServiceModal = ({
   // Estado para controlar la descripción del servicio
   const [description, setDescription] = useState("");
 
-  const [selectName, setSelectName] = useState([]);
+  const [selectName, setSelectName] = useState("");
 
   const [catSelect, setCatSelect] = useState([]);
 
   const [list, setList] = useState([
     {
       cat_id: null,
-      cat_name: "",
+      cat_nombre: "",
     },
   ]);
 
@@ -176,6 +177,7 @@ const ServiceModal = ({
   };
 
   const handleOpenEdit = () => {
+    setOpen(true);
     axios
       .post(
         `${GlobalEnv.host}/service-auth`,
@@ -190,19 +192,17 @@ const ServiceModal = ({
       )
       .then((res) => {
         const cat = res.data.filter((el) =>
-          el.ser_descripcion === serviceDescription ? el.cat_id : ""
+          el.cat_nombre === cat_nombre ? el.cat_id : ""
         );
         setCatSelect(cat);
       })
       .catch((err) => {
         console.log(err);
       });
-    handleOpen();
   };
 
   // Función para cerrar el modal
   const handleClose = () => {
-    setSelectName("");
     setOpen(false);
   };
 
@@ -214,11 +214,8 @@ const ServiceModal = ({
   // Función para capturar lo que se seleccione(setSelectName) y a su vez agregar el nombre que se mostrará en el componente InfoService (setName)
   const handleSelect = (e) => {
     console.log(list);
-    let cont = 0;
-    console.log(data.length);
-    const newName = list[e.target.value - data.length - 1 + cont].cat_nombre;
-    console.log(newName);
-    setName(newName);
+    console.log(e.target);
+    setName(e.target.value);
     setSelectName(e.target.value);
   };
 
@@ -248,7 +245,7 @@ const ServiceModal = ({
     setData([
       ...data,
       {
-        id: data[data.length - 1].id + 1,
+        cat_id: data.cat_id,
         cat_nombre: name,
         ser_descripcion: description,
       },
@@ -260,13 +257,19 @@ const ServiceModal = ({
   const onSubmitEdit = async (datos, e) => {
     setDescriptionService(modalDescription);
     e.preventDefault();
-    console.log(datos);
+    const newData = {
+      cat_id: catSelect[0].cat_id,
+      ser_descripcion: datos.ser_descripcion,
+    };
+    if (datos.ser_descripcion === undefined) {
+      newData.ser_descripcion = serviceDescription;
+    }
     await axios
       .post(
         `${GlobalEnv.host}/service-auth`,
         {
           command: "EDIT_SERVICE",
-          transaction: datos,
+          transaction: newData,
         },
         {
           headers: {
@@ -343,22 +346,22 @@ const ServiceModal = ({
                         <Select
                           labelId="demo-simple-select-required-label"
                           id="demo-simple-select-required"
-                          name="cat_id"
+                          name="cat_nombre"
                           value={existName(selectName)}
-                          {...register("cat_id", {
+                          {...register("cat_nombre", {
                             required: true,
                           })}
                           onChange={handleSelect}
                           className={classes.selectEmpty}
                         >
                           {list.map((el) => (
-                            <MenuItem key={el.cat_id} value={el.cat_id}>
+                            <MenuItem key={el.cat_id} value={el.cat_nombre}>
                               {el.cat_nombre}
                             </MenuItem>
                           ))}
                         </Select>
                         <FormError
-                          condition={errors.cat_id?.type === "required"}
+                          condition={errors.cat_nombre?.type === "required"}
                           content="Debe seleccionar un servicio"
                         />
                       </FormControl>
@@ -369,7 +372,9 @@ const ServiceModal = ({
                       label="Descripción"
                       multiline
                       name="ser_descripcion"
-                      {...register("ser_descripcion", { maxLength: 300 })}
+                      {...register("ser_descripcion", {
+                        maxLength: 300,
+                      })}
                       onChange={handleDescription}
                       rowsMax={3}
                       variant="filled"
@@ -417,15 +422,12 @@ const ServiceModal = ({
                       </InputLabel>
                       <Select
                         native
+                        disabled
                         name="cat_id"
                         value={existName(selectName)}
                         {...register("cat_id")}
                       >
-                        {catSelect.map((el) => (
-                          <option key={el.cat_id} value={el.cat_id}>
-                            {el.cat_nombre}
-                          </option>
-                        ))}
+                        <option>{cat_nombre}</option>
                       </Select>
                     </Container>
                     <TextField

@@ -69,6 +69,7 @@ const ManageServices = () => {
         }
       )
       .then((res) => {
+        console.log(res.data);
         setData(res.data);
       })
       .catch((err) => {
@@ -78,7 +79,7 @@ const ManageServices = () => {
 
   return (
     <>
-      <NavBar user={user} token={state?.token}/>
+      <NavBar user={user} token={state?.token} />
       <HeadingBar before={"TRABAJADOR"} after={"MIS SERVICIOS"} />
       <StyledContainer>
         <StyledTypography>Mis Servicios</StyledTypography>
