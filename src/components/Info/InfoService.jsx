@@ -1,8 +1,12 @@
 import { React, useState } from "react";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
-import { Container, Button, Typography } from "@material-ui/core/";
-import DeleteIcon from "@material-ui/icons/Delete";
+import {
+  makeStyles,
+  withStyles,
+  Container,
+  Typography,
+} from "@material-ui/core/";
 import ServiceModal from "../Modals/ServiceModal";
+import DialogDelete from "../Dialog/DialogDelete";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -18,13 +22,6 @@ const useStyles = makeStyles(() => ({
     flexDirection: "column",
     width: "100%",
     textAlign: "justify",
-  },
-  button: {
-    width: "9em",
-    height: "2.8em",
-    fontSize: "0.9em",
-    lineHeight: "16px",
-    letterSpacing: "1.25px",
   },
   image: {
     maxWidth: "100%",
@@ -63,17 +60,13 @@ const WrapContainer = withStyles({
   },
 })(Container);
 
-const InfoService = ({ cat_nombre, ser_descripcion }) => {
+const InfoService = ({ cat_id, cat_nombre, ser_descripcion }) => {
   const classes = useStyles();
 
   const [descriptionService, setDescriptionService] = useState(ser_descripcion);
   const [state, setState] = useState(true);
 
   const [modalDescription, setModalDescription] = useState(ser_descripcion);
-
-  const handleDelete = () => {
-    setState(false);
-  };
 
   const handleEdit = (e) => {
     setModalDescription(e.target.value);
@@ -106,14 +99,11 @@ const InfoService = ({ cat_nombre, ser_descripcion }) => {
               modalDescription={modalDescription}
               setDescriptionService={setDescriptionService}
             />
-            <Button
-              variant="contained"
-              endIcon={<DeleteIcon />}
-              className={classes.button}
-              onClick={handleDelete}
-            >
-              Eliminar
-            </Button>
+            <DialogDelete
+              cat_id={cat_id}
+              cat_nombre={cat_nombre}
+              setState={setState}
+            />
           </StyledContainerButtons>
         </Container>
       ) : null}

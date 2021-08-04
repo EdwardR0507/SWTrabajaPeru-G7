@@ -69,7 +69,6 @@ const ManageServices = () => {
         }
       )
       .then((res) => {
-        console.log(res.data);
         setData(res.data);
       })
       .catch((err) => {
@@ -87,7 +86,7 @@ const ManageServices = () => {
       </StyledContainer>
       {data.length !== 0 &&
         data.map((el) => {
-          return <InfoService key={el.cat_id} {...el} />;
+          return <InfoService key={`${el.cat_id}-${el.cat_nombre}`} {...el} />;
         })}
     </>
   );
