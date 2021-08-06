@@ -191,18 +191,16 @@ const ServiceModal = ({
         }
       )
       .then((res) => {
-        const cat = res.data.filter((el) =>
-          el.cat_nombre === cat_nombre ? el.cat_id : ""
-        );
+        const cat = res.data.filter((el) => el.cat_nombre === cat_nombre);
         setCatSelect(cat);
       })
       .catch((err) => {
         console.log(err);
       });
   };
-
   // Función para cerrar el modal
   const handleClose = () => {
+    reset();
     setOpen(false);
   };
 
@@ -242,10 +240,11 @@ const ServiceModal = ({
 
     handleClose();
     setDescription("");
+    const id = list.filter((el) => el.cat_nombre === name)[0].cat_id;
     setData([
       ...data,
       {
-        cat_id: data.cat_id,
+        cat_id: id,
         cat_nombre: name,
         ser_descripcion: description,
       },
