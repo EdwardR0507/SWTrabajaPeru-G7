@@ -16,6 +16,6 @@ describe("<ProfileCard></ProfileCard>", () => {
         us_celular: "987654321",
       }
       render(<ProfileCard user={user}/>);
-      expect(expect(screen.getByText(/Test Name/i)).toBeInTheDocument())
+      expect(screen.getByText(/Test Name/i)).toBeInTheDocument()
     })
 });
