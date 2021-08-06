@@ -25,7 +25,7 @@ const ServiceDetails = () => {
   const location = useLocation();
   const [user, setUser] = useState();
   const state = location.state;
-  const [data, setData] = useState();
+  const [service, setService] = useState();
   /*Declaramos lo que nos va a retornar la funcion*/
 
   useEffect(() => {
@@ -46,6 +46,11 @@ const ServiceDetails = () => {
         setUser(res.data);
       });
   }, []);
+
+  useEffect(() => {
+    axios
+      .post(`${GlobalEnv.host}/`)
+  })
 
   return user ? (
     <>

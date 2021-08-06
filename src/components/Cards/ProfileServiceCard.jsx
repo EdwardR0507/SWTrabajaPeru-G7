@@ -60,10 +60,7 @@ export default function ProfileServiceCard(props) {
             title="Contemplative Reptile"
           />
           <Grid container item xs={12} spacing={1}>
-            <Grid item xs={6} spacing={1}>
-              <Typography className={classes.title} variant="h6" component="p">
-                S/100.00
-              </Typography>
+            <Box item xs={6} spacing={1} my={3} mx={2}>
               {service.ser_calificacion ?
                 (<Rating
                   name="read-only"
@@ -74,8 +71,7 @@ export default function ProfileServiceCard(props) {
                   Sin Calificación
                 </Typography>)
               }
-
-            </Grid>
+            </Box>
           </Grid>
         </CardContent>
       </Card>
