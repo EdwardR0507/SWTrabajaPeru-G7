@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { Link as RouterLink, useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useInput } from "../../hooks/useInput";
-import axios from "axios";
-import GlobalEnv from "../../GlobalEnv";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import {
   Link,
@@ -26,7 +24,7 @@ import FormError from "../../components/Errors/FormError";
 import NavBar from "../../layouts/NavBar";
 import useLocations from "../../hooks/useLocations";
 import useFilterSelect from "../../hooks/useFilterSelect";
-
+import { fetchUserData } from "../../services/services";
 /*Declaramos el estilo de la letra*/
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -93,27 +91,21 @@ const SignUp = () => {
     if (reason === "clickaway") {
       return;
     }
-
     setOpen(false);
   };
 
   const onSubmit = async (user, evt) => {
     evt.preventDefault();
-    await axios
-      .post(`${GlobalEnv.host}/user`, {
-        command: "REGISTER_USER",
-        transaction: user,
-      })
-      .then((res) => {
-        console.log(res);
-        setOpen(true);
-        setTimeout(() => {
-          setOpen(false);
-          history.push({
-            pathname: "/signin",
-          });
-        }, 3000);
-      });
+    fetchUserData("POST", "user", "REGISTER_USER", user).then((res) => {
+      console.log(res);
+      setOpen(true);
+      setTimeout(() => {
+        setOpen(false);
+        history.push({
+          pathname: "/signin",
+        });
+      }, 3000);
+    });
   };
 
   return (

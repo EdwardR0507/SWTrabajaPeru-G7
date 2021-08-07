@@ -1,5 +1,6 @@
 import { React, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useLocation } from "react-router";
 import {
   makeStyles,
   Container,
@@ -22,9 +23,7 @@ import PrimaryButton from "../Buttons/PrimaryButton";
 import SecondaryButton from "../Buttons/SecondaryButton";
 import FormError from "../../components/Errors/FormError";
 import theme from "../../themes/themes";
-import axios from "axios";
-import GlobalEnv from "../../GlobalEnv";
-
+import { fetchData } from "../../services/services";
 const useStyles = makeStyles(() => ({
   //Estilos para la customización del modal
   modal: {
@@ -129,6 +128,8 @@ const ServiceModal = ({
     reset,
     formState: { errors },
   } = useForm();
+  const location = useLocation();
+  const state = location.state;
 
   // Variable para customizar los componentes
   const classes = useStyles();
@@ -150,24 +151,11 @@ const ServiceModal = ({
     },
   ]);
 
-  const token = JSON.parse(localStorage.getItem("User_session")).token;
-
   // Función para abrir el modal
   const handleOpen = () => {
-    axios
-      .post(
-        `${GlobalEnv.host}/service-auth`,
-        {
-          command: "GET_CATEGORIES",
-        },
-        {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        }
-      )
+    fetchData(state?.token, "GET", "service-auth", "GET_CATEGORIES")
       .then((res) => {
-        setList(res.data);
+        setList(res);
       })
       .catch((err) => {
         console.log(err);
@@ -178,20 +166,9 @@ const ServiceModal = ({
 
   const handleOpenEdit = () => {
     setOpen(true);
-    axios
-      .post(
-        `${GlobalEnv.host}/service-auth`,
-        {
-          command: "GET_MY_SERVICES",
-        },
-        {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        }
-      )
+    fetchData(state?.token, "GET", "service-auth", "GET_MY_SERVICES")
       .then((res) => {
-        const cat = res.data.filter((el) => el.cat_nombre === cat_nombre);
+        const cat = res.filter((el) => el.cat_nombre === cat_nombre);
         setCatSelect(cat);
       })
       .catch((err) => {
@@ -221,22 +198,15 @@ const ServiceModal = ({
   const onSubmit = async (datos, e) => {
     console.log(datos);
     e.preventDefault();
-    await axios
-      .post(
-        `${GlobalEnv.host}/service-auth`,
-        {
-          command: "CREATE_SERVICE",
-          transaction: datos,
-        },
-        {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        }
-      )
-      .then((res) => {
-        console.log(res);
-      });
+    fetchData(
+      state?.token,
+      "POST",
+      "service-auth",
+      "CREATE_SERVICE",
+      datos
+    ).then((res) => {
+      console.log(res);
+    });
 
     handleClose();
     setDescription("");
@@ -263,22 +233,15 @@ const ServiceModal = ({
     if (datos.ser_descripcion === undefined) {
       newData.ser_descripcion = serviceDescription;
     }
-    await axios
-      .post(
-        `${GlobalEnv.host}/service-auth`,
-        {
-          command: "EDIT_SERVICE",
-          transaction: newData,
-        },
-        {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        }
-      )
-      .then((res) => {
-        console.log(res);
-      });
+    fetchData(
+      state?.token,
+      "POST",
+      "service-auth",
+      "EDIT_SERVICE",
+      newData
+    ).then((res) => {
+      console.log(res);
+    });
     handleClose();
     reset();
   };

@@ -1,12 +1,11 @@
 /*Importamos las librerias principales*/
 import { React, useState, useEffect } from "react";
-import axios from "axios";
-import GlobalEnv from "../../GlobalEnv";
 import { useLocation } from "react-router";
 import NavBar from "../../layouts/NavBar";
 import { Container, withStyles, Grid } from "@material-ui/core/";
 import ServiceDetailsCard from "../../components/Cards/ServiceDetailsCard";
 import WorkerCard from "../../components/Cards/WorkerCard";
+import { fetchData } from "../../services/services";
 /*Declaramos los estilos que se van a usar por cada componente*/
 
 /*Declaramos el estilo del container*/
@@ -25,27 +24,14 @@ const ServiceDetails = () => {
   const location = useLocation();
   const [user, setUser] = useState();
   const state = location.state;
-  const [data, setData] = useState();
+
   /*Declaramos lo que nos va a retornar la funcion*/
 
   useEffect(() => {
-    console.log(location);
-    axios
-      .post(
-        `${GlobalEnv.host}/user-auth`,
-        {
-          command: "GET_MY_USER",
-        },
-        {
-          headers: {
-            authorization: `Bearer ${state?.token}`,
-          },
-        }
-      )
-      .then((res) => {
-        setUser(res.data);
-      });
-  }, []);
+    fetchData(state?.token, "GET", "user-auth", "GET_MY_USER").then((res) => {
+      setUser(res);
+    });
+  }, [state?.token]);
 
   return user ? (
     <>
@@ -53,11 +39,12 @@ const ServiceDetails = () => {
       <NavBar user={user} />
       <StyledContainer>
         {/*Usamos grid para dividir las los dos cards*/}
+        {console.log(user)}
         <Grid container xs={12} sm={8} spacing={12}>
           <ServiceDetailsCard />
         </Grid>
         <Grid container xs={12} sm={4} spacing={12}>
-          <WorkerCard />
+          <WorkerCard user={user} />
         </Grid>
       </StyledContainer>
     </>

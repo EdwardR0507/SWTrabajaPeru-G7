@@ -1,7 +1,5 @@
 /*Importamos las librerias principales*/
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import GlobalEnv from "../../GlobalEnv";
 import { useLocation } from "react-router";
 import { useForm } from "react-hook-form";
 import NavBar from "../../layouts/NavBar";
@@ -25,6 +23,8 @@ import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import FormError from "../../components/Errors/FormError";
 import SecondaryButton from "../../components/Buttons/SecondaryButton";
 import useFilterSelect from "../../hooks/useFilterSelect";
+import { fetchData } from "../../services/services";
+
 /*Declaramos los estilos que se van a usar por cada componente*/
 /*Declaramos el estilo de la letra*/
 const StyledTypography = withStyles({
@@ -98,50 +98,28 @@ export default function EditProfile() {
   useEffect(() => {
     console.log(state);
     //Cambiar post por get cuando se arregle
-    axios
-      .post(
-        `${GlobalEnv.host}/user-auth`,
-        {
-          command: "GET_MY_USER",
-        },
-        {
-          headers: {
-            authorization: `Bearer ${state?.token}`,
-          },
-        }
-      )
+    fetchData(state?.token, "GET", "user-auth", "GET_MY_USER")
       .then((res) => {
         reset({
-          us_nombres: res.data.us_nombres,
-          us_celular: res.data.us_celular,
+          us_nombres: res.us_nombres,
+          us_celular: res.us_celular,
         });
-        setUser(res.data);
+        setUser(res);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [reset]);
+  }, [reset, state]);
 
   const onSubmit = async (userEdited, event) => {
     event.preventDefault();
     console.log(userEdited);
-    await axios
-      .post(
-        `${GlobalEnv.host}/user-auth`,
-        {
-          command: "EDIT_USER",
-          transaction: userEdited,
-        },
-        {
-          headers: {
-            authorization: `Bearer ${state?.token}`,
-          },
-        }
-      )
-      .then((res) => {
+    fetchData(state?.token, "POST", "user-auth", "EDIT_USER", userEdited).then(
+      (res) => {
         setOpen(true);
         console.log(res);
-      });
+      }
+    );
   };
 
   /*const handleSubmit = async (evt) => {

@@ -1,11 +1,11 @@
-import { BrowserRouter, Switch, Route, Router } from "react-router-dom";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { MuiThemeProvider, withStyles } from "@material-ui/core/styles";
 import theme from "./themes/themes";
 import Home from "./pages/Home";
 import SignIn from "./pages/login";
 import SignUp from "./pages/register";
 import EditProfile from "./pages/editProfile";
-import ManageServices from "./pages/services";
+import ManageServices from "./pages/ManageServices";
 import SocialProfile from "./pages/socialProfile";
 import ServiceDetails from "./pages/serviceDetails";
 

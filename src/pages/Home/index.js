@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router";
-import axios from "axios";
-import GlobalEnv from "../../GlobalEnv";
 import { withStyles } from "@material-ui/styles";
 import { Container, Link, Typography, IconButton } from "@material-ui/core/";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
@@ -10,7 +8,7 @@ import NavBar from "../../layouts/NavBar";
 import ServiceCard from "../../components/Cards/ServiceCard";
 import WorkerCard from "../../components/Cards/WorkerCard";
 import theme from "../../themes/themes";
-
+import { fetchData, fetchUserData } from "../../services/services";
 const StyledContentContainer = withStyles({
   root: {
     marginTop: "40px",
@@ -61,47 +59,25 @@ export default function Home() {
   const state = location.state;
 
   useEffect(() => {
-    //Cambiar post por get cuando se arregle
-    axios
-      .post(`${GlobalEnv.host}/service`, {
-        command: "GET_HOME_SERVICES",
-      })
-      .then((res) => {
-        console.log(res.data);
-        setServices(res.data);
-      });
+    fetchUserData("GET", "service", "GET_HOME_SERVICES").then((res) => {
+      console.log(res);
+      setServices(res);
+    });
   }, []);
 
   useEffect(() => {
-    //Cambiar post por get cuando se arregle
-    axios
-      .post(`${GlobalEnv.host}/user`, {
-        command: "GET_HOME_USERS",
-      })
-      .then((res) => {
-        console.log(res.data);
-        setWorkers(res.data);
-      });
+    fetchUserData("GET", "user", "GET_HOME_USERS").then((res) => {
+      console.log(res);
+      setWorkers(res);
+    });
   }, []);
 
   useEffect(() => {
     if (state?.token) {
-      //Cambiar post por get cuando se arregle
-      axios
-        .post(
-          `${GlobalEnv.host}/user-auth`,
-          {
-            command: "GET_MY_USER",
-          },
-          {
-            headers: {
-              authorization: `Bearer ${state?.token}`,
-            },
-          }
-        )
+      fetchData(state?.token, "GET", "user-auth", "GET_MY_USER")
         .then((res) => {
           console.log(res);
-          setUser(res.data);
+          setUser(res);
         })
         .catch((err) => {
           console.log(err);
@@ -109,7 +85,7 @@ export default function Home() {
     } else {
       return;
     }
-  }, []);
+  }, [state?.token]);
 
   return workers && services ? (
     <>

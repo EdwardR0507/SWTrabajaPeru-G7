@@ -1,12 +1,12 @@
 import { React, useState, useEffect } from "react";
-import axios from "axios";
-import GlobalEnv from "../../GlobalEnv";
 import { useLocation } from "react-router";
 import NavBar from "../../layouts/NavBar";
 import HeadingBar from "../../layouts/HeadingBar/HeadingBar";
 import { Container, Typography, withStyles } from "@material-ui/core/";
 import InfoService from "../../components/Info/InfoService.jsx";
 import ServiceModal from "../../components/Modals/ServiceModal";
+import { fetchData } from "../../services/services";
+
 const StyledTypography = withStyles({
   root: {
     fontSize: "2.25rem",
@@ -33,43 +33,19 @@ const ManageServices = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    //Cambiar post por get cuando se arregle
-    axios
-      .post(
-        `${GlobalEnv.host}/user-auth`,
-        {
-          command: "GET_MY_USER",
-        },
-        {
-          headers: {
-            authorization: `Bearer ${state?.token}`,
-          },
-        }
-      )
+    fetchData(state?.token, "GET", "user-auth", "GET_MY_USER")
       .then((res) => {
-        setUser(res.data);
+        setUser(res);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [state?.token]);
 
   useEffect(() => {
-    //Cambiar post por get cuando se arregle
-    axios
-      .post(
-        `${GlobalEnv.host}/service-auth`,
-        {
-          command: "GET_MY_SERVICES",
-        },
-        {
-          headers: {
-            authorization: `Bearer ${state?.token}`,
-          },
-        }
-      )
+    fetchData(state?.token, "GET", "service-auth", "GET_MY_SERVICES")
       .then((res) => {
-        setData(res.data);
+        setData(res);
       })
       .catch((err) => {
         console.log(err);

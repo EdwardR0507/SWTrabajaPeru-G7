@@ -18,42 +18,40 @@ const StyledCardMedia = withStyles({
   root: {
     height: "0",
     paddingTop: "41%",
-    marginBottom: "10%"
+    marginBottom: "10%",
   },
 })(CardMedia);
 
-const WorkerCard = (props) => {
+const WorkerCard = ({ user }) => {
   const [worker, setWorker] = useState();
 
-  useEffect(()=>{
-    setWorker(props.worker);
-  }, [])
+  useEffect(() => {
+    setWorker(user);
+  }, [user]);
 
   return worker ? (
     <StyledCard>
       <StyledCardMedia image="src/assets/CardTest.jpeg" />
       <CardContent>
-        <Typography variant="h6">
-          {worker.us_nombres}
-        </Typography>
+        <Typography variant="h6">{worker.us_nombres}</Typography>
         <Typography variant="body2">
           {worker.us_distrito}/{worker.us_provincia}/{worker.us_departamento}
         </Typography>
       </CardContent>
       <CardActions>
         {worker.calificacion ? (
-          <Rating
-          name="read-only"
-          value={worker.calificacion}
-          readOnly
-        />):(
-          <Typography variant="body2">
-            Sin Calificación
-          </Typography>
+          <Rating name="read-only" value={worker.calificacion} readOnly />
+        ) : (
+          <Typography variant="body2">Sin Calificación</Typography>
         )}
       </CardActions>
     </StyledCard>
-  ): (<div>Cargando... </div>)
+  ) : (
+    <>
+      {console.log(worker)}
+      <div>Cargando... </div>
+    </>
+  );
 };
 
 export default WorkerCard;

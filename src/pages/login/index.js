@@ -2,7 +2,6 @@
 import React from "react";
 import { Link as RouterLink, useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import {
   CssBaseline,
   Link,
@@ -13,9 +12,9 @@ import {
   makeStyles,
   withStyles,
 } from "@material-ui/core/";
-import GlobalEnv from "../../GlobalEnv";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import NavBar from "../../layouts/NavBar";
+import { fetchUserData } from "../../services/services";
 /*Declaramos los estilos que se van a usar por cada componente*/
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -61,18 +60,13 @@ export default function SignIn() {
 
   const onSubmit = async (getUser, evt) => {
     evt.preventDefault();
-    await axios
-      .post(`${GlobalEnv.host}/user`, {
-        command: "LOGIN_USER",
-        transaction: getUser,
-      })
-      .then((res) => {
-        localStorage.setItem("User_session", JSON.stringify(res.data));
-        history.push({
-          pathname: "/",
-          state: { token: res.data.token },
-        });
+    fetchUserData("POST", "user", "LOGIN_USER", getUser).then((res) => {
+      localStorage.setItem("User_session", JSON.stringify(res));
+      history.push({
+        pathname: "/",
+        state: { token: res.token },
       });
+    });
   };
   /* Renderizado de la vista de Inicio de Sesión */
   return (

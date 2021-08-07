@@ -1,11 +1,11 @@
 /*Importamos las librerias principales*/
 import React, { useState, useEffect } from "react";
-import { Box, Typography, Card, CardHeader, Avatar, Divider, Grid } from "@material-ui/core";
+import { Box, Typography, Card, Divider, Grid } from "@material-ui/core/";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import { makeStyles } from "@material-ui/core/styles";
-import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import Rating from "@material-ui/lab/Rating";
+
 /*Declaramos los estilos que se van a usar por cada componente*/
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,8 +33,8 @@ export default function ProfileServiceCard(props) {
   const [service, setService] = useState();
 
   useEffect(() => {
-    setService(props.service)
-  }, [])
+    setService(props.service);
+  }, []);
 
   /*Declaramos lo que nos va a retornar la funcion*/
   return service ? (
@@ -64,17 +64,17 @@ export default function ProfileServiceCard(props) {
               <Typography className={classes.title} variant="h6" component="p">
                 S/100.00
               </Typography>
-              {service.ser_calificacion ?
-                (<Rating
+              {service.ser_calificacion ? (
+                <Rating
                   name="read-only"
                   value={service.ser_calificacion}
                   readOnly
-                />) :
-                (<Typography className={classes.title} variant="body1">
+                />
+              ) : (
+                <Typography className={classes.title} variant="body1">
                   Sin Calificación
-                </Typography>)
-              }
-
+                </Typography>
+              )}
             </Grid>
           </Grid>
         </CardContent>
