@@ -109,7 +109,7 @@ export default function Home() {
               <ServiceCard
                 key={`${service.us_id}-${service.cat_id}`}
                 service={service}
-                token={state.token}
+                token={state?.token}
               />
             ) : (
               <ServiceCard

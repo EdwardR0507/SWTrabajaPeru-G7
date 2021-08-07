@@ -6,6 +6,8 @@ import { Container, withStyles, Grid } from "@material-ui/core/";
 import ServiceDetailsCard from "../../components/Cards/ServiceDetailsCard";
 import WorkerCard from "../../components/Cards/WorkerCard";
 import { fetchData } from "../../services/services";
+import axios from "axios";
+import GlobalEnv from "../../GlobalEnv";
 /*Declaramos los estilos que se van a usar por cada componente*/
 
 /*Declaramos el estilo del container*/
@@ -24,7 +26,7 @@ const ServiceDetails = () => {
   const location = useLocation();
   const [user, setUser] = useState();
   const state = location.state;
-
+  const [service, setService] = useState();
   /*Declaramos lo que nos va a retornar la funcion*/
 
   useEffect(() => {
@@ -32,6 +34,10 @@ const ServiceDetails = () => {
       setUser(res);
     });
   }, [state?.token]);
+
+  useEffect(() => {
+    axios.post(`${GlobalEnv.host}/`);
+  });
 
   return user ? (
     <>

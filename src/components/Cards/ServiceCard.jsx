@@ -85,7 +85,9 @@ const ServiceCard = (props) => {
           history.push({
             pathname: "/serviceDetails",
             search: `user=${service.us_correo.split('@')}&?service=${service.cat_id}`,
-            state: {token: props.token} 
+            state: {token: props.token,
+                    us_id: service.us_id,
+                    cat_id: service} 
           })
         }}>Ver Más</StyledButton>
       </StyledCardActions>
