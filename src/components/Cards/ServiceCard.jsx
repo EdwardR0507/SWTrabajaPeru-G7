@@ -11,6 +11,7 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import ShareIcon from "@material-ui/icons/Share";
 import Avatar from "@material-ui/core/Avatar";
+import DialogLogin from "../Dialog/DialogLogin";
 import theme from "../../themes/themes";
 
 const StyledCard = withStyles({
@@ -57,7 +58,7 @@ const ServiceCard = (props) => {
   const [service, setService] = useState();
   const history = useHistory();
 
-  useEffect(()=>{
+  useEffect(() => {
     setService(props.service);
   }, [])
 
@@ -81,18 +82,22 @@ const ServiceCard = (props) => {
         </StyledBody2>
       </CardContent>
       <StyledCardActions>
-        <StyledButton onClick={()=>{
-          history.push({
-            pathname: "/serviceDetails",
-            search: `user=${service.us_correo.split('@')}&?service=${service.cat_id}`,
-            state: {token: props.token,
-                    us_id: service.us_id,
-                    cat_id: service} 
-          })
-        }}>Ver Más</StyledButton>
+        {props.token ? (
+          <StyledButton onClick={() => {
+            history.push({
+              pathname: "/serviceDetails",
+              search: `user=${service.us_correo.split('@')}&?service=${service.cat_id}`,
+              state: {
+                token: props.token,
+                us_id: service.us_id,
+                cat_id: service
+              }
+            })
+          }}>Ver Más</StyledButton>
+        ) : (<DialogLogin />)}
       </StyledCardActions>
     </StyledCard>
-  ):(
+  ) : (
     <div>Cargando...</div>
   );
 };
