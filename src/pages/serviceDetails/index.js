@@ -28,18 +28,65 @@ const ServiceDetails = () => {
   const state = location.state;
   const [service, setService] = useState();
   /*Declaramos lo que nos va a retornar la funcion*/
-
+  //Información del usuario
   useEffect(() => {
     fetchData(state?.token, "GET", "user-auth", "GET_MY_USER").then((res) => {
       setUser(res);
     });
   }, [state?.token]);
 
+  //Cambiar por las funciones de service.js
+    console.log(state);
+    //Cambiar post por get cuando se arregle
+   
   useEffect(() => {
-    axios.post(`${GlobalEnv.host}/`);
-  });
+    console.log(location);
+    axios
+      .post(
+        `${GlobalEnv.host}/service-auth`,
+        {
+          command: "OBTAIN_SERVICE",
+          transaction: {
+            us_id: state?.us_id,
+            cat_id: state?.cat_id
+          }
+        },
+        {
+          headers: {
+            authorization: `Bearer ${state?.token}`,
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res.data[0]);
+        setService(res.data[0])
+      });
+  }, []);
 
-  return user ? (
+  useEffect(() => {
+    console.log(location);
+    axios
+      .post(
+        `${GlobalEnv.host}/user-auth`,
+        {
+          command: "OBTAIN_USER",
+          transaction: {
+            us_id: state?.us_id,
+          }
+        },
+        {
+          headers: {
+            authorization: `Bearer ${state?.token}`,
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+        //setService(res.data[0])
+      });
+  }, []);
+
+  return service ? (
     <>
       {/*Declaramos el navbar que es el encabezado de la page*/}
       <NavBar user={user} />
@@ -47,7 +94,7 @@ const ServiceDetails = () => {
         {/*Usamos grid para dividir las los dos cards*/}
         {console.log(user)}
         <Grid container xs={12} sm={8} spacing={12}>
-          <ServiceDetailsCard />
+          <ServiceDetailsCard service={service} />
         </Grid>
         <Grid container xs={12} sm={4} spacing={12}>
           <WorkerCard user={user} />
