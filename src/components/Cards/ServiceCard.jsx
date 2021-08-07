@@ -90,7 +90,7 @@ const ServiceCard = (props) => {
               state: {
                 token: props.token,
                 us_id: service.us_id,
-                cat_id: service
+                cat_id: service.cat_id
               }
             })
           }}>Ver Más</StyledButton>

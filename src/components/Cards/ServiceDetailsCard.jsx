@@ -50,10 +50,14 @@ const Boxes = withStyles({
   },
 })(Box);
 /*Declaramos la función principal*/ 
-const ServiceDetailsCard = () => {
-  const [valuestar] = React.useState(2);
+const ServiceDetailsCard = (props) => {
+  const [service, setService] = React.useState();
+
+  React.useEffect(() => {
+    setService(props.service)
+  }, [])
 /*Declaramos lo que nos va a retornar la funcion*/ 
-  return (
+  return service ?(
     <StyledCard>
       {/*Cambiar los datos por informaciónde la bd*/}
       <Grid
@@ -62,7 +66,7 @@ const ServiceDetailsCard = () => {
         alignItems="flex-end"
         justifyContent="center"
       >
-          <CardHeader title="TÍTULO DEL SERVICIO" />
+          <CardHeader title={service.cat_nombre} />
       </Grid>
       {/*declaramos sivider para dal estilo al borde*/}
       <Divider />
@@ -75,7 +79,16 @@ const ServiceDetailsCard = () => {
       >
         <Grid item xs={12} sm={8} >
           <Box ml={2}>
-            <Rating name="read-only" value={valuestar} readOnly />
+          {service.ser_calificacion ? (
+          <Rating
+          name="read-only"
+          value={service.ser_calificacion}
+          readOnly
+        />):(
+          <Typography variant="body2">
+            Sin Calificación
+          </Typography>
+        )}
           </Box>
         </Grid>
         <Grid item xs={12} sm={4}>
@@ -95,9 +108,11 @@ const ServiceDetailsCard = () => {
         </Boxes>
       </Grid>
       <Grid container spacing={12} justifyContent="center">
-          <StyledBody2>Esta es la descripcion del servicio</StyledBody2>
+          <StyledBody2>{service.ser_descripcion}</StyledBody2>
       </Grid>
     </StyledCard>
+  ):(
+    <div>Cargando..</div>
   );
 };
 
