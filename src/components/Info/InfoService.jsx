@@ -7,6 +7,8 @@ import {
 } from "@material-ui/core/";
 import ServiceModal from "../Modals/ServiceModal";
 import DialogDelete from "../Dialog/DialogDelete";
+import { useLocation } from "react-router";
+import { fetchData } from "../../services/services";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -64,17 +66,27 @@ const InfoService = ({ cat_id, cat_nombre, ser_descripcion }) => {
   const classes = useStyles();
 
   const [descriptionService, setDescriptionService] = useState(ser_descripcion);
-  const [state, setState] = useState(true);
+  //Controlar el renderizado condicional, al ser false no se renderizará el componente InfoService
+  const [stateRender, setStateRender] = useState(true);
 
   const [modalDescription, setModalDescription] = useState(ser_descripcion);
+
+  const location = useLocation();
+  const state = location.state;
 
   const handleEdit = (e) => {
     setModalDescription(e.target.value);
   };
 
+  const handleDelete = () => {
+    const newData = { cat_id: cat_id };
+    fetchData(state?.token, "POST", "service-auth", "DELETE_SERVICE", newData);
+    setStateRender(false);
+  };
+
   return (
     <>
-      {state ? (
+      {stateRender ? (
         <Container className={classes.root}>
           <StyledContainerData>
             {/*Aquí irá la imagen del servicio, primero importamos la imagen y luego la colocamos dentro del src, no olvidar poner el alt */}
@@ -99,11 +111,7 @@ const InfoService = ({ cat_id, cat_nombre, ser_descripcion }) => {
               modalDescription={modalDescription}
               setDescriptionService={setDescriptionService}
             />
-            <DialogDelete
-              cat_id={cat_id}
-              cat_nombre={cat_nombre}
-              setState={setState}
-            />
+            <DialogDelete cat_nombre={cat_nombre} handleDelete={handleDelete} />
           </StyledContainerButtons>
         </Container>
       ) : null}

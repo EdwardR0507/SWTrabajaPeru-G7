@@ -3,13 +3,13 @@ import {
   makeStyles,
   Container,
   Typography,
-  Button,
   Modal,
   Backdrop,
   Fade,
 } from "@material-ui/core/";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import theme from "../../themes/themes";
+import PrimaryButton from "../Buttons/PrimaryButton";
 
 const useStyles = makeStyles(() => ({
   //Estilos para la customización del modal
@@ -52,18 +52,6 @@ const useStyles = makeStyles(() => ({
     fontStyle: "normal",
     fontWeigth: "400",
   },
-  containerButton: {
-    display: "flex",
-    width: "100%",
-    justifyContent: "space-between",
-  },
-  button: {
-    background: theme.palette.secondary.main,
-    color: theme.colorLetter.primary.main,
-    "&:hover": {
-      background: theme.palette.secondary.main,
-    },
-  },
 }));
 
 const ContactModal = ({ name }) => {
@@ -72,14 +60,6 @@ const ContactModal = ({ name }) => {
 
   const handleOpen = () => {
     setOpen(true);
-  };
-
-  const handleAcept = () => {
-    setOpen(false);
-  };
-
-  const handleReject = () => {
-    setOpen(false);
   };
 
   const handleClose = () => {
@@ -116,24 +96,7 @@ const ContactModal = ({ name }) => {
               <Typography className={classes.title}>
                 {name} quiere contratar tus servicios
               </Typography>
-              <div className={classes.containerButton}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  size="small"
-                  onClick={handleAcept}
-                >
-                  Aceptar
-                </Button>
-                <Button
-                  variant="contained"
-                  size="small"
-                  className={classes.button}
-                  onClick={handleReject}
-                >
-                  Rechazar
-                </Button>
-              </div>
+              <PrimaryButton onClick={handleClose} name="Ver Más" />
             </Container>
           </Container>
         </Fade>

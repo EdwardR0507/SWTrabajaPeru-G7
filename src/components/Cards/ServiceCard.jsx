@@ -83,7 +83,7 @@ const ServiceCard = (props) => {
       </CardContent>
       <StyledCardActions>
         {props.token ? (
-          <StyledButton onClick={() => {
+          <StyledButton role="redirect" onClick={() => {
             history.push({
               pathname: "/serviceDetails",
               search: `user=${service.us_correo.split('@')}&?service=${service.cat_id}`,
