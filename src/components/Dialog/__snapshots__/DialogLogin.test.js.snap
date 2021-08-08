@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DialogLogin /> render DialogLogin 1`] = `ShallowWrapper {}`;
