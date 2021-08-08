@@ -7,6 +7,7 @@ import CardMedia from "@material-ui/core/CardMedia";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import Rating from "@material-ui/lab/Rating";
 import theme from "../../themes/themes";
+import ContactEmployeeModal from "../Modals/ContactEmployeeModal";
 import { Divider, Grid, Box, Typography } from "@material-ui/core";
 /*Declaramos los estilos que se van a usar por cada componente*/
 /*Declaramos el estilo del card*/
@@ -93,11 +94,12 @@ const ServiceDetailsCard = (props) => {
         </Grid>
         <Grid item xs={12} sm={4}>
           <Box mt={1} mr={2}>
-            <PrimaryButton
+            <ContactEmployeeModal></ContactEmployeeModal>
+            {/* <PrimaryButton
               variant="contained"
               color="primary"
               name="+SOLICITAR"
-            ></PrimaryButton>
+            ></PrimaryButton> */}
           </Box>
         </Grid>
       </Grid>
