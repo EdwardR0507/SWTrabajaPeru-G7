@@ -10,8 +10,6 @@ import {
 } from "@material-ui/core/";
 import DeleteIcon from "@material-ui/icons/Delete";
 import theme from "../../themes/themes";
-import { useLocation } from "react-router";
-import { fetchData } from "../../services/services";
 
 const useStyles = makeStyles(() => ({
   button: {
@@ -30,29 +28,12 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const DialogDelete = ({ setState, cat_id, cat_nombre }) => {
-  const location = useLocation();
-  const state = location.state;
+const DialogDelete = ({ handleDelete, cat_nombre }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
-  };
-
-  const handleDelete = () => {
-    console.log("Cat_id:");
-    console.log(cat_id);
-    const newData = { cat_id: cat_id };
-    fetchData(state?.token, "POST", "service-auth", "DELETE_SERVICE", newData)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    setState(false);
-    setOpen(false);
   };
 
   const handleClose = () => {
