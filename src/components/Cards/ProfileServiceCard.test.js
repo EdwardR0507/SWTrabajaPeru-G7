@@ -11,9 +11,16 @@ describe("<ProfileServiceCard></ProfileServiceCard>", () => {
       });
     it("render Service", () => {
       const service = {
-        cat_name: "Test Cat"
+        cat_nombre: "Test Cat"
       }
       render(<ProfileServiceCard service={service} />)
       expect(screen.getByText(/Test Cat/i)).toBeInTheDocument()
+    })
+    it("should Sin Calificación", () => {
+      const service = {
+        ser_calificacion: 0.000
+      }
+      render(<ProfileServiceCard service={service} />)
+      expect(screen.getByText(/Sin Calificación/i)).toBeInTheDocument()
     })
 });

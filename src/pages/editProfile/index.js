@@ -153,7 +153,7 @@ export default function EditProfile() {
   return user ? (
     <>
       <NavBar user={user} token={state?.token} />
-      <StyledContainer>
+      <StyledContainer role="edit-profile">
         <form className={classes.form} noValidate>
           <Grid container spacing={6}>
             <Grid container item xs={12} spacing={1}></Grid>

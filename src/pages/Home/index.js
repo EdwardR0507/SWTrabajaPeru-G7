@@ -90,7 +90,7 @@ export default function Home() {
   return workers && services ? (
     <>
       {user ? <NavBar user={user} token={state?.token} /> : <NavBar />}
-      <Container>
+      <Container role="home">
         <StyledContentContainer>
           <StyledH2 variant="h2">Servicios</StyledH2>
           <StyledLink href="#">

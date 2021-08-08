@@ -23,20 +23,6 @@ const styles = (theme) => ({
     },
 });
 
-const DialogTitle = withStyles(styles)((props) => {
-    const { children, classes, onClose, ...other } = props;
-    return (
-        <MuiDialogTitle disableTypography className={classes.root} {...other}>
-            <Typography variant="h6">{children}</Typography>
-            {onClose ? (
-                <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
-                    <CloseIcon />
-                </IconButton>
-            ) : null}
-        </MuiDialogTitle>
-    );
-});
-
 const DialogContent = withStyles((theme) => ({
     root: {
         padding: theme.spacing(2),
@@ -63,7 +49,7 @@ export default function DialogLogin() {
 
     return (
         <div>
-            <Button color="primary" onClick={handleClickOpen}>
+            <Button color="primary" role="open" onClick={handleClickOpen}>
                 Ver Más
             </Button>
             <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
@@ -73,12 +59,12 @@ export default function DialogLogin() {
                     </Typography>
                 </DialogContent>
                 <DialogActions>
-                    <Button autoFocus onClick={()=>{
+                    <Button autoFocus role="redirect" onClick={()=>{
                         history.push({
                             pathname: "/signin"
                         })
                     }} color="primary" variant="contained">Iniciar Sesión</Button>
-                    <Button autoFocus onClick={handleClose} color="secondary" variant="contained" >
+                    <Button autoFocus role="close" onClick={handleClose} color="secondary" variant="contained" >
                         Cancelar
                     </Button>
                 </DialogActions>
