@@ -10,18 +10,18 @@ describe("<WorkerCard></WorkerCard>", () => {
     expect(wrapper).toMatchSnapshot()
   });
   it('render WorkerCard with user', () => {
-    const worker = {
+    const user = {
       us_nombres: "Test Name",
       us_celular: "987654321",
     }
-    render(<WorkerCard worker={worker} />);
+    render(<WorkerCard user={user} />);
     expect(screen.getByText(/Test Name/i)).toBeInTheDocument()
   })
   it('render Calification 0', () => {
-    const worker = {
+    const user = {
       us_calificacion: 0.000
     }
-    render(<WorkerCard worker={worker} />);
+    render(<WorkerCard user={user} />);
     expect(screen.getByText(/Sin Calificación/i)).toBeInTheDocument()
   })
-});
+}); 
