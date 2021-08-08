@@ -9,7 +9,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import SecondaryButton from "../../components/Buttons/SecondaryButton";
 import Rating from "@material-ui/lab/Rating";
-/Declarando los estilos de la tabla/
+/*Declarando los estilos de la tabla*/
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -29,11 +29,11 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-/Función para crear la data de la tabla/
+/*Función para crear la data de la tabla*/
 function createData(item, image, service, description, client, calification, gestion) {
   return { item, image, service, description, client, calification, gestion };
 }
-/Columnas de la tabla/
+/*Columnas de la tabla*/
 const rows = [
   createData("1", "https://www.azulweb.net/wp-content/uploads/2020/07/El-camino-para-ser-un-desarrollador-web-profesional.jpg", "Pintura", "Servicio de Pintura","Kori Antunez", 4.0, "Solicitar"),
   createData("1", "https://www.azulweb.net/wp-content/uploads/2020/07/El-camino-para-ser-un-desarrollador-web-profesional.jpg", "Pintura", "Servicio de Pintura","Kori Antunez", 4.0, "Solicitar"),
