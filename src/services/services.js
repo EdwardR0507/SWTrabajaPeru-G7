@@ -11,9 +11,7 @@ export const fetchData = async (token, action, path, command, data) => {
     }
     console.log("response fetchData:");
     console.log(response);
-  } catch (e) {
-    console.error(e);
-  }
+  } catch (e) {}
   return response;
 };
 
@@ -55,9 +53,7 @@ export const fetchUserData = async (action, path, command, data) => {
     } else if (action === "POST") {
       res = sendData(path, command, data);
     }
-  } catch (error) {
-    console.error(error);
-  }
+  } catch (error) {}
   return res;
 };
 export const getDataHome = async (path, command) => {
@@ -72,7 +68,5 @@ export const sendData = async (path, command, data) => {
     command: command,
     transaction: data,
   });
-  console.log("answer data :");
-  console.log(answer.data);
   return answer.data;
 };
