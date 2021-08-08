@@ -50,7 +50,7 @@ const ManageServices = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [state?.token]);
 
   return user ? (
     <>

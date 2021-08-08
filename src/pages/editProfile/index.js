@@ -91,9 +91,10 @@ export default function EditProfile() {
     if (reason === "clickaway") {
       return;
     }
-
     setOpen(false);
   };
+
+  console.log(distrito);
 
   useEffect(() => {
     console.log(state);
@@ -205,7 +206,7 @@ export default function EditProfile() {
                     }
                   })}
                   {locations.departamentos.map((dept) => {
-                    if (dept.name != user.us_departamento) {
+                    if (dept.name !== user.us_departamento) {
                       return (
                         <option value={dept.name} key={dept.id}>
                           {dept.name}
