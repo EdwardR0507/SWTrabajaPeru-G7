@@ -81,7 +81,7 @@ const NavBar = (props) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose=() =>{
     setAnchorEl(null);
   };
 
