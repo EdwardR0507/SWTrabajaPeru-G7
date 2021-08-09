@@ -93,7 +93,11 @@ const ServiceDetailsCard = (props) => {
         </Grid>
         <Grid item xs={12} sm={4}>
           <Box mt={1} mr={2}>
-            <ContactEmployeeModal />
+            <ContactEmployeeModal
+              service={service}
+              token={props.token}
+              user={props.user}
+            />
           </Box>
         </Grid>
       </Grid>
@@ -111,5 +115,4 @@ const ServiceDetailsCard = (props) => {
     <div>Cargando..</div>
   );
 };
-
 export default ServiceDetailsCard;

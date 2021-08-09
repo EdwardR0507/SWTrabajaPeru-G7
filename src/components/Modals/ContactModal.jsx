@@ -73,6 +73,7 @@ const ContactModal = ({ name }) => {
         style={{ color: "#FFF" }}
         onClick={handleOpen}
       />
+
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"

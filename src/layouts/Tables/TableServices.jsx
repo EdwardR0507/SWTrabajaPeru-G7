@@ -7,8 +7,8 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import SecondaryButton from "../../components/Buttons/SecondaryButton";
 import Rating from "@material-ui/lab/Rating";
+import DetailsRequestModal from "../../components/Modals/DetailsRequestModal";
 
 /*Declarando los estilos de la tabla*/
 
@@ -47,12 +47,12 @@ const useStyles = makeStyles({
   },
 });
 
-export default function TableServices({ serviceData }) {
+export default function TableServices({ getToken, serviceData }) {
   const classes = useStyles();
-  const [dataTable, setDataTable] = useState(serviceData);
+  const [dataTable, setDataTable] = useState([]);
 
   useEffect(() => {
-    console.log("serviceData");
+    console.log("service data");
     console.log(serviceData);
     setDataTable(serviceData);
   }, [serviceData]);
@@ -79,9 +79,7 @@ export default function TableServices({ serviceData }) {
         </TableHead>
         <TableBody>
           {dataTable.map((row) => (
-            <StyledTableRow
-              key={`${row.cat_id}-${row.cat_nombre}-${row.ser_descripcion}`}
-            >
+            <StyledTableRow key={serviceData[0].sol_id}>
               <StyledTableCell component="th" scope="row">
                 {row.cat_id}
               </StyledTableCell>
@@ -100,15 +98,17 @@ export default function TableServices({ serviceData }) {
               <StyledTableCell align="center">
                 {row.ser_descripcion}
               </StyledTableCell>
-              <StyledTableCell align="center">
-                Daniel Cifuentes Michuy
-              </StyledTableCell>
+              <StyledTableCell align="center">{row.us_nombres}</StyledTableCell>
               <StyledTableCell align="center">
                 <Rating name="read-only" value={row.ser_calificacion} />
               </StyledTableCell>
-              <StyledTableCell align="center">Pendiente</StyledTableCell>
+              <StyledTableCell align="center">{row.sol_estado}</StyledTableCell>
               <StyledTableCell align="center">
-                <SecondaryButton name="Gestion"></SecondaryButton>
+                <DetailsRequestModal
+                  getToken={getToken}
+                  serviceData={serviceData}
+                  solId={row.sol_id}
+                />
               </StyledTableCell>
             </StyledTableRow>
           ))}

@@ -4,17 +4,15 @@ import {
   Container,
   Typography,
   TextField,
+  InputLabel,
   Modal,
   Backdrop,
   Fade,
-  Button,
+  Select,
 } from "@material-ui/core/";
-import { useForm } from "react-hook-form";
-import AddIcon from "@material-ui/icons/Add";
 import PrimaryButton from "../Buttons/PrimaryButton";
 import SecondaryButton from "../Buttons/SecondaryButton";
 import theme from "../../themes/themes";
-import FormError from "../../components/Errors/FormError";
 import { fetchData } from "../../services/services";
 const useStyles = makeStyles(() => ({
   //Estilos para la customización del modal
@@ -32,7 +30,7 @@ const useStyles = makeStyles(() => ({
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
     width: "50vw",
-    height: "70vh",
+    height: "80vh",
   },
   form: {
     width: "100%",
@@ -57,31 +55,38 @@ const useStyles = makeStyles(() => ({
     width: "200px",
   },
 }));
-
-const ContactEmployeeModal = ({ service, token, user }) => {
-  const {
-    handleSubmit,
-    register,
-    reset,
-    formState: { errors },
-  } = useForm();
-
+/**/
+const ManajeS = ({ serviceData, getToken, solId }) => {
   // Variable para customizar los componentes
   const classes = useStyles();
 
   // Estado para controlar la apertura y cierre de los modales
   const [open, setOpen] = useState(false);
-  const [serviceData, setServiceData] = useState({});
+  const [service, setService] = useState([]);
+  const [token, setToken] = useState("");
+  const [detailReq, setDetailReq] = useState({});
 
   useEffect(() => {
-    setServiceData(service);
-  }, [service, user]);
+    setService(serviceData);
+    setToken(getToken);
+  }, [serviceData, getToken]);
 
   // Función para abrir el modal
   const handleOpen = () => {
-    console.log("user data nombres");
-    console.log(user.us_nombres);
-    setOpen(true);
+    const id = service.filter((el) => el.sol_id === solId)[0].sol_id;
+    console.log("EL ID");
+    console.log(id);
+    const newData = { sol_id: id };
+    console.log(newData);
+    fetchData(token, "POST", "solicitud-auth", "OBTAIN_SOLICITUD", newData)
+      .then((res) => {
+        console.log("res");
+        console.log(res);
+        setDetailReq(res[0]);
+      })
+      .then(() => {
+        setOpen(true);
+      });
   };
 
   // Función para cerrar el modal
@@ -89,39 +94,20 @@ const ContactEmployeeModal = ({ service, token, user }) => {
     setOpen(false);
   };
 
-  const onSubmit = async (datos, e) => {
-    const newData = {
-      cat_id: serviceData.cat_id,
-      us_id_trabajador: serviceData.us_id,
-      sol_mensaje: datos.sol_mensaje,
-    };
-    fetchData(
-      token,
-      "POST",
-      "solicitud-auth",
-      "CREATE_SOLICITUD",
-      newData
-    ).then((res) => {
-      console.log("respuesta creación de solicitud:");
-      console.log(res);
-    });
-    e.preventDefault();
-    reset();
-    handleClose();
+  const handleSelect = (e) => {
+    console.log(e.target.value);
   };
 
-  return (
+  return detailReq ? (
     <>
-      <Button
+      <SecondaryButton
         className={classes.button}
         // Funcion para abrir modal
         onClick={handleOpen}
         variant="contained"
         color="primary"
-        endIcon={<AddIcon />}
-      >
-        SOLICITAR
-      </Button>
+        name="Ver más"
+      ></SecondaryButton>
 
       <Modal
         aria-labelledby="transition-modal-title"
@@ -138,56 +124,54 @@ const ContactEmployeeModal = ({ service, token, user }) => {
       >
         <Fade in={open}>
           <div className={classes.paper}>
-            <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
+            <form className={classes.form}>
               <Typography className={classes.title} variant="h5">
-                CONTACTAR CON EL TRABAJADOR
+                DETALLE DE LA SOLICITUD
               </Typography>
               <TextField
-                style={{
-                  width: "300",
-                }}
                 type="text"
                 id="filled-multiline-flexible"
                 label="Nombre y Apellidos"
-                defaultValue={user.us_nombres}
                 disabled
-                name="emp_name"
-                rowsMax={1}
+                defaultValue={detailReq.us_nombres}
                 variant="filled"
               />
               <TextField
                 id="filled-multiline-flexible"
                 label="Correo Electrónico"
-                name="emp_email"
                 disabled
-                defaultValue={user.us_correo}
-                rowsMax={1}
+                defaultValue={detailReq.us_correo}
                 variant="filled"
               />
               <TextField
                 id="filled-multiline-flexible"
-                label="Celular"
-                defaultValue={user.us_celular}
-                name="em_phone"
+                label="Número Telefónico"
                 disabled
-                rowsMax={1}
                 variant="filled"
+                defaultValue={detailReq.us_celular}
               />
               <TextField
                 id="filled-multiline-flexible"
                 label="Mensaje"
                 multiline
-                name="sol_mensaje"
-                {...register("sol_mensaje", {
-                  maxLength: 500,
-                })}
+                disabled
+                defaultValue={detailReq.sol_mensaje}
                 rowsMax={3}
                 variant="filled"
               />
-              <FormError
-                condition={errors.sol_mensaje}
-                content="Ingrese máximo 300 caracteres"
-              />
+              <InputLabel id="demo-simple-select-required-label">
+                Estado del Servicio
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-required-label"
+                id="demo-simple-select-required"
+                name="sol_estado"
+                onChange={handleSelect}
+                className={classes.selectEmpty}
+              >
+                <option>Pendiente</option>
+                <option>Finalizado</option>
+              </Select>
               {/* Contenedor de botones finales */}
               <Container className={classes.containerButton}>
                 <SecondaryButton
@@ -201,7 +185,7 @@ const ContactEmployeeModal = ({ service, token, user }) => {
                     type="submit"
                     name="ENVIAR"
                     className={classes.submit}
-                    onClick={handleSubmit(onSubmit)}
+                    onClick={handleClose}
                   ></PrimaryButton>
                 </Container>
               </Container>
@@ -211,6 +195,8 @@ const ContactEmployeeModal = ({ service, token, user }) => {
         </Fade>
       </Modal>
     </>
+  ) : (
+    <div>Cargando...</div>
   );
 };
-export default ContactEmployeeModal;
+export default ManajeS;
