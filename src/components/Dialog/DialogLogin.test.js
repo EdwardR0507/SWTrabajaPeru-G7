@@ -7,6 +7,7 @@ import { MemoryRouter } from 'react-router-dom';
 import DialogLogin from "./DialogLogin";
 
 describe("<DialogLogin />", () => {
+    const mockHistoryPush = jest.fn();
     it("render DialogLogin", () => {
         const wrapper = shallow(<DialogLogin/>);
         expect(wrapper).toMatchSnapshot()
@@ -19,6 +20,7 @@ describe("<DialogLogin />", () => {
         expect(result.current.open).toBe(true);
     })
     it("test handle close", () => {
+        
         jest.mock('react-router-dom', () => ({
             ...jest.requireActual('react-router-dom'),
             useHistory: () => ({
