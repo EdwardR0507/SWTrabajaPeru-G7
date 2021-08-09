@@ -100,7 +100,7 @@ const ServiceDetailsCard = (props) => {
       <StyledCardMedia image="../../assets/CardTest.jpeg" />
       <Grid container spacing={12} justifyContent="center">
         <Boxes>
-          <StyledBody>{service.ser_descripcion}</StyledBody>
+          <StyledBody>Descripción</StyledBody>
         </Boxes>
       </Grid>
       <Grid container spacing={12} justifyContent="center">
