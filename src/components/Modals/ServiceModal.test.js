@@ -39,7 +39,7 @@ describe("ServiceModal", () => {
     const history = createMemoryHistory();
     render(
       <Router history={history}>
-        <ServiceModal />
+        <ServiceModal /> 
       </Router>
     );
     expect(screen.getByText()).toBeInTheDocument();
