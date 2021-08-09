@@ -1,7 +1,7 @@
 /*Importamos las librerias principales*/
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
-import { shallow } from "enzyme";
+import { shallow, mount } from "enzyme";
 import { rest } from 'msw'
 import { setupServer } from 'msw/node';
 import { render, screen } from '@testing-library/react'
@@ -52,12 +52,11 @@ describe("ServiceModal", () => {
         return res(ctx.status(500))
       }),
     )
-    const wrapper = shallow(<Router history={history}>
+    const wrapper = mount(<Router history={history}>
       <ServiceModal />
     </Router>);
-    wrapper.instance().handleOpen = jest.fn();
-    wrapper.update();
-    expect(wrapper.instance().handleOpen).toBeCalled(0);
+    const instance = wrapper.instance().props.children
+    instance.handleOpen = jest.fn();
+    expect(instance.handleOpen).toBeCalled();
   })
-
 });
