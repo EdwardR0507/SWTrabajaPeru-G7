@@ -65,7 +65,6 @@ export default function TableServices({ getToken, serviceData }) {
       >
         <TableHead>
           <TableRow>
-            <StyledTableCell>Item</StyledTableCell>
             <StyledTableCell align="center">Imagen</StyledTableCell>
             <StyledTableCell align="center">Servicio</StyledTableCell>
             <StyledTableCell align="center">Descripción</StyledTableCell>
@@ -82,9 +81,6 @@ export default function TableServices({ getToken, serviceData }) {
             <StyledTableRow
               key={`${serviceData[0].sol_id}-${serviceData[0].cat_nombre}`}
             >
-              <StyledTableCell component="th" scope="row">
-                {row.cat_id}
-              </StyledTableCell>
               <StyledTableCell align="center">
                 <div className={classes.containerImage}>
                   <img
