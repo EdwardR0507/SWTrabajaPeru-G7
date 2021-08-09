@@ -49,7 +49,7 @@ export default function DialogLogin() {
 
     return (
         <div>
-            <Button color="primary" role="open" onClick={handleClickOpen}>
+            <Button color="primary" role="open-button" onClick={handleClickOpen}>
                 Ver Más
             </Button>
             <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
@@ -64,7 +64,7 @@ export default function DialogLogin() {
                             pathname: "/signin"
                         })
                     }} color="primary" variant="contained">Iniciar Sesión</Button>
-                    <Button autoFocus role="close" onClick={handleClose} color="secondary" variant="contained" >
+                    <Button autoFocus role="close-button" onClick={handleClose} color="secondary" variant="contained" >
                         Cancelar
                     </Button>
                 </DialogActions>

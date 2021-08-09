@@ -8,9 +8,9 @@ import { createMemoryHistory } from 'history';
 import { Router, Route } from 'react-router-dom';
 import GlobalEnv from '../../GlobalEnv';
 import SocialProfile from "./index";
-import ProfileCard from "../../components/Cards/ProfileCard";
+import SolicitedServices from "./index";
 /*Renderizado de la vista Social Profile*/
-describe("<SocialProfile></SocialProfile>", () => {
+describe("<SolicitedServices></SolicitedServices>", () => {
   const serverUser = setupServer(
     rest.post(`${GlobalEnv.host}/user-auth`, (req, res, ctx) => {
       return res(ctx.json({greeting: 'hello there'}))
@@ -26,15 +26,11 @@ beforeAll(() => {serverUser.listen(); serverService.listen()})
 afterEach(() => {serverUser.resetHandlers(); serverService.resetHandlers()})
 afterAll(() => {serverUser.close(); serverService.close()})
 
-  it('render `SocialProfile', () => {
-    const wrapper = shallow(<SocialProfile />);
+  it('render `SolicitedServices`', () => {
+    const wrapper = shallow(<SolicitedServices />);
     expect(wrapper).toMatchSnapshot()
   });
-  it('should have an `ProfileCard` element', () => {
-    const wrapper = shallow(<SocialProfile />);
-    expect(wrapper.contains(<ProfileCard></ProfileCard>)).toBe(true);
-  });
-  it("get User", () => {
+  it("get User in `SolicitedServices`", () => {
     const history = createMemoryHistory();
     serverUser.use(
         rest.post(`${GlobalEnv.host}/user-auth`, (req, res, ctx) => {
@@ -42,11 +38,11 @@ afterAll(() => {serverUser.close(); serverService.close()})
         }),
       )
     render(<Router history={history}>
-        <SocialProfile /> 
+        <SolicitedServices /> 
     </Router>);
-    expect(screen.getByRole('social-profile')).toHaveTextContent('Cargando...')
+    expect(screen.getByRole('solicited-services')).toHaveTextContent('Cargando...')
 })
-it("get Service", () => {
+it("get Service in `SolicitedServices`", () => {
     const history = createMemoryHistory();
     serverService.use(
         rest.post(`${GlobalEnv.host}/service-auth`, (req, res, ctx) => {
@@ -56,6 +52,6 @@ it("get Service", () => {
     const { getByRole } = render(<Router history={history}>
         <SocialProfile /> 
     </Router>);
-    expect(screen.getByRole('social-profile')).toHaveTextContent('Cargando...')
+    expect(screen.getByRole('solicited-services')).toHaveTextContent('Cargando...')
 })
 });

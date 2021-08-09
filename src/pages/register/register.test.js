@@ -13,7 +13,7 @@ describe("<SignUp></SignUp>", () => {
     const wrapper = shallow(<SignUp />);
     expect(wrapper).toMatchSnapshot()
   });
-  it('should have the `NavBar` in "IniciarSesión"', () => {
+  it('should have the `NavBar` in "Register"', () => {
     const wrapper = shallow(<SignUp />);
     expect(wrapper.containsMatchingElement(<NavBar></NavBar>)).toBe(true);
   });
