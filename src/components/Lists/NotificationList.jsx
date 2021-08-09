@@ -59,6 +59,7 @@ const NotificationList = ({ token }) => {
         <NotificationsIcon
           fontSize="large"
           style={{ color: "#FFF" }}
+          role="toggle"
           ref={anchorRef}
           aria-controls={open ? "menu-list-grow" : undefined}
           aria-haspopup="true"
@@ -81,7 +82,7 @@ const NotificationList = ({ token }) => {
               }}
             >
               <Paper>
-                <ClickAwayListener onClickAway={handleClose}>
+                <ClickAwayListener role="close" onClickAway={handleClose}>
                   <MenuList
                     autoFocusItem={open}
                     id="menu-list-grow"

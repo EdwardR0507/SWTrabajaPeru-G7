@@ -105,6 +105,7 @@ const NavBar = (props) => {
               </IconButton>
               <StyledMenu
                 id="customized-menu"
+                role="close"
                 anchorEl={anchorEl}
                 keepMounted
                 disableScrollLock

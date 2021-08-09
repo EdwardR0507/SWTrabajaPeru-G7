@@ -11,8 +11,4 @@ describe("NavBar", () => {
     console.log(wrapper)
     expect(wrapper).toMatchSnapshot()
   });
-  it("anchor State ", () => {
-    const { result } = renderHook(()=>(<div>Hola</div>));
-    //console.log(result.current)
-  })
 });

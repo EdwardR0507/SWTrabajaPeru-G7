@@ -14,5 +14,5 @@ describe("<CustomizedTables></CustomizedTables>", () => {
   it('should have the `Table` in "CustomizedTables"', () => {
     const wrapper = shallow(<CustomizedTables />);
     expect(wrapper.containsMatchingElement(<Table></Table>)).toBe(true);
-  });
+  }); 
 });

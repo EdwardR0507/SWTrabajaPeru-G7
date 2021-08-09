@@ -124,6 +124,7 @@ const ManajeS = ({ serviceData, getToken, solId }) => {
   return detailReq ? (
     <>
       <SecondaryButton
+      role="open"
         onClick={handleOpen}
         variant="contained"
         color="primary"
@@ -135,6 +136,7 @@ const ManajeS = ({ serviceData, getToken, solId }) => {
         aria-describedby="transition-modal-description"
         className={classes.modal}
         open={open}
+        role="close"
         onClose={handleClose}
         disableScrollLock
         closeAfterTransition
@@ -145,7 +147,7 @@ const ManajeS = ({ serviceData, getToken, solId }) => {
       >
         <Fade in={open}>
           <div className={classes.paper}>
-            <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
+            <form className={classes.form} role="submit" onSubmit={handleSubmit(onSubmit)}>
               <Typography className={classes.title} variant="h5">
                 DETALLE DE LA SOLICITUD
               </Typography>
