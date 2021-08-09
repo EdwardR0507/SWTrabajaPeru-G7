@@ -3,11 +3,12 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { rest } from 'msw'
 import { setupServer } from 'msw/node';
-import { render, cleanup } from '@testing-library/react';
+import { render, cleanup, fireEvent } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Router, Route } from 'react-router-dom';
 import GlobalEnv from '../../GlobalEnv';
 import EditProfile from './index';
+import { Snackbar } from '@material-ui/core';
 /*Renderizado de la vista EditProfile*/
 describe("<EditProfile></EditProfile>", () => {
   const server = setupServer(
@@ -38,5 +39,18 @@ describe("<EditProfile></EditProfile>", () => {
       <EditProfile /> 
   </Router>);
   expect(screen.getByRole('edit-profile')).toHaveTextContent('Cargando...')
+  })
+  it('show Cargando', () => {
+    const history = createMemoryHistory();
+    server.use(
+      rest.post(`${GlobalEnv.host}/user-auth`, (req, res, ctx) => {
+        return res(ctx.status(500))
+      }),
+    )
+    const result = render(<Router history={history}>
+      <EditProfile /> 
+  </Router>);
+  fireEvent(<Snackbar />, 'onClose');
+  expect(result.current.open).toBe(false)
   })
 });
