@@ -1,13 +1,14 @@
 /*Importamos las librerias principales*/
-import React from "react";
+import { React, useState, useEffect } from "react";
 import { withStyles } from "@material-ui/styles";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardMedia from "@material-ui/core/CardMedia";
-import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import Rating from "@material-ui/lab/Rating";
 import theme from "../../themes/themes";
 import { Divider, Grid, Box, Typography } from "@material-ui/core";
+import ContactEmployeeModal from "../Modals/ContactEmployeeModal";
+
 /*Declaramos los estilos que se van a usar por cada componente*/
 /*Declaramos el estilo del card*/
 
@@ -49,15 +50,15 @@ const Boxes = withStyles({
     width: "100%",
   },
 })(Box);
-/*Declaramos la función principal*/ 
+/*Declaramos la función principal*/
 const ServiceDetailsCard = (props) => {
-  const [service, setService] = React.useState();
+  const [service, setService] = useState();
 
-  React.useEffect(() => {
-    setService(props.service)
-  }, [])
-/*Declaramos lo que nos va a retornar la funcion*/ 
-  return service ?(
+  useEffect(() => {
+    setService(props.service);
+  }, [props]);
+  /*Declaramos lo que nos va a retornar la funcion*/
+  return service ? (
     <StyledCard>
       {/*Cambiar los datos por informaciónde la bd*/}
       <Grid
@@ -66,7 +67,7 @@ const ServiceDetailsCard = (props) => {
         alignItems="flex-end"
         justifyContent="center"
       >
-          <CardHeader title={service.cat_nombre} />
+        <CardHeader title={service.cat_nombre} />
       </Grid>
       {/*declaramos sivider para dal estilo al borde*/}
       <Divider />
@@ -79,39 +80,34 @@ const ServiceDetailsCard = (props) => {
       >
         <Grid item xs={12} sm={8}>
           <Box ml={2}>
-          {service.ser_calificacion ? (
-          <Rating
-          name="read-only"
-          value={service.ser_calificacion}
-          readOnly
-        />):(
-          <Typography variant="body2">
-            Sin Calificación
-          </Typography>
-        )}
+            {service.ser_calificacion ? (
+              <Rating
+                name="read-only"
+                value={service.ser_calificacion}
+                readOnly
+              />
+            ) : (
+              <Typography variant="body2">Sin Calificación</Typography>
+            )}
           </Box>
         </Grid>
         <Grid item xs={12} sm={4}>
           <Box mt={1} mr={2}>
-            <PrimaryButton
-              variant="contained"
-              color="primary"
-              name="+SOLICITAR"
-            ></PrimaryButton>
+            <ContactEmployeeModal />
           </Box>
         </Grid>
       </Grid>
       <StyledCardMedia image="../../assets/CardTest.jpeg" />
       <Grid container spacing={12} justifyContent="center">
         <Boxes>
-          <StyledBody>DESCRIPCIÓN</StyledBody>
+          <StyledBody>{service.ser_descripcion}</StyledBody>
         </Boxes>
       </Grid>
       <Grid container spacing={12} justifyContent="center">
-          <StyledBody2>{service.ser_descripcion}</StyledBody2>
+        <StyledBody2>{service.ser_descripcion}</StyledBody2>
       </Grid>
     </StyledCard>
-  ):(
+  ) : (
     <div>Cargando..</div>
   );
 };

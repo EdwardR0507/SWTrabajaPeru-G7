@@ -9,8 +9,6 @@ export const fetchData = async (token, action, path, command, data) => {
     } else if (action === "POST") {
       response = postData(token, path, command, data);
     }
-    console.log("response fetchData:");
-    console.log(response);
   } catch (e) {}
   return response;
 };

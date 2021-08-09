@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function NestedList() {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
   const location = useLocation();
   const history = useHistory();
   const state = location.state;
@@ -39,12 +39,15 @@ export default function NestedList() {
       aria-labelledby="nested-list-subheader"
       className={classes.root}
     >
-      <ListItem button onClick={()=>{
-        history.push({
-          pathname: "/",
-          state: {token: state?.token}
-        })
-      }}>
+      <ListItem
+        button
+        onClick={() => {
+          history.push({
+            pathname: "/",
+            state: { token: state?.token },
+          });
+        }}
+      >
         <ListItemIcon>
           <HomeIcon />
         </ListItemIcon>
@@ -64,16 +67,35 @@ export default function NestedList() {
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <ListItem button className={classes.nested} onClick={() => {
-            history.push({
-              pathname: '/manageservices',
-              state: { token: state.token }
-            })
-          }}>
+          <ListItem
+            button
+            className={classes.nested}
+            onClick={() => {
+              history.push({
+                pathname: "/manageservices",
+                state: { token: state.token },
+              });
+            }}
+          >
             <ListItemIcon>
               <SettingsIcon />
             </ListItemIcon>
             <ListItemText primary="Mis Servicios" />
+          </ListItem>
+          <ListItem
+            button
+            className={classes.nested}
+            onClick={() => {
+              history.push({
+                pathname: "/solicitedServices",
+                state: { token: state.token },
+              });
+            }}
+          >
+            <ListItemIcon>
+              <SettingsIcon />
+            </ListItemIcon>
+            <ListItemText primary="Servicios Solicitados" />
           </ListItem>
         </List>
       </Collapse>
