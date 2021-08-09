@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
 export default function EditProfile() {
   /*Declaramos la función principal*/
   const classes = useStyles();
-  const [user, setUser] = useState();
+  const [user, setUser] = useState({});
   const [open, setOpen] = useState(false);
   const {
     register,

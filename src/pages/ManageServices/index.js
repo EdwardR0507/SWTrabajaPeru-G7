@@ -29,7 +29,7 @@ const ManageServices = () => {
   const location = useLocation();
   const state = location.state;
 
-  const [user, setUser] = useState();
+  const [user, setUser] = useState({});
   const [data, setData] = useState([]);
 
   useEffect(() => {
