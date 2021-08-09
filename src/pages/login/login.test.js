@@ -32,4 +32,21 @@ describe("<SignIn></SignIn>", () => {
       fireEvent.click(getByRole("button"))
     })
   })
+  it("redirect to /", async () => {
+    const history = createMemoryHistory();
+    const mockOnSubmit = jest.fn();
+    const { getByLabelText, getByRole } = render(<Router history={history}>
+      <SignIn onSubmit={mockOnSubmit} />
+    </Router>
+    );
+    await act(async () => {
+      fireEvent.change(getByLabelText("Correo electrónico"), { target: { value: "email@test.com" } });
+      fireEvent.change(getByLabelText("Contraseña"), { target: { value: "123456789" } });
+    })
+    await act(async () => {
+      fireEvent.click(getByRole("button"))
+    })
+    expect(localStorage.getItem("User_session")) ;
+    ;
+  })
 });

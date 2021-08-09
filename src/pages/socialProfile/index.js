@@ -20,7 +20,7 @@ const StyledContainer = withStyles({
 
 /*Declaramos la función principal*/
 export default function SocialProfile() {
-  const [user, setUser] = useState();
+  const [user, setUser] = useState({});
   const [services, setServices] = useState();
   const location = useLocation();
   const state = location.state;

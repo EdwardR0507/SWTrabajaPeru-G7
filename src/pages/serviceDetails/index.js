@@ -6,8 +6,7 @@ import { Container, withStyles, Grid } from "@material-ui/core/";
 import ServiceDetailsCard from "../../components/Cards/ServiceDetailsCard";
 import WorkerCard from "../../components/Cards/WorkerCard";
 import { fetchData } from "../../services/services";
-import axios from "axios";
-import GlobalEnv from "../../GlobalEnv";
+
 /*Declaramos los estilos que se van a usar por cada componente*/
 
 /*Declaramos el estilo del container*/
@@ -24,9 +23,9 @@ const StyledContainer = withStyles({
 /*Declaramos la funcion principal*/
 const ServiceDetails = () => {
   const location = useLocation();
-  const [user, setUser] = useState();
+  const [user, setUser] = useState({});
   const state = location.state;
-  const [service, setService] = useState();
+  const [service, setService] = useState({});
   /*Declaramos lo que nos va a retornar la funcion*/
   //Información del usuario
   useEffect(() => {
@@ -35,56 +34,32 @@ const ServiceDetails = () => {
     });
   }, [state?.token]);
 
-  //Cambiar por las funciones de service.js
-    console.log(state);
-    //Cambiar post por get cuando se arregle
-   
   useEffect(() => {
-    console.log(location);
-    axios
-      .post(
-        `${GlobalEnv.host}/service-auth`,
-        {
-          command: "OBTAIN_SERVICE",
-          transaction: {
-            us_id: state?.us_id,
-            cat_id: state?.cat_id
-          }
-        },
-        {
-          headers: {
-            authorization: `Bearer ${state?.token}`,
-          },
-        }
-      )
-      .then((res) => {
-        console.log(res.data[0]);
-        setService(res.data[0])
-      });
-  }, []);
+    const data = {
+      us_id: state?.us_id,
+      cat_id: state?.cat_id,
+    };
+    fetchData(
+      state?.token,
+      "POST",
+      "service-auth",
+      "OBTAIN_SERVICE",
+      data
+    ).then((res) => {
+      console.log("res[0] de obtain service");
+      console.log(res[0]);
+      setService(res[0]);
+    });
+  }, [state?.token, state?.us_id, state?.cat_id]);
 
   useEffect(() => {
-    console.log(location);
-    axios
-      .post(
-        `${GlobalEnv.host}/user-auth`,
-        {
-          command: "OBTAIN_USER",
-          transaction: {
-            us_id: state?.us_id,
-          }
-        },
-        {
-          headers: {
-            authorization: `Bearer ${state?.token}`,
-          },
-        }
-      )
-      .then((res) => {
+    const newData = { us_id: state?.us_id };
+    fetchData(state?.token, "POST", "user-auth", "OBTAIN_USER", newData).then(
+      (res) => {
         console.log(res);
-        //setService(res.data[0])
-      });
-  }, []);
+      }
+    );
+  }, [state?.token, state?.us_id]);
 
   return service ? (
     <>
