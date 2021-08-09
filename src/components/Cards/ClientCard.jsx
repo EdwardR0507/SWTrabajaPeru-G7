@@ -1,5 +1,10 @@
 import { React } from "react";
-import { makeStyles, Container, Typography } from "@material-ui/core/";
+import {
+  makeStyles,
+  Container,
+  Typography,
+  MenuItem,
+} from "@material-ui/core/";
 const useStyles = makeStyles({
   card: {
     width: "300px",
@@ -11,10 +16,10 @@ const useStyles = makeStyles({
 const ClientCard = () => {
   const classes = useStyles();
   return (
-    <Container className={classes.card}>
+    <MenuItem className={classes.card}>
       <Container className={classes.cardImage}></Container>
       <Container className={classes.cardText}></Container>
-    </Container>
+    </MenuItem>
   );
 };
 export default ClientCard;

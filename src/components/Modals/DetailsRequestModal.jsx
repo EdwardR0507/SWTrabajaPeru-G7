@@ -190,6 +190,7 @@ const ManajeS = ({ serviceData, getToken, solId }) => {
                 })}
                 defaultValue={detailReq.sol_estado}
               >
+                <MenuItem value="Rechazado">Rechazado</MenuItem>
                 <MenuItem value="Pendiente">Pendiente</MenuItem>
                 <MenuItem value="Finalizado">Finalizado</MenuItem>
               </Select>
