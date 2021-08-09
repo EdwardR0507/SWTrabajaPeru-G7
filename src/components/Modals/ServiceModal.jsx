@@ -314,7 +314,6 @@ const ServiceModal = ({
                             required: true,
                           })}
                           onChange={handleSelect}
-                          className={classes.selectEmpty}
                         >
                           {list.map((el) => (
                             <MenuItem key={el.cat_id} value={el.cat_nombre}>

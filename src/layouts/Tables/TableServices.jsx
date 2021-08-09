@@ -79,7 +79,9 @@ export default function TableServices({ getToken, serviceData }) {
         </TableHead>
         <TableBody>
           {dataTable.map((row) => (
-            <StyledTableRow key={serviceData[0].sol_id}>
+            <StyledTableRow
+              key={`${serviceData[0].sol_id}-${serviceData[0].cat_nombre}`}
+            >
               <StyledTableCell component="th" scope="row">
                 {row.cat_id}
               </StyledTableCell>
