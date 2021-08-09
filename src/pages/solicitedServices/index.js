@@ -6,7 +6,6 @@ import {
   Typography,
   Grid,
   Box,
-  Button,
   makeStyles,
 } from "@material-ui/core/";
 import TableServices from "../../layouts/Tables/TableServices";
@@ -60,9 +59,9 @@ const SolicitedServices = () => {
   return user ? (
     <>
       <NavBar user={user} token={state?.token} />
-      <HeadingBar before={"TRABAJADOR"} after={"SOLICITUDES"} />
+      <HeadingBar before={"TRABAJADOR"} after={"MIS SOLICITUDES"} />
       <Container>
-        <Typography className={classes.typography}>Solicitudes</Typography>
+        <Typography className={classes.typography}>Mis Solicitudes</Typography>
         <Grid container justifycontent="center" aligncontent="center">
           <Box mt={3} ml={"auto"} mr={"auto"}>
             <TableServices

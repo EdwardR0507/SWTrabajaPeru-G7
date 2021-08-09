@@ -95,7 +95,7 @@ export default function NestedList() {
             <ListItemIcon>
               <SettingsIcon />
             </ListItemIcon>
-            <ListItemText primary="SOLICITUDES" />
+            <ListItemText primary="MIS SOLICITUDES" />
           </ListItem>
         </List>
       </Collapse>

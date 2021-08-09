@@ -1,12 +1,9 @@
-import React from "react";
+import { React, useState, useEffect, useRef } from "react";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import Grow from "@material-ui/core/Grow";
-import Paper from "@material-ui/core/Paper";
-import Popper from "@material-ui/core/Popper";
-import MenuItem from "@material-ui/core/MenuItem";
-import MenuList from "@material-ui/core/MenuList";
-import { makeStyles } from "@material-ui/core/styles";
+import { Grow, Paper, Popper, makeStyles, MenuList } from "@material-ui/core/";
 import NotificationsIcon from "@material-ui/icons/Notifications";
+import ClientCard from "../Cards/ClientCard";
+import { fetchData } from "../../services/services";
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -14,22 +11,29 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     marginRight: theme.spacing(2),
   },
+  list: {
+    marginTop: theme.spacing(2),
+  },
 }));
 
-export default function MenuListComposition() {
+const NotificationList = ({ token }) => {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
-  const anchorRef = React.useRef(null);
+  const [open, setOpen] = useState(false);
+  const [solData, setSolData] = useState([]);
+  const anchorRef = useRef(null);
 
   const handleToggle = () => {
     setOpen(!open);
+    fetchData(token, "GET", "solicitud-auth", "GET_NOTIFICATIONS").then(
+      (res) => {
+        console.log("res:");
+        console.log(res);
+        setSolData(res);
+      }
+    );
   };
 
-  const handleClose = (event) => {
-    if (anchorRef.current && anchorRef.current.contains(event.target)) {
-      return;
-    }
-
+  const handleClose = () => {
     setOpen(false);
   };
 
@@ -41,12 +45,11 @@ export default function MenuListComposition() {
   }
 
   // return focus to the button when we transitioned from !open -> open
-  const prevOpen = React.useRef(open);
-  React.useEffect(() => {
+  const prevOpen = useRef(open);
+  useEffect(() => {
     if (prevOpen.current === true && open === false) {
       anchorRef.current.focus();
     }
-
     prevOpen.current = open;
   }, [open]);
 
@@ -83,10 +86,18 @@ export default function MenuListComposition() {
                     autoFocusItem={open}
                     id="menu-list-grow"
                     onKeyDown={handleListKeyDown}
+                    className={classes.list}
                   >
-                    <MenuItem onClick={handleClose}>Profile</MenuItem>
-                    <MenuItem onClick={handleClose}>My account</MenuItem>
-                    <MenuItem onClick={handleClose}>Logout</MenuItem>
+                    {solData.map((el) => {
+                      return (
+                        <ClientCard
+                          imagen={el.us_imagen}
+                          nombres={el.us_nombres}
+                          servicio={el.cat_nombre}
+                          token={token}
+                        />
+                      );
+                    })}
                   </MenuList>
                 </ClickAwayListener>
               </Paper>
@@ -96,4 +107,5 @@ export default function MenuListComposition() {
       </div>
     </div>
   );
-}
+};
+export default NotificationList;
