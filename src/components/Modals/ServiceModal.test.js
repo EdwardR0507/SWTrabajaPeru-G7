@@ -45,4 +45,19 @@ describe("ServiceModal", () => {
     </Router>);
     expect(screen.getByRole('service-modal')).toHaveTextContent('Cargando...')
   })
+  it("test handle Open", () => {
+    const history = createMemoryHistory();
+    server.use(
+      rest.post(`${GlobalEnv.host}/service-auth`, (req, res, ctx) => {
+        return res(ctx.status(500))
+      }),
+    )
+    const wrapper = shallow(<Router history={history}>
+      <ServiceModal />
+    </Router>);
+    wrapper.instance().handleOpen = jest.fn();
+    wrapper.update();
+    expect(wrapper.instance().handleOpen).toBeCalled(0);
+  })
+
 });
