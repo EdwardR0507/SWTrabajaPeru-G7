@@ -55,7 +55,7 @@ export default function Home() {
   const location = useLocation();
   const [services, setServices] = useState();
   const [workers, setWorkers] = useState();
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState();
   const state = location.state;
 
   useEffect(() => {
