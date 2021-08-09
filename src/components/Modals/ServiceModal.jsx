@@ -355,6 +355,11 @@ const ServiceModal = ({
                   </Container>
                 </Container>
                 <Container className={classes.containerButton}>
+                  <SecondaryButton
+                    variant="contained"
+                    name="CANCELAR"
+                    onClick={handleClose}
+                  ></SecondaryButton>
                   <Container className={classes.wrapp}>
                     <PrimaryButton
                       type="submit"
@@ -363,11 +368,6 @@ const ServiceModal = ({
                       onClick={handleSubmit(onSubmit)}
                     ></PrimaryButton>
                   </Container>
-                  <SecondaryButton
-                    variant="contained"
-                    name="CANCELAR"
-                    onClick={handleClose}
-                  ></SecondaryButton>
                 </Container>
               </form>
             ) : (
@@ -417,6 +417,11 @@ const ServiceModal = ({
                   </Container>
                 </Container>
                 <Container className={classes.containerButton}>
+                  <SecondaryButton
+                    variant="contained"
+                    name="CANCELAR"
+                    onClick={handleClose}
+                  ></SecondaryButton>
                   <Container className={classes.wrapp}>
                     <PrimaryButton
                       type="submit"
@@ -426,11 +431,6 @@ const ServiceModal = ({
                       onClick={handleSubmit(onSubmitEdit)}
                     ></PrimaryButton>
                   </Container>
-                  <SecondaryButton
-                    variant="contained"
-                    name="CANCELAR"
-                    onClick={handleClose}
-                  ></SecondaryButton>
                 </Container>
               </form>
             )}

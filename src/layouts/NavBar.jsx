@@ -20,7 +20,6 @@ import Avatar from "@material-ui/core/Avatar";
 import theme from "../themes/themes";
 import SideBar from "../layouts/Sidebar/SideBar";
 import ContactModal from "../components/Modals/ContactModal";
-
 const StyledNavBar = withStyles({
   root: {
     background: theme.palette.primary.main,
@@ -81,7 +80,7 @@ const NavBar = (props) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose=() =>{
+  const handleClose = () => {
     setAnchorEl(null);
   };
 
@@ -99,7 +98,7 @@ const NavBar = (props) => {
             <SearchField placeholder="Buscar Cliente o Servicio" />
             <>
               <StyledIconButton>
-                <ContactModal name={"Daniel Cifuentes Michuy"} />
+                <ContactModal name={"Luis Alarcon"} />
               </StyledIconButton>
               <IconButton onClick={handleClick}>
                 <Avatar />
