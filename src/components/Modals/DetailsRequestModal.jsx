@@ -160,7 +160,7 @@ const ManajeS = ({ serviceData, getToken, solId }) => {
                 variant="filled"
               />
               <InputLabel id="demo-simple-select-required-label">
-                Nombre del Servicio
+                Estado del Servicio
               </InputLabel>
               <Select
                 labelId="demo-simple-select-required-label"
