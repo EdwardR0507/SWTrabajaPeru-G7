@@ -20,7 +20,7 @@ describe("ServiceModal", () => {
 
   beforeAll(() => {
     server.listen();
-  }); 
+  });
   afterEach(() => {
     server.resetHandlers();
   });
@@ -29,7 +29,10 @@ describe("ServiceModal", () => {
   });
 
   it('render "ServiceModal"', () => {
-    const wrapper = shallow(<ServiceModal />);
+    const history = createMemoryHistory()
+    const wrapper = shallow(<Router history={history}>
+      <ServiceModal />
+    </Router>);
     expect(wrapper).toMatchSnapshot();
   });
   it("render with location", () => {
@@ -55,6 +58,35 @@ describe("ServiceModal", () => {
     );
     expect(screen.getByRole("service-modal")).toHaveTextContent("Cargando...");
   });
+  it("test HanldeClose", () => {
+    const wrapper = shallow(<ServiceModal />);
+    const button = wrapper.find({ role: "close" });
+    const open = wrapper.find({ role: "Modal" });
+    button.simulate("click")
+    expect(open.props("open")).toBe(false)
+  })
+  it("test HanldeOpen", () => {
+    const wrapper = shallow(<ServiceModal />);
+    const button = wrapper.find({ role: "open" });
+    const open = wrapper.find({ role: "Modal" });
+    button.simulate("click")
+    serverService.use(
+      rest.post(`${GlobalEnv.host}/service-auth`, (req, res, ctx) => {
+        return res(ctx.status(500))
+      }),
+    )
+    expect(open.props("open")).toBe(true)
+  })
+  it("test OnSubmit", () => {
+    const wrapper = shallow(<ServiceModal />);
+    const button = wrapper.find({ type: "submit" });
+    button.simulate("click")
+    serverService.use(
+      rest.post(`${GlobalEnv.host}/service-auth`, (req, res, ctx) => {
+        return res(ctx.status(500))
+      }))
+    expect(wrapper.props("onSubmit")).toBeCalled()
+  })
   /* NO SIRVE
   it("renders without crashing ServiceModal", () => {
     const handleClose = jest.fn(),

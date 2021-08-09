@@ -4,8 +4,7 @@ import { shallow } from "enzyme";
 import { rest } from 'msw'
 import { setupServer } from 'msw/node';
 import DetailsRequestModal from "./DetailsRequestModal";
-import { createMemoryHistory } from "history";
-import GlobalEnv from "../../GlobalEnv";
+import GlobalEnv from "../../GlobalEnv"; 
 
 describe("<DetailsRequestModal />", () => {
     const serverUser = setupServer(
@@ -28,7 +27,6 @@ describe("<DetailsRequestModal />", () => {
         expect(wrapper).toMatchSnapshot()
       }); 
       it("get Service in `DetailsRequestModal`", () => {
-        const history = createMemoryHistory();
         serverService.use(
             rest.post(`${GlobalEnv.host}/service-auth`, (req, res, ctx) => {
               return res(ctx.status(500))
@@ -39,9 +37,31 @@ describe("<DetailsRequestModal />", () => {
     })
     it("test HanldeClose", () => {
         const wrapper = shallow(<DetailsRequestModal />);
-          const button = wrapper.find("button");
+          const button = wrapper.find({role: "close"});
           const open = wrapper.find({role: "Modal"});
           button.simulate("click")
           expect(open.props("open")).toBe(false)
     })
+    it("test HanldeOpen", () => {
+      const wrapper = shallow(<DetailsRequestModal />);
+        const button = wrapper.find({role: "open"});
+        const open = wrapper.find({role: "Modal"});
+        button.simulate("click")
+        serverService.use(
+          rest.post(`${GlobalEnv.host}/service-auth`, (req, res, ctx) => {
+            return res(ctx.status(500))
+          }),
+        )
+        expect(open.props("open")).toBe(true)
+  })
+  it("test OnSubmit", () => {
+    const wrapper = shallow(<DetailsRequestModal />);
+      const button = wrapper.find({role: "submit"});
+      button.simulate("click")
+      serverService.use(
+        rest.post(`${GlobalEnv.host}/service-auth`, (req, res, ctx) => {
+          return res(ctx.status(500))
+        }), )
+      expect(wrapper.props("onSubmit")).toBeCalled()
+  })
 })

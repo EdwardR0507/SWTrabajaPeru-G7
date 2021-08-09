@@ -24,4 +24,4 @@ describe("NestedList", () => {
     button.simulate("click")
     expect(open.props("in")).toBe(true)
   })
-});
+}); 

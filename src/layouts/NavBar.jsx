@@ -19,7 +19,7 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import Avatar from "@material-ui/core/Avatar";
 import theme from "../themes/themes";
 import SideBar from "../layouts/Sidebar/SideBar";
-import ContactModal from "../components/Modals/ContactModal";
+
 const StyledNavBar = withStyles({
   root: {
     background: theme.palette.primary.main,
