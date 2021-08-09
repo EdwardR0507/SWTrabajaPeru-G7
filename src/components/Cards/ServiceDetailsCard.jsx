@@ -6,8 +6,8 @@ import CardHeader from "@material-ui/core/CardHeader";
 import CardMedia from "@material-ui/core/CardMedia";
 import Rating from "@material-ui/lab/Rating";
 import theme from "../../themes/themes";
-import { Divider, Grid, Box, Typography } from "@material-ui/core";
 import ContactEmployeeModal from "../Modals/ContactEmployeeModal";
+import { Divider, Grid, Box, Typography } from "@material-ui/core";
 
 /*Declaramos los estilos que se van a usar por cada componente*/
 /*Declaramos el estilo del card*/
@@ -93,7 +93,11 @@ const ServiceDetailsCard = (props) => {
         </Grid>
         <Grid item xs={12} sm={4}>
           <Box mt={1} mr={2}>
-            <ContactEmployeeModal />
+            <ContactEmployeeModal
+              service={service}
+              token={props.token}
+              user={props.user}
+            />
           </Box>
         </Grid>
       </Grid>
@@ -111,5 +115,4 @@ const ServiceDetailsCard = (props) => {
     <div>Cargando..</div>
   );
 };
-
 export default ServiceDetailsCard;

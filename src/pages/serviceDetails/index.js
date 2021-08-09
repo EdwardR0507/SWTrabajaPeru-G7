@@ -46,7 +46,7 @@ const ServiceDetails = () => {
       "OBTAIN_SERVICE",
       data
     ).then((res) => {
-      console.log("res[0] de obtain service");
+      console.log("get:");
       console.log(res[0]);
       setService(res[0]);
     });
@@ -69,7 +69,11 @@ const ServiceDetails = () => {
         {/*Usamos grid para dividir las los dos cards*/}
         {console.log(user)}
         <Grid container xs={12} sm={8} spacing={12}>
-          <ServiceDetailsCard service={service} />
+          <ServiceDetailsCard
+            service={service}
+            token={state?.token}
+            user={user}
+          />
         </Grid>
         <Grid container xs={12} sm={4} spacing={12}>
           <WorkerCard user={user} />

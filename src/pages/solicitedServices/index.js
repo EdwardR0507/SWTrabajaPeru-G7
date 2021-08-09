@@ -49,8 +49,10 @@ const SolicitedServices = () => {
   }, [state?.token]);
 
   useEffect(() => {
-    fetchData(state?.token, "GET", "service-auth", "GET_MY_SERVICES")
+    fetchData(state?.token, "GET", "solicitud-auth", "GET_SOLICITUDES")
       .then((res) => {
+        console.log("res data service:");
+        console.log(res);
         setServiceData(res);
       })
       .catch((err) => {
@@ -65,12 +67,10 @@ const SolicitedServices = () => {
   return user ? (
     <>
       <NavBar user={user} token={state?.token} />
-      <HeadingBar before={"TRABAJADOR"} after={"SERVICIOS SOLICITADOS"} />
+      <HeadingBar before={"TRABAJADOR"} after={"SOLICITUDES"} />
       <Container>
         <Container className={classes.container}>
-          <Typography className={classes.typography}>
-            Servicios Solicitados
-          </Typography>
+          <Typography className={classes.typography}>Solicitudes</Typography>
           <Button
             variant="contained"
             color="primary"
@@ -82,7 +82,11 @@ const SolicitedServices = () => {
         </Container>
         <Grid container justifycontent="center" aligncontent="center">
           <Box mt={3} ml={"auto"} mr={"auto"}>
-            <TableServices serviceData={serviceData} />
+            <TableServices
+              getToken={state?.token}
+              serviceData={serviceData}
+              getUser={user}
+            />
           </Box>
         </Grid>
       </Container>

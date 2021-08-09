@@ -45,6 +45,7 @@ const DialogDelete = ({ handleDelete, cat_nombre }) => {
       <Button
         variant="contained"
         endIcon={<DeleteIcon />}
+        role="open-button"
         className={classes.button}
         onClick={handleClickOpen}
       >
@@ -53,6 +54,7 @@ const DialogDelete = ({ handleDelete, cat_nombre }) => {
       <Dialog
         open={open}
         disableScrollLock
+        role="close-button"
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
