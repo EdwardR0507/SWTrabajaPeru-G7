@@ -17,4 +17,10 @@ describe("<SignUp></SignUp>", () => {
     const wrapper = shallow(<SignUp />);
     expect(wrapper.containsMatchingElement(<NavBar></NavBar>)).toBe(true);
   });
+  it('handleClose test', () => {
+    const wrapper = shallow(<SignUp />);
+    const button = wrapper.find({ role: "close" });
+    button.simulate("click");
+    expect(wrapper.state().open).toBe(false)
+  })
 });
