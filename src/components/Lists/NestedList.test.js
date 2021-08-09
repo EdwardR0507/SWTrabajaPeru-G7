@@ -9,4 +9,4 @@ describe("NestedList", () => {
     const wrapper = shallow(<NestedList />);
     expect(wrapper).toMatchSnapshot()
   });
-});
+}); 
