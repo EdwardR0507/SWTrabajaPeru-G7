@@ -4,17 +4,25 @@ import "@testing-library/jest-dom/extend-expect";
 import { render } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 import { createMount } from "@material-ui/core/test-utils";
-import ContactEmployeeModal from "./ContactEmployeeModal";
+import ContactModal from "./ContactModal";
 import PrimaryButton from "../Buttons/PrimaryButton"
 import { Modal } from "@material-ui/core";
 import SecondaryButton from "../Buttons/SecondaryButton";
 import { shallow } from "enzyme/build";
 /*Renderizado del componente ContactModal*/
-describe("<ContactEmployeeModal />", () => {
-    it('render "ContactEmployeeModal"', () => {
-        const wrapper = shallow(<ContactEmployeeModal />);
-        expect(wrapper).toMatchSnapshot()
-      });
+describe("<ContactModal />", () => {
+  const name = "Test";
+  let component;
+  let componentMount = createMount();
+  act(() => {
+    component = componentMount(<ContactModal />);
+  });
+  beforeEach(() => {
+    component = render(<ContactModal name={name} />);
+  });
+  test("renders ContactModal", () => {
+    component.getByText(name);
+  });
   
   /* 
   it("should render modal window with TAC content", done => {
@@ -46,18 +54,18 @@ describe("<ContactEmployeeModal />", () => {
     done();
   });
   */
-  it('renders without crashing ContactEmployeeModal', () => {
+  it('renders without crashing ContactModal', () => {
     const 
         handleClose = jest.fn(),
         handleOpen = jest.fn(),
         open = jest.fn();
 
-    const component = shallow(<ContactEmployeeModal
+    const component = shallow(<ContactModal
       open={open}
       handleOpen={handleOpen}
       handleClose={handleClose} />);
 
-     component.find('PrimaryButton[name="+SOLICITAR"]').simulate('click');
+     component.find('PrimaryButton[name="Ver Más"]').simulate('click');
      expect(handleOpen).toHaveBeenCalledTimes(0);
      component.find('SecondaryButton[name="CANCELAR"]').simulate('click');
      expect(handleClose).toHaveBeenCalledTimes(1);
