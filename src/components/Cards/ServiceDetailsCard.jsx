@@ -52,7 +52,7 @@ const Boxes = withStyles({
 })(Box);
 /*Declaramos la función principal*/
 const ServiceDetailsCard = (props) => {
-  const [service, setService] = useState();
+  const [service, setService] = useState({});
 
   useEffect(() => {
     setService(props.service);
