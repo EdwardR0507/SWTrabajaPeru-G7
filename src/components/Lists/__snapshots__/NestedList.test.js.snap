@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NestedList render "NestedList" 1`] = `ShallowWrapper {}`;

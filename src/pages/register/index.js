@@ -355,6 +355,7 @@ const SignUp = () => {
             <Snackbar
               open={open}
               autoHideDuration={6000}
+              role="close"
               onClose={handleClose}
               anchorOrigin={{
                 vertical: "bottom",

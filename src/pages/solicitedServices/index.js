@@ -6,7 +6,6 @@ import {
   Typography,
   Grid,
   Box,
-  Button,
   makeStyles,
 } from "@material-ui/core/";
 import TableServices from "../../layouts/Tables/TableServices";
@@ -19,13 +18,10 @@ const useStyles = makeStyles(() => ({
     lineHeigth: "2.25em",
     fontStyle: "normal",
     fontWeigth: "400",
-  },
-  container: {
     marginTop: "1%",
     paddingLeft: "9%",
-    display: "flex",
-    alignItems: "center",
   },
+
   button: {
     marginLeft: "20%",
   },
@@ -60,26 +56,12 @@ const SolicitedServices = () => {
       });
   }, [state?.token]);
 
-  const handleFilter = () => {
-    console.log("filter");
-  };
-
   return user ? (
     <>
       <NavBar user={user} token={state?.token} />
-      <HeadingBar before={"TRABAJADOR"} after={"SOLICITUDES"} />
+      <HeadingBar before={"TRABAJADOR"} after={"MIS SOLICITUDES"} />
       <Container>
-        <Container className={classes.container}>
-          <Typography className={classes.typography}>Solicitudes</Typography>
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.button}
-            onClick={handleFilter}
-          >
-            Filtrar
-          </Button>
-        </Container>
+        <Typography className={classes.typography}>Mis Solicitudes</Typography>
         <Grid container justifycontent="center" aligncontent="center">
           <Box mt={3} ml={"auto"} mr={"auto"}>
             <TableServices

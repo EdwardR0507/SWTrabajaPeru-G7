@@ -19,7 +19,7 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import Avatar from "@material-ui/core/Avatar";
 import theme from "../themes/themes";
 import SideBar from "../layouts/Sidebar/SideBar";
-import ContactModal from "../components/Modals/ContactModal";
+import NotificationList from "../components/Lists/NotificationList";
 const StyledNavBar = withStyles({
   root: {
     background: theme.palette.primary.main,
@@ -98,13 +98,14 @@ const NavBar = (props) => {
             <SearchField placeholder="Buscar Cliente o Servicio" />
             <>
               <StyledIconButton>
-                <ContactModal name={"Luis Alarcon"} />
+                <NotificationList token={props.token} history={history} />
               </StyledIconButton>
               <IconButton onClick={handleClick}>
                 <Avatar />
               </IconButton>
               <StyledMenu
                 id="customized-menu"
+                role="close"
                 anchorEl={anchorEl}
                 keepMounted
                 disableScrollLock

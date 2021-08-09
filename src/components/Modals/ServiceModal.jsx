@@ -254,6 +254,7 @@ const ServiceModal = ({
       {mood === "Agregar" ? (
         <Button
           variant="contained"
+          role="open"
           color="primary"
           className={classes.button}
           onClick={handleOpen}
@@ -277,6 +278,7 @@ const ServiceModal = ({
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         className={classes.modal}
+        role="close"
         open={open}
         onClose={handleClose}
         disableScrollLock
@@ -314,7 +316,6 @@ const ServiceModal = ({
                             required: true,
                           })}
                           onChange={handleSelect}
-                          className={classes.selectEmpty}
                         >
                           {list.map((el) => (
                             <MenuItem key={el.cat_id} value={el.cat_nombre}>

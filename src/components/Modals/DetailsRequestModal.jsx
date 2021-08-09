@@ -9,10 +9,13 @@ import {
   Backdrop,
   Fade,
   Select,
+  MenuItem,
 } from "@material-ui/core/";
 import PrimaryButton from "../Buttons/PrimaryButton";
 import SecondaryButton from "../Buttons/SecondaryButton";
 import theme from "../../themes/themes";
+import FormError from "../../components/Errors/FormError";
+import { useForm } from "react-hook-form";
 import { fetchData } from "../../services/services";
 const useStyles = makeStyles(() => ({
   //Estilos para la customización del modal
@@ -59,7 +62,12 @@ const useStyles = makeStyles(() => ({
 const ManajeS = ({ serviceData, getToken, solId }) => {
   // Variable para customizar los componentes
   const classes = useStyles();
-
+  const {
+    handleSubmit,
+    register,
+    reset,
+    formState: { errors },
+  } = useForm();
   // Estado para controlar la apertura y cierre de los modales
   const [open, setOpen] = useState(false);
   const [service, setService] = useState([]);
@@ -71,7 +79,7 @@ const ManajeS = ({ serviceData, getToken, solId }) => {
     setToken(getToken);
   }, [serviceData, getToken]);
 
-  // Función para abrir el modal
+  // Función para abrir el modal y para ver detalles de la solicitud
   const handleOpen = () => {
     const id = service.filter((el) => el.sol_id === solId)[0].sol_id;
     console.log("EL ID");
@@ -91,18 +99,32 @@ const ManajeS = ({ serviceData, getToken, solId }) => {
 
   // Función para cerrar el modal
   const handleClose = () => {
+    reset();
     setOpen(false);
   };
 
-  const handleSelect = (e) => {
-    console.log(e.target.value);
+  // Envío de datos y cambiar el estado de la solicitud
+  const onSubmit = (datos, e) => {
+    const id_sol = service.filter((el) => el.sol_id === solId)[0].sol_id;
+    const data = { sol_id: id_sol, sol_estado: datos.sol_estado };
+    e.preventDefault();
+    console.log("datos que se envían:");
+    console.log(data);
+    fetchData(token, "POST", "solicitud-auth", "CHANGE_SOLICITUD_STATE", data)
+      .then((res) => {
+        console.log("res cambio de estado:");
+        console.log(res);
+        window.location.replace("");
+      })
+      .then(() => {
+        setOpen(false);
+      });
   };
 
   return detailReq ? (
     <>
       <SecondaryButton
-        className={classes.button}
-        // Funcion para abrir modal
+      role="open"
         onClick={handleOpen}
         variant="contained"
         color="primary"
@@ -114,6 +136,7 @@ const ManajeS = ({ serviceData, getToken, solId }) => {
         aria-describedby="transition-modal-description"
         className={classes.modal}
         open={open}
+        role="close"
         onClose={handleClose}
         disableScrollLock
         closeAfterTransition
@@ -124,7 +147,7 @@ const ManajeS = ({ serviceData, getToken, solId }) => {
       >
         <Fade in={open}>
           <div className={classes.paper}>
-            <form className={classes.form}>
+            <form className={classes.form} role="submit" onSubmit={handleSubmit(onSubmit)}>
               <Typography className={classes.title} variant="h5">
                 DETALLE DE LA SOLICITUD
               </Typography>
@@ -163,16 +186,21 @@ const ManajeS = ({ serviceData, getToken, solId }) => {
                 Estado del Servicio
               </InputLabel>
               <Select
-                labelId="demo-simple-select-required-label"
-                id="demo-simple-select-required"
                 name="sol_estado"
-                onChange={handleSelect}
-                className={classes.selectEmpty}
+                {...register("sol_estado", {
+                  required: true,
+                })}
+                defaultValue={detailReq.sol_estado}
               >
-                <option>Pendiente</option>
-                <option>Finalizado</option>
+                <MenuItem value="Rechazado">Rechazado</MenuItem>
+                <MenuItem value="Pendiente">Pendiente</MenuItem>
+                <MenuItem value="Finalizado">Finalizado</MenuItem>
               </Select>
-              {/* Contenedor de botones finales */}
+              <FormError
+                condition={errors.sol_estado?.type === "required"}
+                content="Debe seleccionar un estado"
+              />
+
               <Container className={classes.containerButton}>
                 <SecondaryButton
                   variant="contained"
@@ -183,9 +211,9 @@ const ManajeS = ({ serviceData, getToken, solId }) => {
                 <Container className={classes.wrapp}>
                   <PrimaryButton
                     type="submit"
-                    name="ENVIAR"
+                    name="ACEPTAR"
                     className={classes.submit}
-                    onClick={handleClose}
+                    onClick={handleSubmit(onSubmit)}
                   ></PrimaryButton>
                 </Container>
               </Container>
