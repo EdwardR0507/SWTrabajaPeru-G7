@@ -107,11 +107,12 @@ const InfoService = ({ cat_id, cat_nombre, ser_descripcion }) => {
             <ServiceModal
               cat_nombre={cat_nombre}
               serviceDescription={descriptionService}
+              role="edit"
               handleEdit={handleEdit}
               modalDescription={modalDescription}
               setDescriptionService={setDescriptionService}
             />
-            <DialogDelete cat_nombre={cat_nombre} handleDelete={handleDelete} />
+            <DialogDelete role="delete" cat_nombre={cat_nombre} handleDelete={handleDelete} />
           </StyledContainerButtons>
         </Container>
       ) : null}

@@ -135,6 +135,7 @@ const ManajeS = ({ serviceData, getToken, solId }) => {
         aria-describedby="transition-modal-description"
         className={classes.modal}
         open={open}
+        role="Modal"
         onClose={handleClose}
         disableScrollLock
         closeAfterTransition
