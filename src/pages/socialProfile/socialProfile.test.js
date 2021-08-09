@@ -26,7 +26,7 @@ beforeAll(() => {serverUser.listen(); serverService.listen()})
 afterEach(() => {serverUser.resetHandlers(); serverService.resetHandlers()})
 afterAll(() => {serverUser.close(); serverService.close()})
 
-  it('render `ProfileCard`', () => {
+  it('render `SocialProfile', () => {
     const wrapper = shallow(<SocialProfile />);
     expect(wrapper).toMatchSnapshot()
   });

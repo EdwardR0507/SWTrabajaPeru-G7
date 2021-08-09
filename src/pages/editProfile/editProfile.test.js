@@ -3,7 +3,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { rest } from 'msw'
 import { setupServer } from 'msw/node';
-import { render, cleanup, fireEvent } from '@testing-library/react';
+import { render, screen,cleanup, fireEvent } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Router, Route } from 'react-router-dom';
 import GlobalEnv from '../../GlobalEnv';
@@ -28,7 +28,7 @@ describe("<EditProfile></EditProfile>", () => {
     </Router>);
     expect(wrapper).toMatchSnapshot()
   });
-  it('show Cargando', () => {
+  it('show Cargando in editprofile', () => {
     const history = createMemoryHistory();
     server.use(
       rest.post(`${GlobalEnv.host}/user-auth`, (req, res, ctx) => {
@@ -40,7 +40,7 @@ describe("<EditProfile></EditProfile>", () => {
   </Router>);
   expect(screen.getByRole('edit-profile')).toHaveTextContent('Cargando...')
   })
-  it('show Cargando', () => {
+  it('show 500', () => {
     const history = createMemoryHistory();
     server.use(
       rest.post(`${GlobalEnv.host}/user-auth`, (req, res, ctx) => {
