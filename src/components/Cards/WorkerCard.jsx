@@ -22,12 +22,12 @@ const StyledCardMedia = withStyles({
   },
 })(CardMedia);
 
-const WorkerCard = ({ user }) => {
+const WorkerCard = (props) => {
   const [worker, setWorker] = useState();
 
   useEffect(() => {
-    setWorker(user);
-  }, [user]);
+    setWorker(props.worker);
+  }, []);
 
   return worker ? (
     <StyledCard>
