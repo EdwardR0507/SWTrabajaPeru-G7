@@ -20,7 +20,7 @@ describe("ServiceModal", () => {
 
   beforeAll(() => {
     server.listen();
-  });
+  }); 
   afterEach(() => {
     server.resetHandlers();
   });
