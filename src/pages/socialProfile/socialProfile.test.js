@@ -3,9 +3,9 @@ import React from "react";
 import { shallow } from 'enzyme';
 import { rest } from 'msw'
 import { setupServer } from 'msw/node';
-import { render, screen, cleanup } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
-import { Router, Route } from 'react-router-dom';
+import { Router } from 'react-router-dom';
 import GlobalEnv from '../../GlobalEnv';
 import SocialProfile from "./index";
 import ProfileCard from "../../components/Cards/ProfileCard";

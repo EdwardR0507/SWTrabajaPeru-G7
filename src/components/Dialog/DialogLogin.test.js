@@ -1,8 +1,6 @@
 /*Importamos las librerias principales*/
 import React from "react";
-import { render, screen, fireEvent } from '@testing-library/react';
-import { renderHook } from '@testing-library/react-hooks'
-import { shallow, mount } from "enzyme";
+import { shallow } from "enzyme";
 import DialogLogin from "./DialogLogin";
 
 describe("<DialogLogin />", () => {

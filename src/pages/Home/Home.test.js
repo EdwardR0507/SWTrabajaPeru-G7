@@ -3,10 +3,9 @@ import '@testing-library/jest-dom/extend-expect';
 import {rest} from 'msw'
 import {setupServer} from 'msw/node'
 import { shallow } from 'enzyme';
-import { act } from 'react-dom/test-utils';
-import { render, cleanup } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
-import { Router, Route } from 'react-router-dom'
+import { Router } from 'react-router-dom'
 import GlobalEnv from '../../GlobalEnv';
 import Home from './index';  
 

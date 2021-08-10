@@ -2,7 +2,6 @@ import React from "react";
 import '@testing-library/jest-dom/extend-expect';
 import { shallow } from "enzyme";
 import NotificationList from "./NotificationList";
-import { Router } from "react-router-dom";
 
 describe("<NotificationList />", () => {
     it('render "NotificationList"', () => {
