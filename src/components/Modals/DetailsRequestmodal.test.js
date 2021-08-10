@@ -32,7 +32,6 @@ describe("<DetailsRequestModal />", () => {
               return res(ctx.status(500))
             }),
           )
-        const { getByRole } = render(<DetailsRequestModal />);
         expect(screen.getByRole('solicited-services')).toHaveTextContent('Cargando...')
     })
     it("test HanldeClose", () => {

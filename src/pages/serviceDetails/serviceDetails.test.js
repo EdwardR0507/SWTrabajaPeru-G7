@@ -3,7 +3,6 @@ import React from "react";
 import { shallow } from 'enzyme';
 import { rest } from 'msw'
 import { setupServer } from 'msw/node';
-import { RenderOptions} from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 import GlobalEnv from '../../GlobalEnv';

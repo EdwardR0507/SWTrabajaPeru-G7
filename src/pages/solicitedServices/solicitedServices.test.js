@@ -7,7 +7,6 @@ import { render, screen} from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Router} from 'react-router-dom';
 import GlobalEnv from '../../GlobalEnv';
-import SocialProfile from "./index";
 import SolicitedServices from "./index";
 /*Renderizado de la vista Social Profile*/
 describe("<SolicitedServices></SolicitedServices>", () => {

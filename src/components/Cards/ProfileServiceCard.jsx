@@ -29,7 +29,6 @@ const useStyles = makeStyles((theme) => ({
 /*Declaramos la función principal*/
 export default function ProfileServiceCard(props) {
   const classes = useStyles();
-  //const [value, setValue] = useState(2);
   const [service, setService] = useState();
 
   useEffect(() => {

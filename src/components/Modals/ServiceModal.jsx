@@ -110,7 +110,7 @@ const useStyles = makeStyles(() => ({
     width: "214px",
   },
 }));
-/*Props: objeto, setter del objeto, modo que tomará el modal que se va a renderizar (agregar o editar, basta con pasarle Agregar), nombre del servicio, descripción del servicio, método para poder editar el servicio*/
+/*Props: objeto, setter del objeto, modo que tomará el modal que se va a renderizar (agregar o editar, basta con pasarle Agregar), nombre del servicio, descripción del servicio, función para poder editar el servicio*/
 const ServiceModal = ({
   data,
   setData,

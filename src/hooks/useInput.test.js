@@ -3,7 +3,6 @@ import React from "react";
 import '@testing-library/jest-dom/extend-expect';
 import { shallow } from "enzyme";
 import UseInput from "./useInput";
-import { useInput } from "./useInput";
 import { render,  fireEvent } from '@testing-library/react';
 /*Renderizado del componente UseInput*/
 describe("UseInput", () => {

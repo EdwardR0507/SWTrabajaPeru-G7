@@ -47,6 +47,5 @@ describe("<SignIn></SignIn>", () => {
       fireEvent.click(getByRole("button"))
     })
     expect(localStorage.getItem("User_session")) ;
-    ;
   })
 });
