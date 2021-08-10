@@ -59,7 +59,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 /**/
-const ManajeS = ({ serviceData, getToken, solId }) => {
+const DetailsRequestModal = ({ serviceData, getToken, solId }) => {
   // Variable para customizar los componentes
   const classes = useStyles();
   const {
@@ -124,7 +124,7 @@ const ManajeS = ({ serviceData, getToken, solId }) => {
   return detailReq ? (
     <>
       <SecondaryButton
-      role="open"
+        role="open"
         onClick={handleOpen}
         variant="contained"
         color="primary"
@@ -147,7 +147,7 @@ const ManajeS = ({ serviceData, getToken, solId }) => {
       >
         <Fade in={open}>
           <div className={classes.paper}>
-            <form className={classes.form} role="submit" onSubmit={handleSubmit(onSubmit)}>
+            <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
               <Typography className={classes.title} variant="h5">
                 DETALLE DE LA SOLICITUD
               </Typography>
@@ -227,4 +227,4 @@ const ManajeS = ({ serviceData, getToken, solId }) => {
     <div>Cargando...</div>
   );
 };
-export default ManajeS;
+export default DetailsRequestModal;
