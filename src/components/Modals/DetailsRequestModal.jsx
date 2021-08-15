@@ -14,9 +14,8 @@ import {
 import PrimaryButton from "../Buttons/PrimaryButton";
 import SecondaryButton from "../Buttons/SecondaryButton";
 import theme from "../../themes/themes";
-import FormError from "../../components/Errors/FormError";
-import { useForm } from "react-hook-form";
 import { fetchData } from "../../services/services";
+import RatingModal from "../Modals/RatingModal";
 const useStyles = makeStyles(() => ({
   //Estilos para la customización del modal
   modal: {
@@ -59,22 +58,18 @@ const useStyles = makeStyles(() => ({
   },
 }));
 /**/
-const DetailsRequestModal = ({ serviceData, getToken, solId }) => {
+const DetailsRequestModal = ({ serviceData, getToken, solId, solEstado }) => {
   // Variable para customizar los componentes
   const classes = useStyles();
-  const {
-    handleSubmit,
-    register,
-    reset,
-    formState: { errors },
-  } = useForm();
+
   // Estado para controlar la apertura y cierre de los modales
   const [open, setOpen] = useState(false);
   const [service, setService] = useState([]);
   const [token, setToken] = useState("");
   const [detailReq, setDetailReq] = useState({});
-
+  const [solState, setSolState] = useState("");
   useEffect(() => {
+    console.log("service data:", serviceData);
     setService(serviceData);
     setToken(getToken);
   }, [serviceData, getToken]);
@@ -99,30 +94,85 @@ const DetailsRequestModal = ({ serviceData, getToken, solId }) => {
 
   // Función para cerrar el modal
   const handleClose = () => {
-    reset();
+    setSolState("");
     setOpen(false);
   };
 
-  // Envío de datos y cambiar el estado de la solicitud
-  const onSubmit = (datos, e) => {
-    const id_sol = service.filter((el) => el.sol_id === solId)[0].sol_id;
-    const data = { sol_id: id_sol, sol_estado: datos.sol_estado };
-    e.preventDefault();
-    console.log("datos que se envían:");
-    console.log(data);
-    fetchData(token, "POST", "solicitud-auth", "CHANGE_SOLICITUD_STATE", data)
-      .then((res) => {
-        console.log("res cambio de estado:");
-        console.log(res);
-        window.location.replace("");
-      })
-      .then(() => {
-        setOpen(false);
-      });
+  const handleChange = (e) => {
+    setSolState(e.target.value);
   };
 
-  return detailReq ? (
-    <>
+  const conditionalRender = () => {
+    return solEstado !== "Finalizado" ? (
+      <>
+        <InputLabel id="demo-simple-select-required-label">
+          Estado del Servicio
+        </InputLabel>
+        <Select
+          name="sol_estado"
+          value={solState}
+          defaultValue={detailReq.sol_estado}
+          onChange={handleChange}
+        >
+          <MenuItem value="Rechazado">Rechazado</MenuItem>
+          <MenuItem value="Pendiente">Pendiente</MenuItem>
+        </Select>
+
+        <Container className={classes.containerButton}>
+          <SecondaryButton
+            variant="contained"
+            name="CANCELAR"
+            onClick={handleClose}
+          ></SecondaryButton>
+
+          <Container className={classes.wrapp}>
+            <PrimaryButton
+              type="submit"
+              name="ACEPTAR"
+              className={classes.submit}
+              onClick={handleSubmit}
+            ></PrimaryButton>
+          </Container>
+        </Container>
+      </>
+    ) : (
+      <Container className={classes.containerButton}>
+        <SecondaryButton
+          variant="contained"
+          name="Cerrar"
+          onClick={handleClose}
+        ></SecondaryButton>
+      </Container>
+    );
+  };
+
+  // Envío de datos y cambiar el estado de la solicitud
+  const handleSubmit = () => {
+    const id_sol = service.filter((el) => el.sol_id === solId)[0].sol_id;
+    const data = { sol_id: id_sol, sol_estado: solState };
+    console.log("datos que se envían:");
+    console.log(data);
+    fetchData(
+      token,
+      "POST",
+      "solicitud-auth",
+      "CHANGE_SOLICITUD_STATE",
+      data
+    ).then(() => {
+      window.location.replace("");
+      setOpen(false);
+    });
+  };
+
+  const ModalRender = () => {
+    return solEstado === "Pendiente" ? (
+      <RatingModal
+        solId={solId}
+        token={token}
+        person={"CLIENTE"}
+        solEstado={solEstado}
+      />
+    ) : (
       <SecondaryButton
         role="open"
         onClick={handleOpen}
@@ -130,7 +180,12 @@ const DetailsRequestModal = ({ serviceData, getToken, solId }) => {
         color="primary"
         name="Ver más"
       ></SecondaryButton>
+    );
+  };
 
+  return detailReq ? (
+    <>
+      {ModalRender()}
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -147,7 +202,7 @@ const DetailsRequestModal = ({ serviceData, getToken, solId }) => {
       >
         <Fade in={open}>
           <div className={classes.paper}>
-            <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
+            <form className={classes.form} onSubmit={handleSubmit}>
               <Typography className={classes.title} variant="h5">
                 DETALLE DE LA SOLICITUD
               </Typography>
@@ -182,41 +237,7 @@ const DetailsRequestModal = ({ serviceData, getToken, solId }) => {
                 rowsMax={3}
                 variant="filled"
               />
-              <InputLabel id="demo-simple-select-required-label">
-                Estado del Servicio
-              </InputLabel>
-              <Select
-                name="sol_estado"
-                {...register("sol_estado", {
-                  required: true,
-                })}
-                defaultValue={detailReq.sol_estado}
-              >
-                <MenuItem value="Rechazado">Rechazado</MenuItem>
-                <MenuItem value="Pendiente">Pendiente</MenuItem>
-                <MenuItem value="Finalizado">Finalizado</MenuItem>
-              </Select>
-              <FormError
-                condition={errors.sol_estado?.type === "required"}
-                content="Debe seleccionar un estado"
-              />
-
-              <Container className={classes.containerButton}>
-                <SecondaryButton
-                  variant="contained"
-                  name="CANCELAR"
-                  onClick={handleClose}
-                ></SecondaryButton>
-
-                <Container className={classes.wrapp}>
-                  <PrimaryButton
-                    type="submit"
-                    name="ACEPTAR"
-                    className={classes.submit}
-                    onClick={handleSubmit(onSubmit)}
-                  ></PrimaryButton>
-                </Container>
-              </Container>
+              {conditionalRender()}
               {/*Fin Contenedor de botones finales */}
             </form>
           </div>

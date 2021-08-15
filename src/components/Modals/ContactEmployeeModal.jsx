@@ -104,10 +104,10 @@ const ContactEmployeeModal = ({ service, token, user }) => {
     ).then((res) => {
       console.log("respuesta creación de solicitud:");
       console.log(res);
+      e.preventDefault();
+      reset();
+      handleClose();
     });
-    e.preventDefault();
-    reset();
-    handleClose();
   };
 
   return (

@@ -206,20 +206,19 @@ const ServiceModal = ({
       datos
     ).then((res) => {
       console.log(res);
+      handleClose();
+      setDescription("");
+      const id = list.filter((el) => el.cat_nombre === name)[0].cat_id;
+      setData([
+        ...data,
+        {
+          cat_id: id,
+          cat_nombre: name,
+          ser_descripcion: description,
+        },
+      ]);
+      reset();
     });
-
-    handleClose();
-    setDescription("");
-    const id = list.filter((el) => el.cat_nombre === name)[0].cat_id;
-    setData([
-      ...data,
-      {
-        cat_id: id,
-        cat_nombre: name,
-        ser_descripcion: description,
-      },
-    ]);
-    reset();
   };
 
   // Función para editar un servicio
@@ -241,9 +240,9 @@ const ServiceModal = ({
       newData
     ).then((res) => {
       console.log(res);
+      handleClose();
+      reset();
     });
-    handleClose();
-    reset();
   };
 
   // Función para comprobar la existencia de un nombre por defecto en el select que se encuentra deshabilitado (en editModal)

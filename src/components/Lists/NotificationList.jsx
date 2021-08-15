@@ -1,9 +1,17 @@
 import { React, useState, useEffect, useRef } from "react";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import { Grow, Paper, Popper, makeStyles, MenuList } from "@material-ui/core/";
+import {
+  Grow,
+  Paper,
+  Popper,
+  makeStyles,
+  MenuList,
+  ClickAwayListener,
+  MenuItem,
+} from "@material-ui/core/";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import ClientCard from "../Cards/ClientCard";
 import { fetchData } from "../../services/services";
+import { useHistory } from "react-router";
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -22,6 +30,8 @@ const NotificationList = ({ token }) => {
   const [solData, setSolData] = useState([]);
   const anchorRef = useRef(null);
 
+  const history = useHistory();
+
   const handleToggle = () => {
     setOpen(!open);
     fetchData(token, "GET", "solicitud-auth", "GET_NOTIFICATIONS").then(
@@ -31,6 +41,10 @@ const NotificationList = ({ token }) => {
         setSolData(res);
       }
     );
+  };
+
+  const handlePush = () => {
+    history.push({ pathname: "/solicitedServices", state: { token: token } });
   };
 
   const handleClose = () => {
@@ -53,7 +67,7 @@ const NotificationList = ({ token }) => {
     prevOpen.current = open;
   }, [open]);
 
-  return (
+  return solData ? (
     <div className={classes.root}>
       <div>
         <NotificationsIcon
@@ -61,7 +75,6 @@ const NotificationList = ({ token }) => {
           style={{ color: "#FFF" }}
           role="toggle"
           ref={anchorRef}
-          aria-controls={open ? "menu-list-grow" : undefined}
           aria-haspopup="true"
           onClick={handleToggle}
         />
@@ -91,12 +104,13 @@ const NotificationList = ({ token }) => {
                   >
                     {solData.map((el) => {
                       return (
-                        <ClientCard
-                          imagen={el.us_imagen}
-                          nombres={el.us_nombres}
-                          servicio={el.cat_nombre}
-                          token={token}
-                        />
+                        <MenuItem className={classes.card} onClick={handlePush}>
+                          <ClientCard
+                            imagen={el.us_imagen}
+                            nombres={el.us_nombres}
+                            servicio={el.cat_nombre}
+                          />
+                        </MenuItem>
                       );
                     })}
                   </MenuList>
@@ -107,6 +121,8 @@ const NotificationList = ({ token }) => {
         </Popper>
       </div>
     </div>
+  ) : (
+    <div>Cargando...</div>
   );
 };
 export default NotificationList;

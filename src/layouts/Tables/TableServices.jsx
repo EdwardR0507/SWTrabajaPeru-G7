@@ -69,7 +69,9 @@ export default function TableServices({ getToken, serviceData }) {
             <StyledTableCell align="center">Servicio</StyledTableCell>
             <StyledTableCell align="center">Descripción</StyledTableCell>
             <StyledTableCell align="center">Cliente</StyledTableCell>
-            <StyledTableCell align="center">Calificación</StyledTableCell>
+            <StyledTableCell align="center">
+              Calificación del trato del cliente
+            </StyledTableCell>
             <StyledTableCell align="center">Estado</StyledTableCell>
             <StyledTableCell align="center">
               Gestión de Solicitud
@@ -78,9 +80,7 @@ export default function TableServices({ getToken, serviceData }) {
         </TableHead>
         <TableBody>
           {dataTable.map((row) => (
-            <StyledTableRow
-              key={`${serviceData[0].sol_id}-${serviceData[0].cat_nombre}`}
-            >
+            <StyledTableRow key={`${row.sol_id}-${row.cat_nombre}`}>
               <StyledTableCell align="center">
                 <div className={classes.containerImage}>
                   <img
@@ -98,11 +98,16 @@ export default function TableServices({ getToken, serviceData }) {
               </StyledTableCell>
               <StyledTableCell align="center">{row.us_nombres}</StyledTableCell>
               <StyledTableCell align="center">
-                <Rating name="read-only" value={row.ser_calificacion} />
+                <Rating
+                  name="read-only"
+                  value={parseInt(row.us_calificacion)}
+                  readOnly
+                />
               </StyledTableCell>
               <StyledTableCell align="center">{row.sol_estado}</StyledTableCell>
               <StyledTableCell align="center">
                 <DetailsRequestModal
+                  solEstado={row.sol_estado}
                   getToken={getToken}
                   serviceData={serviceData}
                   solId={row.sol_id}
