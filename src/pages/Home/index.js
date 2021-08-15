@@ -52,17 +52,28 @@ const StyledLink = withStyles({
 })(Link);
 
 export default function Home() {
+  //Estados de ejecución de los botones
+  const [before, setBefore] = useState(false);
+  const [after, setAfter] = useState(false);
+
+  //Paginación 
+  const [pageServices, setPageServices] = useState(0);
+  const [pageWorkers, setPageWorkers] = useState(0);
+
   const location = useLocation();
   const [services, setServices] = useState();
+  // Servicios que se reenderizan por página
   const [workers, setWorkers] = useState();
+  // Trabajadores que se renderizan por página
   const [user, setUser] = useState();
   const state = location.state;
 
   useEffect(() => {
-    fetchUserData("GET", "service", "GET_HOME_SERVICES").then((res) => {
-      console.log(res);
-      setServices(res);
-    });
+    fetchUserData("GET", "service", "GET_HOME_SERVICES")
+      .then((res) => {
+        console.log(res);
+        setServices(res);
+      })
   }, []);
 
   useEffect(() => {
@@ -87,6 +98,34 @@ export default function Home() {
     }
   }, [state?.token]);
 
+  const handleServiceBefore = () => {
+    if (pageServices > 0) {
+      setBefore(true);
+      setPageServices(pageServices - 1)
+    }
+  }
+
+  const handleWorkerBefore = () => {
+    if (pageWorkers > 0) {
+      setBefore(true);
+      setPageWorkers(pageWorkers - 1)
+    }
+  }
+
+  const handleServiceAfter = () => {
+    if (pageServices < services.length - 1) {
+      setAfter(true);
+      setPageServices(pageServices + 1)
+    }
+  }
+
+  const handleWorkerAfter = () => {
+    if (pageWorkers < workers.length - 1) {
+      setAfter(true);
+      setPageWorkers(pageWorkers + 1)
+    }
+  }
+
   return workers && services ? (
     <>
       {user ? <NavBar user={user} token={state?.token} /> : <NavBar />}
@@ -101,24 +140,25 @@ export default function Home() {
           {/*Extensión a cantidad de servicios aleatorios
                        con información desde la base de datos 
                        Iterar y por cada info generar un service card*/}
-          <StyledIconButton>
+          <StyledIconButton onClick={handleServiceBefore}>
             <NavigateBeforeIcon />
           </StyledIconButton>
-          {services?.map((service) =>
-            user ? (
-              <ServiceCard
-                key={`${service.us_id}-${service.cat_id}`}
-                service={service}
-                token={state?.token}
-              />
-            ) : (
-              <ServiceCard
-                key={`${service.us_id}-${service.cat_id}`}
-                service={service}
-              />
-            )
-          )}
-          <StyledIconButton>
+          {services?.slice(pageServices, pageServices + 2)
+            .map((service) =>
+              user ? (
+                <ServiceCard
+                  key={`${service.us_id}-${service.cat_id}`}
+                  service={service}
+                  token={state?.token}
+                />
+              ) : (
+                <ServiceCard
+                  key={`${service.us_id}-${service.cat_id}`}
+                  service={service}
+                />
+              )
+            )}
+          <StyledIconButton onClick={handleServiceAfter}>
             <NavigateNextIcon />
           </StyledIconButton>
         </StyledCardContainer>
@@ -129,13 +169,14 @@ export default function Home() {
           </StyledLink>
         </StyledContentContainer>
         <StyledCardContainer>
-          <StyledIconButton>
+          <StyledIconButton onClick={handleWorkerBefore}>
             <NavigateBeforeIcon />
           </StyledIconButton>
-          {workers?.map((worker) => (
-            <WorkerCard worker={worker} />
-          ))}
-          <StyledIconButton>
+          {workers?.slice(pageWorkers, pageWorkers + 2)
+            .map((worker) => (
+              <WorkerCard worker={worker} />
+            ))}
+          <StyledIconButton onClick={handleWorkerAfter}>
             <NavigateNextIcon />
           </StyledIconButton>
         </StyledCardContainer>

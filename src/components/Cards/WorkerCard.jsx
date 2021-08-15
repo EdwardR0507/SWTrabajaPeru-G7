@@ -26,8 +26,6 @@ const WorkerCard = (props) => {
   const [worker, setWorker] = useState({});
 
   useEffect(() => {
-    console.log("worker card:");
-    console.log(props.worker);
     setWorker(props.worker);
   }, [props.worker]);
 
