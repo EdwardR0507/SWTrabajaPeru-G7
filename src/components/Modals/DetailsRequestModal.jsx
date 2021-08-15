@@ -69,7 +69,6 @@ const DetailsRequestModal = ({ serviceData, getToken, solId, solEstado }) => {
   const [detailReq, setDetailReq] = useState({});
   const [solState, setSolState] = useState("");
   useEffect(() => {
-    console.log("service data:", serviceData);
     setService(serviceData);
     setToken(getToken);
   }, [serviceData, getToken]);
@@ -77,14 +76,9 @@ const DetailsRequestModal = ({ serviceData, getToken, solId, solEstado }) => {
   // Función para abrir el modal y para ver detalles de la solicitud
   const handleOpen = () => {
     const id = service.filter((el) => el.sol_id === solId)[0].sol_id;
-    console.log("EL ID");
-    console.log(id);
     const newData = { sol_id: id };
-    console.log(newData);
     fetchData(token, "POST", "solicitud-auth", "OBTAIN_SOLICITUD", newData)
       .then((res) => {
-        console.log("res");
-        console.log(res);
         setDetailReq(res[0]);
       })
       .then(() => {
@@ -150,8 +144,6 @@ const DetailsRequestModal = ({ serviceData, getToken, solId, solEstado }) => {
   const handleSubmit = () => {
     const id_sol = service.filter((el) => el.sol_id === solId)[0].sol_id;
     const data = { sol_id: id_sol, sol_estado: solState };
-    console.log("datos que se envían:");
-    console.log(data);
     fetchData(
       token,
       "POST",

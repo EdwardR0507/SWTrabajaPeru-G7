@@ -63,7 +63,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const RatingModal = ({ person, token, solId, solEstado }) => {
+const RatingModal = ({ person, token, solId }) => {
   // Variable para customizar los componentes
   const classes = useStyles();
 
@@ -73,7 +73,6 @@ const RatingModal = ({ person, token, solId, solEstado }) => {
 
   // Función para abrir el modal
   const handleOpen = () => {
-    console.log("solestado: ", solEstado);
     const data = { sol_id: solId, sol_estado: "Finalizado" };
     fetchData(
       token,
@@ -100,9 +99,9 @@ const RatingModal = ({ person, token, solId, solEstado }) => {
     e.preventDefault();
     const newData = {
       id_solicitud: solId,
-      calif_tra: rating,
+      calif_cli: rating,
     };
-    fetchData(token, "POST", "solicitud-auth", "RATE_SERVICE", newData).then(
+    fetchData(token, "POST", "solicitud-auth", "RATE_CLIENT", newData).then(
       () => {
         handleClose();
       }

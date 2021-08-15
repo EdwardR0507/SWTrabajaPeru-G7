@@ -52,8 +52,6 @@ export default function TableServices({ getToken, serviceData }) {
   const [dataTable, setDataTable] = useState([]);
 
   useEffect(() => {
-    console.log("service data");
-    console.log(serviceData);
     setDataTable(serviceData);
   }, [serviceData]);
   return (
