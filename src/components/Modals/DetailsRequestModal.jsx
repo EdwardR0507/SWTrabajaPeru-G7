@@ -58,7 +58,13 @@ const useStyles = makeStyles(() => ({
   },
 }));
 /**/
-const DetailsRequestModal = ({ serviceData, getToken, solId, solEstado }) => {
+const DetailsRequestModal = ({
+  mood,
+  serviceData,
+  getToken,
+  solId,
+  solEstado,
+}) => {
   // Variable para customizar los componentes
   const classes = useStyles();
 
@@ -79,6 +85,7 @@ const DetailsRequestModal = ({ serviceData, getToken, solId, solEstado }) => {
     const newData = { sol_id: id };
     fetchData(token, "POST", "solicitud-auth", "OBTAIN_SOLICITUD", newData)
       .then((res) => {
+        console.log("obtain datos del cliente: ", res);
         setDetailReq(res[0]);
       })
       .then(() => {
@@ -97,7 +104,7 @@ const DetailsRequestModal = ({ serviceData, getToken, solId, solEstado }) => {
   };
 
   const conditionalRender = () => {
-    return solEstado !== "Finalizado" ? (
+    return solEstado === "Aceptado" ? (
       <>
         <InputLabel id="demo-simple-select-required-label">
           Estado del Servicio
@@ -109,7 +116,7 @@ const DetailsRequestModal = ({ serviceData, getToken, solId, solEstado }) => {
           onChange={handleChange}
         >
           <MenuItem value="Rechazado">Rechazado</MenuItem>
-          <MenuItem value="Pendiente">Pendiente</MenuItem>
+          <MenuItem value="Aceptado">Aceptado</MenuItem>
         </Select>
 
         <Container className={classes.containerButton}>
@@ -136,6 +143,12 @@ const DetailsRequestModal = ({ serviceData, getToken, solId, solEstado }) => {
           name="Cerrar"
           onClick={handleClose}
         ></SecondaryButton>
+        <RatingModal
+          mood={mood}
+          solId={solId}
+          token={token}
+          solEstado={solEstado}
+        />
       </Container>
     );
   };
@@ -156,15 +169,8 @@ const DetailsRequestModal = ({ serviceData, getToken, solId, solEstado }) => {
     });
   };
 
-  const ModalRender = () => {
-    return solEstado === "Pendiente" ? (
-      <RatingModal
-        solId={solId}
-        token={token}
-        person={"CLIENTE"}
-        solEstado={solEstado}
-      />
-    ) : (
+  return detailReq ? (
+    <>
       <SecondaryButton
         role="open"
         onClick={handleOpen}
@@ -172,12 +178,6 @@ const DetailsRequestModal = ({ serviceData, getToken, solId, solEstado }) => {
         color="primary"
         name="Ver más"
       ></SecondaryButton>
-    );
-  };
-
-  return detailReq ? (
-    <>
-      {ModalRender()}
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"

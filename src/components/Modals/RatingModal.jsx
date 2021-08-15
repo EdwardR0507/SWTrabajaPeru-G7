@@ -6,7 +6,6 @@ import {
   Modal,
   Backdrop,
   Fade,
-  Button,
   Grid,
 } from "@material-ui/core/";
 import PrimaryButton from "../Buttons/PrimaryButton";
@@ -54,6 +53,7 @@ const useStyles = makeStyles(() => ({
   wrapp: {
     width: "200px",
   },
+  button: {},
   start: {
     display: "flex",
     flexDirection: "column",
@@ -63,7 +63,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const RatingModal = ({ person, token, solId }) => {
+const RatingModal = ({ mood, token, solId }) => {
   // Variable para customizar los componentes
   const classes = useStyles();
 
@@ -71,7 +71,7 @@ const RatingModal = ({ person, token, solId }) => {
   const [open, setOpen] = useState(false);
   const [rating, setRating] = useState(0);
 
-  // Función para abrir el modal
+  /* Función para cambiar estado de la solicitud 
   const handleOpen = () => {
     const data = { sol_id: solId, sol_estado: "Finalizado" };
     fetchData(
@@ -83,12 +83,15 @@ const RatingModal = ({ person, token, solId }) => {
     ).then(() => {
       setOpen(true);
     });
+  };*/
+
+  const handleOpen = () => {
+    setOpen(true);
   };
 
   // Función para cerrar el modal
   const handleClose = () => {
     setOpen(false);
-    window.location.replace("");
   };
 
   const handleChange = (e, value) => {
@@ -101,7 +104,7 @@ const RatingModal = ({ person, token, solId }) => {
       id_solicitud: solId,
       calif_cli: rating,
     };
-    fetchData(token, "POST", "solicitud-auth", "RATE_CLIENT", newData).then(
+    fetchData(token, "POST", "solicitud-auth", "RATE_SERVICE", newData).then(
       () => {
         handleClose();
       }
@@ -110,15 +113,14 @@ const RatingModal = ({ person, token, solId }) => {
 
   return (
     <>
-      <Button
-        className={classes.button}
-        // Funcion para abrir modal
-        onClick={handleOpen}
-        variant="contained"
-        color="primary"
-      >
-        FINALIZAR
-      </Button>
+      <Container className={classes.wrapp}>
+        <PrimaryButton
+          type="submit"
+          name="Calificar"
+          className={classes.submit}
+          onClick={handleOpen}
+        ></PrimaryButton>
+      </Container>
 
       <Modal
         aria-labelledby="transition-modal-title"
@@ -136,10 +138,15 @@ const RatingModal = ({ person, token, solId }) => {
         <Fade in={open}>
           <div className={classes.paper}>
             <form className={classes.form} onSubmit={handleSubmit}>
-              <Typography className={classes.title} variant="h5">
-                CALIFICAR {person}
-              </Typography>
-
+              {mood === "CLIENT" ? (
+                <Typography className={classes.title} variant="h5">
+                  CALIFICAR SERVICIO
+                </Typography>
+              ) : (
+                <Typography className={classes.title} variant="h5">
+                  CALIFICAR CLIENTE
+                </Typography>
+              )}
               <Grid
                 className={classes.start}
                 container

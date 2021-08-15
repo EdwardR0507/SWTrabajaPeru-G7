@@ -47,7 +47,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function TableServices({ getToken, serviceData }) {
+export default function TableServices({ mood, getToken, serviceData }) {
   const classes = useStyles();
   const [dataTable, setDataTable] = useState([]);
 
@@ -66,10 +66,21 @@ export default function TableServices({ getToken, serviceData }) {
             <StyledTableCell align="center">Imagen</StyledTableCell>
             <StyledTableCell align="center">Servicio</StyledTableCell>
             <StyledTableCell align="center">Descripción</StyledTableCell>
-            <StyledTableCell align="center">Cliente</StyledTableCell>
-            <StyledTableCell align="center">
-              Calificación del trato del cliente
-            </StyledTableCell>
+            {mood === "CLIENT" ? (
+              <>
+                <StyledTableCell align="center">Trabajador</StyledTableCell>
+                <StyledTableCell align="center">
+                  Calificación del servicio
+                </StyledTableCell>
+              </>
+            ) : (
+              <>
+                <StyledTableCell align="center">Cliente</StyledTableCell>
+                <StyledTableCell align="center">
+                  Calificación del trato del cliente
+                </StyledTableCell>
+              </>
+            )}
             <StyledTableCell align="center">Estado</StyledTableCell>
             <StyledTableCell align="center">
               Gestión de Solicitud
@@ -109,6 +120,7 @@ export default function TableServices({ getToken, serviceData }) {
                   getToken={getToken}
                   serviceData={serviceData}
                   solId={row.sol_id}
+                  mood={mood}
                 />
               </StyledTableCell>
             </StyledTableRow>

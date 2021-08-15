@@ -9,7 +9,7 @@ import ManageServices from "./pages/ManageServices";
 import SocialProfile from "./pages/socialProfile";
 import ServiceDetails from "./pages/serviceDetails";
 import SolicitedServices from "./pages/solicitedServices";
-
+import HiredServices from "./pages/HiredServices";
 const GlobalStyles = withStyles({
   "@global": {
     "html, body": {
@@ -35,6 +35,7 @@ function App() {
           <Route path="/myAccount" component={SocialProfile} />
           <Route path="/serviceDetails" component={ServiceDetails} />
           <Route path="/solicitedServices" component={SolicitedServices} />
+          <Route path="/hiredServices" component={HiredServices} />
 
           <Route path="*" component={() => <h1>404 NOT FOUND</h1>} />
         </Switch>
