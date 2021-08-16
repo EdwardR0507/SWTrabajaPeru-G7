@@ -144,6 +144,8 @@ const ServiceModal = ({
 
   const [catSelect, setCatSelect] = useState([]);
 
+  const [fileUrl, setFileUrl] = useState(null);
+
   const [list, setList] = useState([
     {
       cat_id: null,
@@ -197,6 +199,7 @@ const ServiceModal = ({
   //Función que crea un nuevo componente InfoService y envía datos al backend
   const onSubmit = async (datos, e) => {
     console.log(datos);
+
     e.preventDefault();
     fetchData(
       state?.token,
@@ -244,6 +247,27 @@ const ServiceModal = ({
       reset();
     });
   };
+
+  const processImage = async (event) => {
+    const imageFile = event.target.files[0];
+    const imageUrl = URL.createObjectURL(imageFile);
+    const file = document.querySelector("#imageService").files[0];
+    const result = await toBase64(file).catch((e) => Error(e));
+    if (result instanceof Error) {
+      console.log("Error: ", result.message);
+      return;
+    }
+    setFileUrl(imageUrl);
+    return result;
+  };
+
+  const toBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
 
   // Función para comprobar la existencia de un nombre por defecto en el select que se encuentra deshabilitado (en editModal)
   const existName = (e) => (e ? e : "");
@@ -348,10 +372,25 @@ const ServiceModal = ({
                   </Container>
                   {/*Aquí irá la imagen del servicio, primero importamos la imagen y luego la colocamos dentro del src, no olvidar poner el alt */}
                   <Container className={classes.containerImage}>
-                    <IconButton aria-label="add" className={classes.addIcon}>
+                    <IconButton
+                      aria-label="add"
+                      className={classes.addIcon}
+                      component="label"
+                    >
+                      <input
+                        type="file"
+                        acept="image/*"
+                        id="imageService"
+                        onChange={processImage}
+                        hidden
+                      />
                       <AddCircleIcon />
                     </IconButton>
-                    {/*<img src={imgService} alt={"Servicio"} className={classes.image} />*/}
+                    <img
+                      src={fileUrl}
+                      alt={"Servicio"}
+                      className={classes.image}
+                    />
                   </Container>
                 </Container>
                 <Container className={classes.containerButton}>
@@ -410,10 +449,24 @@ const ServiceModal = ({
                   </Container>
                   {/*Aquí irá la imagen del servicio, primero importamos la imagen y luego la colocamos dentro del src, no olvidar poner el alt */}
                   <Container className={classes.containerImage}>
-                    <IconButton aria-label="add" className={classes.addIcon}>
+                    <IconButton
+                      aria-label="add"
+                      className={classes.addIcon}
+                      component="label"
+                    >
+                      <input
+                        type="file"
+                        acept="image/*"
+                        onChange={processImage}
+                        hidden
+                      />
                       <AddCircleIcon />
                     </IconButton>
-                    {/*<img src={imgService} alt={"Servicio"} className={classes.image} />*/}
+                    <img
+                      src={fileUrl}
+                      alt={"Servicio"}
+                      className={classes.image}
+                    />
                   </Container>
                 </Container>
                 <Container className={classes.containerButton}>
