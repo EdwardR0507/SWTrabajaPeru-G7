@@ -113,14 +113,14 @@ export default function Home() {
   }
 
   const handleServiceAfter = () => {
-    if (pageServices < services.length - 1) {
+    if (pageServices < services.length - 4) {
       setAfter(true);
       setPageServices(pageServices + 1)
     }
   }
 
   const handleWorkerAfter = () => {
-    if (pageWorkers < workers.length - 1) {
+    if (pageWorkers < workers.length - 4) {
       setAfter(true);
       setPageWorkers(pageWorkers + 1)
     }
@@ -143,7 +143,7 @@ export default function Home() {
           <StyledIconButton onClick={handleServiceBefore}>
             <NavigateBeforeIcon />
           </StyledIconButton>
-          {services?.slice(pageServices, pageServices + 2)
+          {services?.slice(pageServices, pageServices + 3)
             .map((service) =>
               user ? (
                 <ServiceCard
@@ -172,7 +172,7 @@ export default function Home() {
           <StyledIconButton onClick={handleWorkerBefore}>
             <NavigateBeforeIcon />
           </StyledIconButton>
-          {workers?.slice(pageWorkers, pageWorkers + 2)
+          {workers?.slice(pageWorkers, pageWorkers + 3)
             .map((worker) => (
               <WorkerCard worker={worker} />
             ))}
