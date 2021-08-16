@@ -21,31 +21,45 @@ const StyledContainer = withStyles({
 /*Declaramos la función principal*/
 export default function SocialProfile() {
   const [user, setUser] = useState({});
-  const [services, setServices] = useState();
+  const [services, setServices] = useState([]);
   const location = useLocation();
   const state = location.state;
 
   //Información del usuario
   useEffect(() => {
+    console.log(location)
     console.log(state);
     //Cambiar post por get cuando se arregle
-    fetchData(state?.token, "GET", "user-auth", "GET_MY_USER")
-      .then((res) => {
-        console.log(res);
-        setUser(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (location.pathname === "/myAccount") {
+      fetchData(state?.token, "GET", "user-auth", "GET_MY_USER")
+        .then((res) => {
+          console.log(res);
+          setUser(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+    else if (location.pathname === "/profile") {
+      fetchData(state?.token, "POST", "user-auth", "OBTAIN_USER", state?.idUser).then(
+        (res) => {
+          console.log(res);
+          setUser(res[0])
+        }
+      );
+    }
   }, [state]);
 
   useEffect(() => {
-    fetchData(state?.token, "GET", "service-auth", "GET_MY_SERVICES").then(
-      (res) => {
-        console.log(res);
-        setServices(res);
-      }
-    );
+    if (location.pathname === "/myAccount") {
+      fetchData(state?.token, "GET", "service-auth", "GET_MY_SERVICES").then(
+        (res) => {
+          console.log(res);
+          setServices(res);
+        }
+      );
+    }
+ //Falta agregar la obtención de servicios de otro usuario
   }, [state?.token]);
 
   return user && services ? (

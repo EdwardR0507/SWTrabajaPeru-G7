@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { useHistory } from "react-router";
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import InputBase from "@material-ui/core/InputBase";
@@ -7,7 +8,8 @@ import SearchIcon from "@material-ui/icons/Search";
 import theme from "../../themes/themes";
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-
+import axios from 'axios';
+import GlobalEnv from '../../GlobalEnv';
 
 const StyledSearchField = withStyles({
   root: {
@@ -44,14 +46,38 @@ const StyledAutocomplete = withStyles({
   },
 })(Autocomplete);
 
-const Prueba1 = [
-  { Name: 'Arian Zambrano', Servicio: "Albañilería" },
-  { Name: 'Gianela Malqui', Servicio: "Secretaría" },
-  { Name: 'Jose Caicedo', Servicio: "Limpieza" },
-];
-
-
 const SearchField = (props) => {
+  const [searched, setSearched] = useState([])
+  const history = useHistory();
+
+  const handleChange = (evt) => {
+    axios
+      .post(`${GlobalEnv.host}/user-auth`, {
+        command: "SEARCH",
+        transaction: evt.target.value
+      }, {
+        headers: {
+          authorization: `Bearer ${props.token}`,
+        },
+      })
+      .then((res) => {
+        console.log(res.data.resultado)
+        setSearched(res.data.resultado)
+      })
+  }
+
+  const redirect = (evt, value) => {
+    evt.preventDefault();
+    if (value.includes("user")) {
+      history.push({
+        pathname: "/profile",
+        search: `email=${value.extra}`,
+        state: { token: props.token,
+                 idUser: value["id user"] }
+      })
+    }
+  }
+
   return (
     <StyledSearchField>
       <IconButton>
@@ -60,10 +86,10 @@ const SearchField = (props) => {
       <StyledAutocomplete
 
         /*Mostrará info de service y user */
-        options={Prueba1.map((option) => option.Name)}
-        
+        options={searched.map((option) => `${option.nombre} - ${option.type}`)}
+        onChange={redirect}
         renderInput={(params) => (
-          <TextField {...params} width="577px"
+          <TextField {...params} width="577px" onChange={handleChange}
           />
         )}
       />
