@@ -33,10 +33,10 @@ function App() {
           <Route path="/manageservices" component={ManageServices} />
           <Route path="/servicedetails" component={ServiceDetails} />
           <Route path="/myAccount" component={SocialProfile} />
+          <Route path="/profile" component={SocialProfile} />
           <Route path="/serviceDetails" component={ServiceDetails} />
           <Route path="/solicitedServices" component={SolicitedServices} />
           <Route path="/hiredServices" component={HiredServices} />
-
           <Route path="*" component={() => <h1>404 NOT FOUND</h1>} />
         </Switch>
       </BrowserRouter>

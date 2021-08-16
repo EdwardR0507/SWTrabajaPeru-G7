@@ -95,7 +95,7 @@ const NavBar = (props) => {
               <SideBar />
               <img src={logo} alt="logo" width="56px" height="50px" />
             </>
-            <SearchField placeholder="Buscar Cliente o Servicio" />
+            <SearchField placeholder="Buscar Cliente o Servicio" token={props.token}/>
             <>
               <StyledIconButton>
                 <NotificationList token={props.token} history={history} />
