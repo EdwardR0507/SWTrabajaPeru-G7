@@ -47,7 +47,6 @@ const ServiceDetails = () => {
       "OBTAIN_SERVICE",
       data
     ).then((res) => {
-      console.log("get:");
       console.log(res[0]);
       setService(res[0]);
     });

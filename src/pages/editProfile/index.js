@@ -94,23 +94,22 @@ export default function EditProfile() {
     setOpen(false);
   };
 
-  console.log(distrito);
-
   useEffect(() => {
     console.log(state);
     //Cambiar post por get cuando se arregle
     fetchData(state?.token, "GET", "user-auth", "GET_MY_USER")
       .then((res) => {
+        console.log(res)
+        setUser(res);
         reset({
           us_nombres: res.us_nombres,
           us_celular: res.us_celular,
         });
-        setUser(res);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [reset, state]);
+  }, [reset]);
 
   const onSubmit = async (userEdited, event) => {
     event.preventDefault();
@@ -163,23 +162,30 @@ export default function EditProfile() {
             </Grid>
 
             <Grid container item xs={6} spacing={3}>
-              <TextField
-                variant="filled"
-                fullWidth
-                label="Nombres y Apellidos"
-                name="us_nombres"
-                defaultValue={user.us_nombres}
-                type="text"
-                {...register("us_nombres", { required: true, maxLength: 40 })}
-              />
-              <FormError
-                condition={errors.us_nombres?.type === "required"}
-                content="Ingrese nombres y apellidos"
-              />
-              <FormError
-                condition={errors.us_nombres?.type === "maxLength"}
-                content="Nombre no válido"
-              />
+              {user.us_nombres ? (
+                <>
+                  <TextField
+                    variant="filled"
+                    fullWidth
+                    label="Nombres y Apellidos"
+                    name="us_nombres"
+                    defaultValue={user.us_nombres}
+                    type="text"
+                    {...register("us_nombres", { required: true, maxLength: 40 })}
+                  />
+                  <FormError
+                    condition={errors.us_nombres?.type === "required"}
+                    content="Ingrese nombres y apellidos"
+                  />
+                  <FormError
+                    condition={errors.us_nombres?.type === "maxLength"}
+                    content="Nombre no válido"
+                  />
+                </>
+              ) : (
+                <div>Cargando....</div>
+              )}
+
             </Grid>
 
             <Grid container item xs={6} spacing={3}>
@@ -223,26 +229,32 @@ export default function EditProfile() {
             </Grid>
 
             <Grid container item xs={6} spacing={3}>
-              <TextField
-                fullWidth
-                variant="filled"
-                id="phoneNumber"
-                label="Teléfono"
-                name="us_celular"
-                defaultValue={user.us_celular}
-                {...register("us_celular", {
-                  required: true,
-                  pattern: /^^9\d{8}$/,
-                })}
-              />
-              <FormError
-                condition={errors.us_celular?.type === "required"}
-                content="Ingrese celular"
-              />
-              <FormError
-                condition={errors.us_correo?.type === "pattern"}
-                content="Número de celular no válido"
-              />
+              {user.us_celular ? (
+                <>
+                  <TextField
+                    fullWidth
+                    variant="filled"
+                    id="phoneNumber"
+                    label="Teléfono"
+                    name="us_celular"
+                    defaultValue={user.us_celular}
+                    {...register("us_celular", {
+                      required: true,
+                      pattern: /^^9\d{8}$/,
+                    })}
+                  />
+                  <FormError
+                    condition={errors.us_celular?.type === "required"}
+                    content="Ingrese celular"
+                  />
+                  <FormError
+                    condition={errors.us_correo?.type === "pattern"}
+                    content="Número de celular no válido"
+                  />
+                </>
+              ) : (
+                <div>Cargando...</div>
+              )}
             </Grid>
 
             <Grid container item xs={6} spacing={3}>
