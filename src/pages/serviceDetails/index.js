@@ -26,6 +26,7 @@ const ServiceDetails = () => {
   const [user, setUser] = useState({});
   const state = location.state;
   const [service, setService] = useState({});
+  const [worker, setWorker] = useState();
   /*Declaramos lo que nos va a retornar la funcion*/
   //Información del usuario
   useEffect(() => {
@@ -57,11 +58,12 @@ const ServiceDetails = () => {
     fetchData(state?.token, "POST", "user-auth", "OBTAIN_USER", newData).then(
       (res) => {
         console.log(res);
+        setWorker(res[0])
       }
     );
   }, [state?.token, state?.us_id]);
 
-  return service ? (
+  return service && worker ? (
     <>
       {/*Declaramos el navbar que es el encabezado de la page*/}
       <NavBar user={user} />
@@ -76,7 +78,7 @@ const ServiceDetails = () => {
           />
         </Grid>
         <Grid container xs={12} sm={4} spacing={12}>
-          <WorkerCard user={user} />
+          <WorkerCard worker={worker} />
         </Grid>
       </StyledContainer>
     </>

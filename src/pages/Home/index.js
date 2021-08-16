@@ -42,15 +42,6 @@ const StyledH2 = withStyles({
   },
 })(Typography);
 
-const StyledLink = withStyles({
-  root: {
-    color: theme.palette.primary.main,
-    marginRight: "40px",
-    marginTop: "12px",
-    letterSpacing: "0.18px",
-  },
-})(Link);
-
 export default function Home() {
   //Estados de ejecución de los botones
   const [before, setBefore] = useState(false);
@@ -132,9 +123,6 @@ export default function Home() {
       <Container role="home">
         <StyledContentContainer>
           <StyledH2 variant="h2">Servicios</StyledH2>
-          <StyledLink href="#">
-            <Typography variant="h5">VER TODO</Typography>
-          </StyledLink>
         </StyledContentContainer>
         <StyledCardContainer>
           {/*Extensión a cantidad de servicios aleatorios
@@ -164,9 +152,6 @@ export default function Home() {
         </StyledCardContainer>
         <StyledContentContainer>
           <StyledH2 variant="h2">Trabajadores</StyledH2>
-          <StyledLink href="#">
-            <Typography variant="h5">VER TODO</Typography>
-          </StyledLink>
         </StyledContentContainer>
         <StyledCardContainer>
           <StyledIconButton onClick={handleWorkerBefore}>

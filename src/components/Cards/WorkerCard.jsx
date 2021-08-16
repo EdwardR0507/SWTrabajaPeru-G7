@@ -9,7 +9,7 @@ import Typography from "@material-ui/core/Typography";
 
 const StyledCard = withStyles({
   root: {
-    width: "25%",
+    width: "300px",
     margin: "20px auto",
   },
 })(Card);

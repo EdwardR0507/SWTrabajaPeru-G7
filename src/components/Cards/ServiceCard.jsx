@@ -16,7 +16,7 @@ import theme from "../../themes/themes";
 
 const StyledCard = withStyles({
   root: {
-    width: "25%",
+    width: "300px",
     margin: "20px auto",
   },
 })(Card);
