@@ -135,7 +135,7 @@ const DetailsRequestModal = ({
   };
 
   const conditionalRender = () => {
-    return solEstado === "Solicitado" ? (
+    return solEstado === "Solicitado" && mood !== "CLIENT" ? (
       <>
         <InputLabel id="demo-simple-select-required-label">
           Estado del Servicio
@@ -221,8 +221,8 @@ const DetailsRequestModal = ({
     });
   };
 
-  const isAcepted = () => {
-    return solEstado === "Aceptado" ? (
+  const btnState = () => {
+    return mood === "CLIENT" && solEstado === "Aceptado" ? (
       <Container className={classes.wrapp}>
         <PrimaryButton
           type="submit"
@@ -231,20 +231,6 @@ const DetailsRequestModal = ({
           onClick={handleEnded}
         ></PrimaryButton>
       </Container>
-    ) : (
-      <SecondaryButton
-        role="open"
-        onClick={handleOpen}
-        variant="contained"
-        color="primary"
-        name="Ver más"
-      ></SecondaryButton>
-    );
-  };
-
-  const btnState = () => {
-    return mood === "CLIENT" ? (
-      isAcepted()
     ) : (
       <SecondaryButton
         role="open"

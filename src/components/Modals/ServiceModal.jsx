@@ -146,6 +146,8 @@ const ServiceModal = ({
 
   const [fileUrl, setFileUrl] = useState(null);
 
+  const [dataImage, setDataImage] = useState(null);
+
   const [list, setList] = useState([
     {
       cat_id: null,
@@ -181,6 +183,7 @@ const ServiceModal = ({
   const handleClose = () => {
     reset();
     setOpen(false);
+    console.log("data: ", dataImage);
   };
 
   // Función para capturar lo que se escriba la descripción
@@ -199,14 +202,18 @@ const ServiceModal = ({
   //Función que crea un nuevo componente InfoService y envía datos al backend
   const onSubmit = async (datos, e) => {
     console.log(datos);
-
+    const newData = {
+      ...datos,
+      ser_image: dataImage,
+    };
+    console.log("datos enviados: ", newData);
     e.preventDefault();
     fetchData(
       state?.token,
       "POST",
       "service-auth",
       "CREATE_SERVICE",
-      datos
+      newData
     ).then((res) => {
       console.log(res);
       handleClose();
@@ -258,7 +265,7 @@ const ServiceModal = ({
       return;
     }
     setFileUrl(imageUrl);
-    return result;
+    setDataImage(result);
   };
 
   const toBase64 = (file) =>
