@@ -66,7 +66,7 @@ const ServiceDetails = () => {
   return service && worker ? (
     <>
       {/*Declaramos el navbar que es el encabezado de la page*/}
-      <NavBar user={user} />
+      <NavBar user={user} token={state?.token} />
       <StyledContainer>
         {/*Usamos grid para dividir las los dos cards*/}
         {console.log(user)}

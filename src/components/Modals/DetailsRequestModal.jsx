@@ -74,6 +74,7 @@ const DetailsRequestModal = ({
   const [token, setToken] = useState("");
   const [detailReq, setDetailReq] = useState({});
   const [solState, setSolState] = useState("");
+  const [reqState, setReqState] = useState(false);
   useEffect(() => {
     setService(serviceData);
     setToken(getToken);
@@ -83,14 +84,29 @@ const DetailsRequestModal = ({
   const handleOpen = () => {
     const id = service.filter((el) => el.sol_id === solId)[0].sol_id;
     const newData = { sol_id: id };
-    fetchData(token, "POST", "solicitud-auth", "OBTAIN_SOLICITUD", newData)
-      .then((res) => {
-        console.log("obtain datos del cliente: ", res);
-        setDetailReq(res[0]);
-      })
-      .then(() => {
-        setOpen(true);
-      });
+    mood === "CLIENT"
+      ? fetchData(
+          token,
+          "POST",
+          "solicitud-auth",
+          "OBTAIN_MY_SOLICITUD",
+          newData
+        )
+          .then((res) => {
+            setDetailReq(res[0]);
+            setReqState(res[0].sol_servicio_calificado);
+          })
+          .then(() => {
+            setOpen(true);
+          })
+      : fetchData(token, "POST", "solicitud-auth", "OBTAIN_SOLICITUD", newData)
+          .then((res) => {
+            setDetailReq(res[0]);
+            setReqState(res[0].sol_cliente_calificado);
+          })
+          .then(() => {
+            setOpen(true);
+          });
   };
 
   // Función para cerrar el modal
@@ -103,8 +119,23 @@ const DetailsRequestModal = ({
     setSolState(e.target.value);
   };
 
+  const isRating = () => {
+    return reqState ? null : (
+      <RatingModal
+        mood={mood}
+        solId={solId}
+        token={token}
+        solEstado={solEstado}
+      />
+    );
+  };
+
+  const conditionalRating = () => {
+    return solEstado === "Finalizado" ? isRating() : null;
+  };
+
   const conditionalRender = () => {
-    return solEstado === "Aceptado" ? (
+    return solEstado === "Solicitado" ? (
       <>
         <InputLabel id="demo-simple-select-required-label">
           Estado del Servicio
@@ -143,12 +174,7 @@ const DetailsRequestModal = ({
           name="Cerrar"
           onClick={handleClose}
         ></SecondaryButton>
-        <RatingModal
-          mood={mood}
-          solId={solId}
-          token={token}
-          solEstado={solEstado}
-        />
+        {conditionalRating()}
       </Container>
     );
   };
@@ -169,8 +195,43 @@ const DetailsRequestModal = ({
     });
   };
 
-  return detailReq ? (
-    <>
+  const conditionalDetails = () => {
+    return mood === "CLIENT" ? (
+      <Typography variant="subtitle1" className={classes.subtitle}>
+        DATOS DEL TRABAJADOR
+      </Typography>
+    ) : (
+      <Typography variant="subtitle1" className={classes.subtitle}>
+        DATOS DEL CLIENTE
+      </Typography>
+    );
+  };
+
+  const handleEnded = () => {
+    const id_sol = service.filter((el) => el.sol_id === solId)[0].sol_id;
+    const data = { sol_id: id_sol, sol_estado: "Finalizado" };
+    fetchData(
+      token,
+      "POST",
+      "solicitud-auth",
+      "CHANGE_SOLICITUD_STATE",
+      data
+    ).then(() => {
+      window.location.replace("");
+    });
+  };
+
+  const isAcepted = () => {
+    return solEstado === "Aceptado" ? (
+      <Container className={classes.wrapp}>
+        <PrimaryButton
+          type="submit"
+          name="FINALIZAR"
+          className={classes.submit}
+          onClick={handleEnded}
+        ></PrimaryButton>
+      </Container>
+    ) : (
       <SecondaryButton
         role="open"
         onClick={handleOpen}
@@ -178,6 +239,25 @@ const DetailsRequestModal = ({
         color="primary"
         name="Ver más"
       ></SecondaryButton>
+    );
+  };
+
+  const btnState = () => {
+    return mood === "CLIENT" ? (
+      isAcepted()
+    ) : (
+      <SecondaryButton
+        role="open"
+        onClick={handleOpen}
+        variant="contained"
+        color="primary"
+        name="Ver más"
+      ></SecondaryButton>
+    );
+  };
+  return detailReq ? (
+    <>
+      {btnState()}
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -198,30 +278,27 @@ const DetailsRequestModal = ({
               <Typography className={classes.title} variant="h5">
                 DETALLE DE LA SOLICITUD
               </Typography>
+              {conditionalDetails()}
               <TextField
                 type="text"
-                id="filled-multiline-flexible"
                 label="Nombre y Apellidos"
                 disabled
                 defaultValue={detailReq.us_nombres}
                 variant="filled"
               />
               <TextField
-                id="filled-multiline-flexible"
                 label="Correo Electrónico"
                 disabled
                 defaultValue={detailReq.us_correo}
                 variant="filled"
               />
               <TextField
-                id="filled-multiline-flexible"
-                label="Número Telefónico"
+                label="Celular"
                 disabled
                 variant="filled"
                 defaultValue={detailReq.us_celular}
               />
               <TextField
-                id="filled-multiline-flexible"
                 label="Mensaje"
                 multiline
                 disabled

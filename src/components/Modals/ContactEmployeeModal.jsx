@@ -82,6 +82,7 @@ const ContactEmployeeModal = ({ service, token, user }) => {
     console.log("user data nombres");
     console.log(user.us_nombres);
     setOpen(true);
+    reset();
   };
 
   // Función para cerrar el modal

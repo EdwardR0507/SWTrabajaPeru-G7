@@ -168,7 +168,7 @@ const SignUp = () => {
                   fullWidth
                   variant="filled"
                   id="phoneNumber"
-                  label="Teléfono"
+                  label="Celular"
                   name="us_celular"
                   {...register("us_celular", {
                     required: true,
