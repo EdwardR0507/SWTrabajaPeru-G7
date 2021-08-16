@@ -61,19 +61,37 @@ const SearchField = (props) => {
         },
       })
       .then((res) => {
-        console.log(res.data.resultado)
         setSearched(res.data.resultado)
       })
   }
 
   const redirect = (evt, value) => {
     evt.preventDefault();
-    if (value.includes("user")) {
+    const email = value.split("-")[1];
+    let elementFound = searched.find((el) => el.extra === email);
+    console.log(elementFound)
+    if (elementFound.type === "user") {
       history.push({
         pathname: "/profile",
-        search: `email=${value.extra}`,
-        state: { token: props.token,
-                 idUser: value["id user"] }
+        search: `email=${elementFound.extra}`,
+        state: {
+          token: props.token,
+          idUser: elementFound["id user"]
+        }
+      })
+    }
+    else if (elementFound.type === "service") {
+      const servicio = value.split("-")[0];
+      const usuario = value.split("-")[1];
+      elementFound = searched.find((el)=> el.nombre === servicio && el.extra === usuario)
+      history.push({
+        pathname: "/serviceDetails",
+        search: `user=${elementFound["id user"]}&?service=${elementFound["id extra"]}`,
+        state: {
+          token: props.token,
+          us_id: elementFound["id user"],
+          cat_id: elementFound["id extra"]
+        }
       })
     }
   }
@@ -86,7 +104,7 @@ const SearchField = (props) => {
       <StyledAutocomplete
 
         /*Mostrará info de service y user */
-        options={searched.map((option) => `${option.nombre} - ${option.type}`)}
+        options={searched.map((option) => `${option.nombre}-${option.extra}`)}
         onChange={redirect}
         renderInput={(params) => (
           <TextField {...params} width="577px" onChange={handleChange}
