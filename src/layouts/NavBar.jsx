@@ -20,6 +20,7 @@ import Avatar from "@material-ui/core/Avatar";
 import theme from "../themes/themes";
 import SideBar from "../layouts/Sidebar/SideBar";
 import NotificationList from "../components/Lists/NotificationList";
+import image from "../assets/worker.jpg";
 const StyledNavBar = withStyles({
   root: {
     background: theme.palette.primary.main,
@@ -95,13 +96,16 @@ const NavBar = (props) => {
               <SideBar />
               <img src={logo} alt="logo" width="56px" height="50px" />
             </>
-            <SearchField placeholder="Buscar Cliente o Servicio" token={props.token}/>
+            <SearchField
+              placeholder="Buscar Cliente o Servicio"
+              token={props.token}
+            />
             <>
               <StyledIconButton>
                 <NotificationList token={props.token} history={history} />
               </StyledIconButton>
               <IconButton onClick={handleClick}>
-                <Avatar />
+                <Avatar src={image} />
               </IconButton>
               <StyledMenu
                 id="customized-menu"

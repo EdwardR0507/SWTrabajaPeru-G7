@@ -13,7 +13,8 @@ import ShareIcon from "@material-ui/icons/Share";
 import Avatar from "@material-ui/core/Avatar";
 import DialogLogin from "../Dialog/DialogLogin";
 import theme from "../../themes/themes";
-
+import image from "../../assets/services.jpg";
+import imageWorker from "../../assets/worker.jpg";
 const StyledCard = withStyles({
   root: {
     width: "300px",
@@ -60,13 +61,13 @@ const ServiceCard = (props) => {
 
   useEffect(() => {
     setService(props.service);
-  }, [])
+  }, []);
 
   return service ? (
     <StyledCard>
       {/*Cambiar los datos por informaciónde la bd*/}
       <CardHeader
-        avatar={<Avatar></Avatar>}
+        avatar={<Avatar src={imageWorker}></Avatar>}
         title={service.cat_nombre}
         subheader={service.us_nombres}
         action={
@@ -75,26 +76,33 @@ const ServiceCard = (props) => {
           </IconButton>
         }
       />
-      <StyledCardMedia image="src/assets/CardTest.jpeg" />
+      <StyledCardMedia image={image} />
       <CardContent>
-        <StyledBody2 variant="body2">
-          {service.ser_descripcion}
-        </StyledBody2>
+        <StyledBody2 variant="body2">{service.ser_descripcion}</StyledBody2>
       </CardContent>
       <StyledCardActions>
         {props.token ? (
-          <StyledButton role="redirect" onClick={() => {
-            history.push({
-              pathname: "/serviceDetails",
-              search: `user=${service.us_correo.split('@')}&?service=${service.cat_id}`,
-              state: {
-                token: props.token,
-                us_id: service.us_id,
-                cat_id: service.cat_id
-              }
-            })
-          }}>Ver Más</StyledButton>
-        ) : (<DialogLogin />)}
+          <StyledButton
+            role="redirect"
+            onClick={() => {
+              history.push({
+                pathname: "/serviceDetails",
+                search: `user=${service.us_correo.split("@")}&?service=${
+                  service.cat_id
+                }`,
+                state: {
+                  token: props.token,
+                  us_id: service.us_id,
+                  cat_id: service.cat_id,
+                },
+              });
+            }}
+          >
+            Ver Más
+          </StyledButton>
+        ) : (
+          <DialogLogin />
+        )}
       </StyledCardActions>
     </StyledCard>
   ) : (

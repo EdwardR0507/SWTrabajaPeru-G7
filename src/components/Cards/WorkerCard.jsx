@@ -6,7 +6,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import Rating from "@material-ui/lab/Rating";
 import Typography from "@material-ui/core/Typography";
-
+import image from "../../assets/worker.jpg";
 const StyledCard = withStyles({
   root: {
     width: "300px",
@@ -31,7 +31,7 @@ const WorkerCard = (props) => {
 
   return worker ? (
     <StyledCard>
-      <StyledCardMedia image="src/assets/CardTest.jpeg" />
+      <StyledCardMedia image={image} />
       <CardContent>
         <Typography variant="h6">{worker.us_nombres}</Typography>
         <Typography variant="body2">

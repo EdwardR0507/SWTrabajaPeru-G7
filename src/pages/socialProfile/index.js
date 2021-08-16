@@ -27,7 +27,7 @@ export default function SocialProfile() {
 
   //Información del usuario
   useEffect(() => {
-    console.log(location)
+    console.log(location);
     console.log(state);
     //Cambiar post por get cuando se arregle
     if (location.pathname === "/myAccount") {
@@ -39,14 +39,17 @@ export default function SocialProfile() {
         .catch((err) => {
           console.log(err);
         });
-    }
-    else if (location.pathname === "/profile") {
-      fetchData(state?.token, "POST", "user-auth", "OBTAIN_USER", state?.idUser).then(
-        (res) => {
-          console.log(res);
-          setUser(res[0])
-        }
-      );
+    } else if (location.pathname === "/profile") {
+      fetchData(
+        state?.token,
+        "POST",
+        "user-auth",
+        "OBTAIN_USER",
+        state?.idUser
+      ).then((res) => {
+        console.log(res);
+        setUser(res[0]);
+      });
     }
   }, [state]);
 
@@ -59,7 +62,7 @@ export default function SocialProfile() {
         }
       );
     }
- //Falta agregar la obtención de servicios de otro usuario
+    //Falta agregar la obtención de servicios de otro usuario
   }, [state?.token]);
 
   return user && services ? (
@@ -73,7 +76,10 @@ export default function SocialProfile() {
           <Grid item xs={8} spacing={3}>
             {services.map((service) => (
               <Box>
-                <ProfileServiceCard service={service}></ProfileServiceCard>
+                <ProfileServiceCard
+                  key={`${service.cat_id} - ${service.cat_nombre}`}
+                  service={service}
+                ></ProfileServiceCard>
               </Box>
             ))}
           </Grid>

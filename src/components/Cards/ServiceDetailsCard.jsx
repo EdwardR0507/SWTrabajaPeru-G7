@@ -8,7 +8,7 @@ import Rating from "@material-ui/lab/Rating";
 import theme from "../../themes/themes";
 import ContactEmployeeModal from "../Modals/ContactEmployeeModal";
 import { Divider, Grid, Box, Typography } from "@material-ui/core";
-
+import image from "../../assets/services.jpg";
 /*Declaramos los estilos que se van a usar por cada componente*/
 /*Declaramos el estilo del card*/
 
@@ -23,6 +23,7 @@ const StyledCard = withStyles({
 const StyledCardMedia = withStyles({
   root: {
     height: "0",
+    margin: "2% 0",
     paddingTop: "41%",
   },
 })(CardMedia);
@@ -65,7 +66,7 @@ const ServiceDetailsCard = (props) => {
         container
         spacing={12}
         alignItems="flex-end"
-        justifyContent="center"
+        justifycontent="center"
       >
         <CardHeader title={service.cat_nombre} />
       </Grid>
@@ -76,7 +77,7 @@ const ServiceDetailsCard = (props) => {
         container
         spacing={12}
         alignItems="flex-end"
-        justifyContent="center"
+        justifycontent="center"
       >
         <Grid item xs={12} sm={8}>
           <Box ml={2}>
@@ -101,13 +102,13 @@ const ServiceDetailsCard = (props) => {
           </Box>
         </Grid>
       </Grid>
-      <StyledCardMedia image="../../assets/CardTest.jpeg" />
-      <Grid container spacing={12} justifyContent="center">
+      <StyledCardMedia image={image} />
+      <Grid container spacing={12} justifycontent="center">
         <Boxes>
           <StyledBody>Descripción</StyledBody>
         </Boxes>
       </Grid>
-      <Grid container spacing={12} justifyContent="center">
+      <Grid container spacing={12} justifycontent="center">
         <StyledBody2>{service.ser_descripcion}</StyledBody2>
       </Grid>
     </StyledCard>

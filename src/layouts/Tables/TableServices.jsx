@@ -9,7 +9,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Rating from "@material-ui/lab/Rating";
 import DetailsRequestModal from "../../components/Modals/DetailsRequestModal";
-
+import image from "../../assets/services.jpg";
 /*Declarando los estilos de la tabla*/
 
 const StyledTableCell = withStyles((theme) => ({
@@ -93,13 +93,7 @@ export default function TableServices({ mood, getToken, serviceData }) {
             <StyledTableRow key={`${row.sol_id}-${row.cat_nombre}`}>
               <StyledTableCell align="center">
                 <div className={classes.containerImage}>
-                  <img
-                    src={
-                      "https://www.azulweb.net/wp-content/uploads/2020/07/El-camino-para-ser-un-desarrollador-web-profesional.jpg"
-                    }
-                    className={classes.image}
-                    alt={"imagen"}
-                  />
+                  <img src={image} className={classes.image} alt={"imagen"} />
                 </div>
               </StyledTableCell>
               <StyledTableCell align="center">{row.cat_nombre}</StyledTableCell>

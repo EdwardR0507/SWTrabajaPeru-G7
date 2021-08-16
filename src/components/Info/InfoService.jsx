@@ -9,7 +9,7 @@ import ServiceModal from "../Modals/ServiceModal";
 import DialogDelete from "../Dialog/DialogDelete";
 import { useLocation } from "react-router";
 import { fetchData } from "../../services/services";
-
+import image from "../../assets/services.jpg";
 const useStyles = makeStyles(() => ({
   root: {
     display: "flex",
@@ -91,8 +91,7 @@ const InfoService = ({ cat_id, cat_nombre, ser_descripcion }) => {
           <StyledContainerData>
             {/*Aquí irá la imagen del servicio, primero importamos la imagen y luego la colocamos dentro del src, no olvidar poner el alt */}
             <StyledContainerImage>
-              <></>
-              {/*<img src={imageService} alt={"servicio"} className={classes.image} />*/}
+              <img src={image} alt={"servicio"} className={classes.image} />
             </StyledContainerImage>
             <Container className={classes.description}>
               <Typography color="primary" variant="subtitle1">
@@ -112,7 +111,11 @@ const InfoService = ({ cat_id, cat_nombre, ser_descripcion }) => {
               modalDescription={modalDescription}
               setDescriptionService={setDescriptionService}
             />
-            <DialogDelete role="delete" cat_nombre={cat_nombre} handleDelete={handleDelete} />
+            <DialogDelete
+              role="delete"
+              cat_nombre={cat_nombre}
+              handleDelete={handleDelete}
+            />
           </StyledContainerButtons>
         </Container>
       ) : null}

@@ -5,7 +5,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import { makeStyles } from "@material-ui/core/styles";
 import Rating from "@material-ui/lab/Rating";
-
+import image from "../../assets/services.jpg";
 /*Declaramos los estilos que se van a usar por cada componente*/
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -54,7 +54,7 @@ export default function ProfileServiceCard(props) {
 
           <CardMedia
             className={classes.media}
-            image="https://www.azulweb.net/wp-content/uploads/2020/07/El-camino-para-ser-un-desarrollador-web-profesional.jpg"
+            image={image}
             style={{ borderRadius: 10 }}
             title="Contemplative Reptile"
           />
