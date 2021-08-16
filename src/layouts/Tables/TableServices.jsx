@@ -108,21 +108,19 @@ export default function TableServices({ mood, getToken, serviceData }) {
               </StyledTableCell>
               <StyledTableCell align="center">{row.us_nombres}</StyledTableCell>
               <StyledTableCell align="center">
-                {
-                  (mood = "CLIENT" ? (
-                    <Rating
-                      name="read-only"
-                      value={parseInt(row.ser_calificacion)}
-                      readOnly
-                    />
-                  ) : (
-                    <Rating
-                      name="read-only"
-                      value={parseInt(row.us_calificacion)}
-                      readOnly
-                    />
-                  ))
-                }
+                {mood === "CLIENT" ? (
+                  <Rating
+                    name="read-only"
+                    value={parseInt(row.ser_calificacion)}
+                    readOnly
+                  />
+                ) : (
+                  <Rating
+                    name="read-only"
+                    value={parseInt(row.us_calificacion)}
+                    readOnly
+                  />
+                )}
               </StyledTableCell>
               <StyledTableCell align="center">{row.sol_estado}</StyledTableCell>
               <StyledTableCell align="center">
