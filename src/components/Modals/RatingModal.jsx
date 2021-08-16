@@ -71,20 +71,6 @@ const RatingModal = ({ mood, token, solId }) => {
   const [open, setOpen] = useState(false);
   const [rating, setRating] = useState(0);
 
-  /* Función para cambiar estado de la solicitud 
-  const handleOpen = () => {
-    const data = { sol_id: solId, sol_estado: "Finalizado" };
-    fetchData(
-      token,
-      "POST",
-      "solicitud-auth",
-      "CHANGE_SOLICITUD_STATE",
-      data
-    ).then(() => {
-      setOpen(true);
-    });
-  };*/
-
   const handleOpen = () => {
     setOpen(true);
   };
@@ -100,15 +86,36 @@ const RatingModal = ({ mood, token, solId }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newData = {
+    const ratingCli = {
       id_solicitud: solId,
       calif_cli: rating,
     };
-    fetchData(token, "POST", "solicitud-auth", "RATE_SERVICE", newData).then(
-      () => {
-        handleClose();
-      }
-    );
+
+    const ratingSer = {
+      id_solicitud: solId,
+      calif_tra: rating,
+    };
+    mood === "CLIENT"
+      ? fetchData(
+          token,
+          "POST",
+          "solicitud-auth",
+          "RATE_SERVICE",
+          ratingSer
+        ).then(() => {
+          window.location.replace("");
+          setOpen(false);
+        })
+      : fetchData(
+          token,
+          "POST",
+          "solicitud-auth",
+          "RATE_CLIENT",
+          ratingCli
+        ).then(() => {
+          window.location.replace("");
+          setOpen(false);
+        });
   };
 
   return (
