@@ -29,6 +29,14 @@ const WorkerCard = (props) => {
     setWorker(props.worker);
   }, [props.worker]);
 
+  const conditionalWorker = () => {
+    return worker.calificacion ? (
+      <Rating name="read-only" value={worker.calificacion} readOnly />
+    ) : (
+      <Typography variant="body2">Sin Calificación</Typography>
+    );
+  };
+
   return worker ? (
     <StyledCard>
       <StyledCardMedia image={image} />
@@ -38,13 +46,7 @@ const WorkerCard = (props) => {
           {worker.us_distrito}/{worker.us_provincia}/{worker.us_departamento}
         </Typography>
       </CardContent>
-      <CardActions>
-        {worker.calificacion ? (
-          <Rating name="read-only" value={worker.calificacion} readOnly />
-        ) : (
-          <Typography variant="body2">Sin Calificación</Typography>
-        )}
-      </CardActions>
+      <CardActions>{conditionalWorker()}</CardActions>
     </StyledCard>
   ) : (
     <>

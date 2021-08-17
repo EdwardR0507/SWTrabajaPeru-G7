@@ -35,6 +35,15 @@ export default function ProfileServiceCard(props) {
     setService(props.service);
   }, []);
 
+  const conditionalRating = () => {
+    return service.ser_calificacion ? (
+      <Rating name="read-only" value={service.ser_calificacion} readOnly />
+    ) : (
+      <Typography className={classes.title} variant="body1">
+        Sin Calificación
+      </Typography>
+    );
+  };
   /*Declaramos lo que nos va a retornar la funcion*/
   return service ? (
     <Box className={classes.root}>
@@ -60,17 +69,7 @@ export default function ProfileServiceCard(props) {
           />
           <Grid container item xs={12} spacing={1}>
             <Box item xs={6} spacing={1} my={3} mx={2}>
-              {service.ser_calificacion ? (
-                <Rating
-                  name="read-only"
-                  value={service.ser_calificacion}
-                  readOnly
-                />
-              ) : (
-                <Typography className={classes.title} variant="body1">
-                  Sin Calificación
-                </Typography>
-              )}
+              {conditionalRating()}
             </Box>
           </Grid>
         </CardContent>

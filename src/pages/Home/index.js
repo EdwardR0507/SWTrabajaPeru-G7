@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router";
 import { withStyles } from "@material-ui/styles";
-import { Container, Link, Typography, IconButton } from "@material-ui/core/";
+import { Container, Typography, IconButton } from "@material-ui/core/";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import NavBar from "../../layouts/NavBar";
@@ -43,11 +43,7 @@ const StyledH2 = withStyles({
 })(Typography);
 
 export default function Home() {
-  //Estados de ejecución de los botones
-  const [before, setBefore] = useState(false);
-  const [after, setAfter] = useState(false);
-
-  //Paginación 
+  //Paginación
   const [pageServices, setPageServices] = useState(0);
   const [pageWorkers, setPageWorkers] = useState(0);
 
@@ -60,11 +56,10 @@ export default function Home() {
   const state = location.state;
 
   useEffect(() => {
-    fetchUserData("GET", "service", "GET_HOME_SERVICES")
-      .then((res) => {
-        console.log(res);
-        setServices(res);
-      })
+    fetchUserData("GET", "service", "GET_HOME_SERVICES").then((res) => {
+      console.log(res);
+      setServices(res);
+    });
   }, []);
 
   useEffect(() => {
@@ -91,35 +86,35 @@ export default function Home() {
 
   const handleServiceBefore = () => {
     if (pageServices > 0) {
-      setBefore(true);
-      setPageServices(pageServices - 1)
+      setPageServices(pageServices - 1);
     }
-  }
+  };
 
   const handleWorkerBefore = () => {
     if (pageWorkers > 0) {
-      setBefore(true);
-      setPageWorkers(pageWorkers - 1)
+      setPageWorkers(pageWorkers - 1);
     }
-  }
+  };
 
   const handleServiceAfter = () => {
     if (pageServices < services.length - 4) {
-      setAfter(true);
-      setPageServices(pageServices + 1)
+      setPageServices(pageServices + 1);
     }
-  }
+  };
 
   const handleWorkerAfter = () => {
     if (pageWorkers < workers.length - 4) {
-      setAfter(true);
-      setPageWorkers(pageWorkers + 1)
+      setPageWorkers(pageWorkers + 1);
     }
+  };
+
+  const conditionalNavBar = () => {
+    return user ? <NavBar user={user} token={state?.token} /> : <NavBar />;
   }
 
   return workers && services ? (
     <>
-      {user ? <NavBar user={user} token={state?.token} /> : <NavBar />}
+      {conditionalNavBar()}
       <Container role="home">
         <StyledContentContainer>
           <StyledH2 variant="h2">Servicios</StyledH2>
@@ -131,7 +126,8 @@ export default function Home() {
           <StyledIconButton onClick={handleServiceBefore}>
             <NavigateBeforeIcon />
           </StyledIconButton>
-          {services?.slice(pageServices, pageServices + 3)
+          {services
+            ?.slice(pageServices, pageServices + 3)
             .map((service) =>
               user ? (
                 <ServiceCard
@@ -157,10 +153,9 @@ export default function Home() {
           <StyledIconButton onClick={handleWorkerBefore}>
             <NavigateBeforeIcon />
           </StyledIconButton>
-          {workers?.slice(pageWorkers, pageWorkers + 3)
-            .map((worker) => (
-              <WorkerCard worker={worker} />
-            ))}
+          {workers?.slice(pageWorkers, pageWorkers + 3).map((worker) => (
+            <WorkerCard worker={worker} />
+          ))}
           <StyledIconButton onClick={handleWorkerAfter}>
             <NavigateNextIcon />
           </StyledIconButton>

@@ -108,6 +108,8 @@ const SignUp = () => {
     });
   };
 
+  console.log("distrito: ", distrito);
+
   return (
     <>
       <NavBar></NavBar>

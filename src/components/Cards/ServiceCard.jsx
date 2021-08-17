@@ -63,6 +63,30 @@ const ServiceCard = (props) => {
     setService(props.service);
   }, []);
 
+  const conditionalToken = () => {
+    return props.token ? (
+      <StyledButton
+        role="redirect"
+        onClick={() => {
+          history.push({
+            pathname: "/serviceDetails",
+            search: `user=${service.us_correo.split("@")}&?service=${
+              service.cat_id
+            }`,
+            state: {
+              token: props.token,
+              us_id: service.us_id,
+              cat_id: service.cat_id,
+            },
+          });
+        }}
+      >
+        Ver Más
+      </StyledButton>
+    ) : (
+      <DialogLogin />
+    );
+  };
   return service ? (
     <StyledCard>
       {/*Cambiar los datos por informaciónde la bd*/}
@@ -80,30 +104,7 @@ const ServiceCard = (props) => {
       <CardContent>
         <StyledBody2 variant="body2">{service.ser_descripcion}</StyledBody2>
       </CardContent>
-      <StyledCardActions>
-        {props.token ? (
-          <StyledButton
-            role="redirect"
-            onClick={() => {
-              history.push({
-                pathname: "/serviceDetails",
-                search: `user=${service.us_correo.split("@")}&?service=${
-                  service.cat_id
-                }`,
-                state: {
-                  token: props.token,
-                  us_id: service.us_id,
-                  cat_id: service.cat_id,
-                },
-              });
-            }}
-          >
-            Ver Más
-          </StyledButton>
-        ) : (
-          <DialogLogin />
-        )}
-      </StyledCardActions>
+      <StyledCardActions>{conditionalToken()}</StyledCardActions>
     </StyledCard>
   ) : (
     <div>Cargando...</div>

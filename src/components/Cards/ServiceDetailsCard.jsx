@@ -58,6 +58,15 @@ const ServiceDetailsCard = (props) => {
   useEffect(() => {
     setService(props.service);
   }, [props]);
+
+  const conditionalServiceCalification = () => {
+    return service.ser_calificacion ? (
+      <Rating name="read-only" value={service.ser_calificacion} readOnly />
+    ) : (
+      <Typography variant="body2">Sin Calificación</Typography>
+    );
+  };
+
   /*Declaramos lo que nos va a retornar la funcion*/
   return service ? (
     <StyledCard>
@@ -80,17 +89,7 @@ const ServiceDetailsCard = (props) => {
         justifycontent="center"
       >
         <Grid item xs={12} sm={8}>
-          <Box ml={2}>
-            {service.ser_calificacion ? (
-              <Rating
-                name="read-only"
-                value={service.ser_calificacion}
-                readOnly
-              />
-            ) : (
-              <Typography variant="body2">Sin Calificación</Typography>
-            )}
-          </Box>
+          <Box ml={2}>{conditionalServiceCalification()}</Box>
         </Grid>
         <Grid item xs={12} sm={4}>
           <Box mt={1} mr={2}>
