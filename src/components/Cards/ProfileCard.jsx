@@ -24,7 +24,7 @@ export default function ProfileCard(props) {
         style={{
           textAlign: "center",
           display: "flex",
-          justifyontent: "center",
+          justifyContent: "center",
           alignItems: "center",
         }}
       >
