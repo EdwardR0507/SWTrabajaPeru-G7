@@ -47,7 +47,6 @@ const ServiceDetails = () => {
       "OBTAIN_SERVICE",
       data
     ).then((res) => {
-      console.log(res[0]);
       setService(res[0]);
     });
   }, [state?.token, state?.us_id, state?.cat_id]);
@@ -56,8 +55,7 @@ const ServiceDetails = () => {
     const newData = { us_id: state?.us_id };
     fetchData(state?.token, "POST", "user-auth", "OBTAIN_USER", newData).then(
       (res) => {
-        console.log(res);
-        setWorker(res[0])
+        setWorker(res[0]);
       }
     );
   }, [state?.token, state?.us_id]);
@@ -74,6 +72,7 @@ const ServiceDetails = () => {
             service={service}
             token={state?.token}
             user={user}
+            worker={worker}
           />
         </Grid>
         <Grid container xs={12} sm={4} spacing={12}>

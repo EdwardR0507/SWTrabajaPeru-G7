@@ -94,11 +94,6 @@ const ServiceCard = (props) => {
         avatar={<Avatar src={imageWorker}></Avatar>}
         title={service.cat_nombre}
         subheader={service.us_nombres}
-        action={
-          <IconButton aria-label="share">
-            <ShareIcon />
-          </IconButton>
-        }
       />
       <StyledCardMedia image={image} />
       <CardContent>

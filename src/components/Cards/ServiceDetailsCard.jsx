@@ -54,6 +54,11 @@ const Boxes = withStyles({
 /*Declaramos la función principal*/
 const ServiceDetailsCard = (props) => {
   const [service, setService] = useState({});
+  const emailUser = props.user.us_correo;
+  const emailWorker = props.worker.us_correo;
+
+  console.log("emailUser: ", emailUser);
+  console.log("emailWorker: ", emailWorker);
 
   useEffect(() => {
     setService(props.service);
@@ -65,6 +70,16 @@ const ServiceDetailsCard = (props) => {
     ) : (
       <Typography variant="body2">Sin Calificación</Typography>
     );
+  };
+
+  const conditionalContactEmployeeModal = () => {
+    return emailUser !== emailWorker ? (
+      <ContactEmployeeModal
+        service={service}
+        token={props.token}
+        user={props.user}
+      />
+    ) : null;
   };
 
   /*Declaramos lo que nos va a retornar la funcion*/
@@ -93,11 +108,7 @@ const ServiceDetailsCard = (props) => {
         </Grid>
         <Grid item xs={12} sm={4}>
           <Box mt={1} mr={2}>
-            <ContactEmployeeModal
-              service={service}
-              token={props.token}
-              user={props.user}
-            />
+            {conditionalContactEmployeeModal()}
           </Box>
         </Grid>
       </Grid>
