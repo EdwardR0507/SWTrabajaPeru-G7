@@ -333,16 +333,26 @@ const ServiceModal = ({
                       multiline
                       name="ser_descripcion"
                       {...register("ser_descripcion", {
+                        required: true,
                         maxLength: 300,
+                        pattern: /^[a-zA-ZñÑáéíóúÁÉÍÓÚ0-9\s]+$/
                       })}
                       onChange={handleDescription}
                       rowsMax={3}
                       variant="filled"
                     />
-                    <FormError
-                      condition={errors.ser_descripcion}
+                    {errors.ser_descripcion?.type === "required" && <FormError
+                      condition={errors.ser_descripcion?.type === "required"}
+                      content="El campo descripción no puede estar vacío"
+                    /> }
+                    {errors.ser_descripcion?.type === "pattern" && <FormError
+                      condition={errors.ser_descripcion?.type === "pattern"}
+                      content="Ingrese solo numeros y letras"
+                    /> }
+                    {errors.ser_descripcion?.type === "maxLength" && <FormError
+                      condition={errors.ser_descripcion?.type === "maxLength"}
                       content="Ingrese máximo 300 caracteres"
-                    />
+                    /> }
                   </Container>
                   {/*Aquí irá la imagen del servicio, primero importamos la imagen y luego la colocamos dentro del src, no olvidar poner el alt */}
                   <Container className={classes.containerImage}>
@@ -396,16 +406,27 @@ const ServiceModal = ({
                       label="Descripción"
                       multiline
                       name="ser_descripcion"
-                      {...register("ser_descripcion", { maxLength: 300 })}
+                      {...register("ser_descripcion", { 
+                        required: true,
+                        maxLength: 300,
+                        pattern: /^[a-zA-ZñÑáéíóúÁÉÍÓÚ0-9\s]+$/})}
                       defaultValue={serviceDescription}
                       onChange={handleEdit}
                       rowsMax={3}
                       variant="filled"
                     />
-                    <FormError
-                      condition={errors.ser_descripcion}
+                    {errors.ser_descripcion?.type === "pattern" && <FormError
+                      condition={errors.ser_descripcion?.type === "pattern"}
+                      content="Ingrese solo numeros y letras"
+                    /> }
+                    {errors.ser_descripcion?.type === "required" && <FormError
+                      condition={errors.ser_descripcion?.type === "required"}
+                      content="El campo descripción no puede estar vacío"
+                    /> }
+                    {errors.ser_descripcion?.type === "maxLength" && <FormError
+                      condition={errors.ser_descripcion?.type === "maxLength"}
                       content="Ingrese máximo 300 caracteres"
-                    />
+                    /> }
                   </Container>
                   {/*Aquí irá la imagen del servicio, primero importamos la imagen y luego la colocamos dentro del src, no olvidar poner el alt */}
                   <Container className={classes.containerImage}>
