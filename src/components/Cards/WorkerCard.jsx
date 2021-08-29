@@ -6,10 +6,10 @@ import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import Rating from "@material-ui/lab/Rating";
 import Typography from "@material-ui/core/Typography";
-
+import image from "../../assets/worker.jpg";
 const StyledCard = withStyles({
   root: {
-    width: "25%",
+    width: "300px",
     margin: "20px auto",
   },
 })(Card);
@@ -26,27 +26,27 @@ const WorkerCard = (props) => {
   const [worker, setWorker] = useState({});
 
   useEffect(() => {
-    console.log("worker card:");
-    console.log(props.worker);
     setWorker(props.worker);
   }, [props.worker]);
 
+  const conditionalWorker = () => {
+    return worker.calificacion ? (
+      <Rating name="read-only" value={worker.calificacion} readOnly />
+    ) : (
+      <Typography variant="body2">Sin Calificación</Typography>
+    );
+  };
+
   return worker ? (
     <StyledCard>
-      <StyledCardMedia image="src/assets/CardTest.jpeg" />
+      <StyledCardMedia image={image} />
       <CardContent>
         <Typography variant="h6">{worker.us_nombres}</Typography>
         <Typography variant="body2">
           {worker.us_distrito}/{worker.us_provincia}/{worker.us_departamento}
         </Typography>
       </CardContent>
-      <CardActions>
-        {worker.calificacion ? (
-          <Rating name="read-only" value={worker.calificacion} readOnly />
-        ) : (
-          <Typography variant="body2">Sin Calificación</Typography>
-        )}
-      </CardActions>
+      <CardActions>{conditionalWorker()}</CardActions>
     </StyledCard>
   ) : (
     <>

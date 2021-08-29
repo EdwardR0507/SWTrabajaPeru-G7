@@ -13,10 +13,11 @@ import ShareIcon from "@material-ui/icons/Share";
 import Avatar from "@material-ui/core/Avatar";
 import DialogLogin from "../Dialog/DialogLogin";
 import theme from "../../themes/themes";
-
+import image from "../../assets/services.jpg";
+import imageWorker from "../../assets/worker.jpg";
 const StyledCard = withStyles({
   root: {
-    width: "25%",
+    width: "300px",
     margin: "20px auto",
   },
 })(Card);
@@ -60,42 +61,45 @@ const ServiceCard = (props) => {
 
   useEffect(() => {
     setService(props.service);
-  }, [])
+  }, []);
 
+  const conditionalToken = () => {
+    return props.token ? (
+      <StyledButton
+        role="redirect"
+        onClick={() => {
+          history.push({
+            pathname: "/serviceDetails",
+            search: `user=${service.us_correo.split("@")}&?service=${
+              service.cat_id
+            }`,
+            state: {
+              token: props.token,
+              us_id: service.us_id,
+              cat_id: service.cat_id,
+            },
+          });
+        }}
+      >
+        Ver Más
+      </StyledButton>
+    ) : (
+      <DialogLogin />
+    );
+  };
   return service ? (
     <StyledCard>
       {/*Cambiar los datos por informaciónde la bd*/}
       <CardHeader
-        avatar={<Avatar></Avatar>}
+        avatar={<Avatar src={imageWorker}></Avatar>}
         title={service.cat_nombre}
         subheader={service.us_nombres}
-        action={
-          <IconButton aria-label="share">
-            <ShareIcon />
-          </IconButton>
-        }
       />
-      <StyledCardMedia image="src/assets/CardTest.jpeg" />
+      <StyledCardMedia image={image} />
       <CardContent>
-        <StyledBody2 variant="body2">
-          {service.ser_descripcion}
-        </StyledBody2>
+        <StyledBody2 variant="body2">{service.ser_descripcion}</StyledBody2>
       </CardContent>
-      <StyledCardActions>
-        {props.token ? (
-          <StyledButton role="redirect" onClick={() => {
-            history.push({
-              pathname: "/serviceDetails",
-              search: `user=${service.us_correo.split('@')}&?service=${service.cat_id}`,
-              state: {
-                token: props.token,
-                us_id: service.us_id,
-                cat_id: service.cat_id
-              }
-            })
-          }}>Ver Más</StyledButton>
-        ) : (<DialogLogin />)}
-      </StyledCardActions>
+      <StyledCardActions>{conditionalToken()}</StyledCardActions>
     </StyledCard>
   ) : (
     <div>Cargando...</div>

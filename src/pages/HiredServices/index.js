@@ -27,12 +27,12 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const SolicitedServices = () => {
+const HiredServices = () => {
   const location = useLocation();
   const state = location.state;
   const classes = useStyles();
   const [user, setUser] = useState({});
-  const [serviceData, setServiceData] = useState([]);
+  const [solData, setSolData] = useState([]);
 
   useEffect(() => {
     fetchData(state?.token, "GET", "user-auth", "GET_MY_USER")
@@ -45,11 +45,11 @@ const SolicitedServices = () => {
   }, [state?.token]);
 
   useEffect(() => {
-    fetchData(state?.token, "GET", "solicitud-auth", "GET_SOLICITUDES")
+    fetchData(state?.token, "GET", "solicitud-auth", "GET_MY_SOLICITUDES")
       .then((res) => {
         console.log("res data service:");
         console.log(res);
-        setServiceData(res);
+        setSolData(res);
       })
       .catch((err) => {
         console.log(err);
@@ -59,12 +59,18 @@ const SolicitedServices = () => {
   return user ? (
     <>
       <NavBar user={user} token={state?.token} />
-      <HeadingBar before={"TRABAJADOR"} after={"MIS SOLICITUDES"} />
+      <HeadingBar before={"CLIENTE"} after={"MIS SERVICIOS CONTRATADOS"} />
       <Container>
-        <Typography className={classes.typography}>Mis Solicitudes</Typography>
+        <Typography className={classes.typography}>
+          Mis Servicios Contratados
+        </Typography>
         <Grid container justifycontent="center" aligncontent="center">
           <Box mt={3} ml={"auto"} mr={"auto"}>
-            <TableServices getToken={state?.token} serviceData={serviceData} />
+            <TableServices
+              mood={"CLIENT"}
+              getToken={state?.token}
+              serviceData={solData}
+            />
           </Box>
         </Grid>
       </Container>
@@ -73,4 +79,4 @@ const SolicitedServices = () => {
     <div>Cargando...</div>
   );
 };
-export default SolicitedServices;
+export default HiredServices;

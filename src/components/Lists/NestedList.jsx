@@ -24,13 +24,18 @@ const useStyles = makeStyles((theme) => ({
 
 export default function NestedList() {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  const [worker, setWorker] = React.useState(false);
+  const [client, setClient] = React.useState(false);
   const location = useLocation();
   const history = useHistory();
   const state = location.state;
 
   const handleClick = () => {
-    setOpen(!open);
+    setWorker(!worker);
+  };
+
+  const handleOpen = () => {
+    setClient(!client);
   };
 
   return (
@@ -53,19 +58,38 @@ export default function NestedList() {
         </ListItemIcon>
         <ListItemText primary="Inicio" />
       </ListItem>
-      <ListItem button>
+      <ListItem button onClick={handleOpen}>
         <ListItemIcon>
           <PersonIcon />
         </ListItemIcon>
         <ListItemText primary="Cliente" />
       </ListItem>
+      <Collapse in={client} timeout="auto" unmountOnExit>
+        <List component="div" disablePadding>
+          <ListItem
+            button
+            className={classes.nested}
+            onClick={() => {
+              history.push({
+                pathname: "/hiredServices",
+                state: { token: state.token },
+              });
+            }}
+          >
+            <ListItemIcon>
+              <SettingsIcon />
+            </ListItemIcon>
+            <ListItemText primary="Mis Servicios Contratados" />
+          </ListItem>
+        </List>
+      </Collapse>
       <ListItem button onClick={handleClick}>
         <ListItemIcon>
           <WorkIcon />
         </ListItemIcon>
         <ListItemText primary="Trabajador" />
       </ListItem>
-      <Collapse in={open} timeout="auto" unmountOnExit>
+      <Collapse in={worker} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           <ListItem
             button

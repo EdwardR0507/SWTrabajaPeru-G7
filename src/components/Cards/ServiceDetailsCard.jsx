@@ -8,7 +8,7 @@ import Rating from "@material-ui/lab/Rating";
 import theme from "../../themes/themes";
 import ContactEmployeeModal from "../Modals/ContactEmployeeModal";
 import { Divider, Grid, Box, Typography } from "@material-ui/core";
-
+import image from "../../assets/services.jpg";
 /*Declaramos los estilos que se van a usar por cada componente*/
 /*Declaramos el estilo del card*/
 
@@ -23,6 +23,7 @@ const StyledCard = withStyles({
 const StyledCardMedia = withStyles({
   root: {
     height: "0",
+    margin: "2% 0",
     paddingTop: "41%",
   },
 })(CardMedia);
@@ -53,10 +54,34 @@ const Boxes = withStyles({
 /*Declaramos la función principal*/
 const ServiceDetailsCard = (props) => {
   const [service, setService] = useState({});
+  const emailUser = props.user.us_correo;
+  const emailWorker = props.worker.us_correo;
+
+  console.log("emailUser: ", emailUser);
+  console.log("emailWorker: ", emailWorker);
 
   useEffect(() => {
     setService(props.service);
   }, [props]);
+
+  const conditionalServiceCalification = () => {
+    return service.ser_calificacion ? (
+      <Rating name="read-only" value={service.ser_calificacion} readOnly />
+    ) : (
+      <Typography variant="body2">Sin Calificación</Typography>
+    );
+  };
+
+  const conditionalContactEmployeeModal = () => {
+    return emailUser !== emailWorker ? (
+      <ContactEmployeeModal
+        service={service}
+        token={props.token}
+        user={props.user}
+      />
+    ) : null;
+  };
+
   /*Declaramos lo que nos va a retornar la funcion*/
   return service ? (
     <StyledCard>
@@ -65,7 +90,7 @@ const ServiceDetailsCard = (props) => {
         container
         spacing={12}
         alignItems="flex-end"
-        justifyContent="center"
+        justifycontent="center"
       >
         <CardHeader title={service.cat_nombre} />
       </Grid>
@@ -76,38 +101,24 @@ const ServiceDetailsCard = (props) => {
         container
         spacing={12}
         alignItems="flex-end"
-        justifyContent="center"
+        justifycontent="center"
       >
         <Grid item xs={12} sm={8}>
-          <Box ml={2}>
-            {service.ser_calificacion ? (
-              <Rating
-                name="read-only"
-                value={service.ser_calificacion}
-                readOnly
-              />
-            ) : (
-              <Typography variant="body2">Sin Calificación</Typography>
-            )}
-          </Box>
+          <Box ml={2}>{conditionalServiceCalification()}</Box>
         </Grid>
         <Grid item xs={12} sm={4}>
           <Box mt={1} mr={2}>
-            <ContactEmployeeModal
-              service={service}
-              token={props.token}
-              user={props.user}
-            />
+            {conditionalContactEmployeeModal()}
           </Box>
         </Grid>
       </Grid>
-      <StyledCardMedia image="../../assets/CardTest.jpeg" />
-      <Grid container spacing={12} justifyContent="center">
+      <StyledCardMedia image={image} />
+      <Grid container spacing={12} justifycontent="center">
         <Boxes>
           <StyledBody>Descripción</StyledBody>
         </Boxes>
       </Grid>
-      <Grid container spacing={12} justifyContent="center">
+      <Grid container spacing={12} justifycontent="center">
         <StyledBody2>{service.ser_descripcion}</StyledBody2>
       </Grid>
     </StyledCard>

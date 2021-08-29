@@ -26,6 +26,7 @@ const ServiceDetails = () => {
   const [user, setUser] = useState({});
   const state = location.state;
   const [service, setService] = useState({});
+  const [worker, setWorker] = useState();
   /*Declaramos lo que nos va a retornar la funcion*/
   //Información del usuario
   useEffect(() => {
@@ -46,8 +47,6 @@ const ServiceDetails = () => {
       "OBTAIN_SERVICE",
       data
     ).then((res) => {
-      console.log("get:");
-      console.log(res[0]);
       setService(res[0]);
     });
   }, [state?.token, state?.us_id, state?.cat_id]);
@@ -56,15 +55,15 @@ const ServiceDetails = () => {
     const newData = { us_id: state?.us_id };
     fetchData(state?.token, "POST", "user-auth", "OBTAIN_USER", newData).then(
       (res) => {
-        console.log(res);
+        setWorker(res[0]);
       }
     );
   }, [state?.token, state?.us_id]);
 
-  return service ? (
+  return service && worker ? (
     <>
       {/*Declaramos el navbar que es el encabezado de la page*/}
-      <NavBar user={user} />
+      <NavBar user={user} token={state?.token} />
       <StyledContainer>
         {/*Usamos grid para dividir las los dos cards*/}
         {console.log(user)}
@@ -73,10 +72,11 @@ const ServiceDetails = () => {
             service={service}
             token={state?.token}
             user={user}
+            worker={worker}
           />
         </Grid>
         <Grid container xs={12} sm={4} spacing={12}>
-          <WorkerCard user={user} />
+          <WorkerCard worker={worker} />
         </Grid>
       </StyledContainer>
     </>

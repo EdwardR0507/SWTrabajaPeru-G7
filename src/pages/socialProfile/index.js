@@ -21,18 +21,30 @@ const StyledContainer = withStyles({
 /*Declaramos la función principal*/
 export default function SocialProfile() {
   const [user, setUser] = useState({});
-  const [services, setServices] = useState();
+  const [profile, setProfile] = useState();
+  const [services, setServices] = useState([]);
   const location = useLocation();
   const state = location.state;
 
   //Información del usuario
   useEffect(() => {
-    console.log(state);
+    console.log(state)
     //Cambiar post por get cuando se arregle
     fetchData(state?.token, "GET", "user-auth", "GET_MY_USER")
       .then((res) => {
         console.log(res);
         setUser(res);
+        if (location.pathname === "/myAccount") {
+          setProfile(res)
+        }
+        else if (location.pathname === "/profile") {
+          fetchData(state?.token, "POST", "user-auth", "OBTAIN_USER", { us_id: state?.idUser }).then(
+            (res) => {
+              console.log(res);
+              setProfile(res[0])
+            }
+          );
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -40,26 +52,39 @@ export default function SocialProfile() {
   }, [state]);
 
   useEffect(() => {
-    fetchData(state?.token, "GET", "service-auth", "GET_MY_SERVICES").then(
-      (res) => {
-        console.log(res);
-        setServices(res);
-      }
-    );
+    if (location.pathname === "/myAccount") {
+      fetchData(state?.token, "GET", "service-auth", "GET_MY_SERVICES").then(
+        (res) => {
+          console.log(res);
+          setServices(res);
+        }
+      );
+    }
+    //Falta agregar la obtención de servicios de otro usuario
+    else if (location.pathname === "/profile") {
+      fetchData(state?.token, "POST", "service-auth", "GET_OTHERS_SERVICES", { us_id: state?.idUser })
+        .then((res) => {
+          console.log(res);
+          setServices(res)
+        })
+    }
   }, [state?.token]);
 
-  return user && services ? (
+  return user && profile && services ? (
     <>
       <NavBar user={user} token={state?.token} />
       <StyledContainer>
         <Grid container item xs={12} spacing={3}>
           <Grid item xs={4}>
-            <ProfileCard user={user}></ProfileCard>
+            <ProfileCard user={profile}></ProfileCard>
           </Grid>
           <Grid item xs={8} spacing={3}>
             {services.map((service) => (
               <Box>
-                <ProfileServiceCard service={service}></ProfileServiceCard>
+                <ProfileServiceCard
+                  key={`${service.cat_id} - ${service.cat_nombre}`}
+                  service={service}
+                ></ProfileServiceCard>
               </Box>
             ))}
           </Grid>

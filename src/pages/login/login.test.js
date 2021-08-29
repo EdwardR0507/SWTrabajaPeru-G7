@@ -3,10 +3,10 @@ import React from 'react';
 import SignIn from './index';
 import NavBar from '../../layouts/NavBar';
 import { createMemoryHistory } from 'history';
-import { Router, Route } from 'react-router-dom'
+import { Router } from 'react-router-dom'
 import { shallow } from 'enzyme';
 import { act } from 'react-dom/test-utils';
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, fireEvent } from '@testing-library/react'
 /*Renderizado de la vista Login*/
 describe("<SignIn></SignIn>", () => {
   it('render "Registrarse"', () => {
@@ -47,6 +47,5 @@ describe("<SignIn></SignIn>", () => {
       fireEvent.click(getByRole("button"))
     })
     expect(localStorage.getItem("User_session")) ;
-    ;
   })
 });

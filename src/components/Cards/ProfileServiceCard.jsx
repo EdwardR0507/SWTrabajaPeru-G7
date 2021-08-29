@@ -5,7 +5,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import { makeStyles } from "@material-ui/core/styles";
 import Rating from "@material-ui/lab/Rating";
-
+import image from "../../assets/services.jpg";
 /*Declaramos los estilos que se van a usar por cada componente*/
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,13 +29,21 @@ const useStyles = makeStyles((theme) => ({
 /*Declaramos la función principal*/
 export default function ProfileServiceCard(props) {
   const classes = useStyles();
-  //const [value, setValue] = useState(2);
   const [service, setService] = useState();
 
   useEffect(() => {
     setService(props.service);
   }, []);
 
+  const conditionalRating = () => {
+    return service.ser_calificacion ? (
+      <Rating name="read-only" value={service.ser_calificacion} readOnly />
+    ) : (
+      <Typography className={classes.title} variant="body1">
+        Sin Calificación
+      </Typography>
+    );
+  };
   /*Declaramos lo que nos va a retornar la funcion*/
   return service ? (
     <Box className={classes.root}>
@@ -55,23 +63,13 @@ export default function ProfileServiceCard(props) {
 
           <CardMedia
             className={classes.media}
-            image="https://www.azulweb.net/wp-content/uploads/2020/07/El-camino-para-ser-un-desarrollador-web-profesional.jpg"
+            image={image}
             style={{ borderRadius: 10 }}
             title="Contemplative Reptile"
           />
           <Grid container item xs={12} spacing={1}>
             <Box item xs={6} spacing={1} my={3} mx={2}>
-              {service.ser_calificacion ? (
-                <Rating
-                  name="read-only"
-                  value={service.ser_calificacion}
-                  readOnly
-                />
-              ) : (
-                <Typography className={classes.title} variant="body1">
-                  Sin Calificación
-                </Typography>
-              )}
+              {conditionalRating()}
             </Box>
           </Grid>
         </CardContent>

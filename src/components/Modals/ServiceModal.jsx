@@ -14,16 +14,15 @@ import {
   Fade,
   FormControl,
   MenuItem,
-  IconButton,
 } from "@material-ui/core/";
 import AddIcon from "@material-ui/icons/Add";
 import CreateIcon from "@material-ui/icons/Create";
-import AddCircleIcon from "@material-ui/icons/AddCircle";
 import PrimaryButton from "../Buttons/PrimaryButton";
 import SecondaryButton from "../Buttons/SecondaryButton";
 import FormError from "../../components/Errors/FormError";
 import theme from "../../themes/themes";
 import { fetchData } from "../../services/services";
+import image from "../../assets/services.jpg";
 const useStyles = makeStyles(() => ({
   //Estilos para la customización del modal
   modal: {
@@ -110,7 +109,7 @@ const useStyles = makeStyles(() => ({
     width: "214px",
   },
 }));
-/*Props: objeto, setter del objeto, modo que tomará el modal que se va a renderizar (agregar o editar, basta con pasarle Agregar), nombre del servicio, descripción del servicio, método para poder editar el servicio*/
+/*Props: objeto, setter del objeto, modo que tomará el modal que se va a renderizar (agregar o editar, basta con pasarle Agregar), nombre del servicio, descripción del servicio, función para poder editar el servicio*/
 const ServiceModal = ({
   data,
   setData,
@@ -196,7 +195,6 @@ const ServiceModal = ({
 
   //Función que crea un nuevo componente InfoService y envía datos al backend
   const onSubmit = async (datos, e) => {
-    console.log(datos);
     e.preventDefault();
     fetchData(
       state?.token,
@@ -206,20 +204,19 @@ const ServiceModal = ({
       datos
     ).then((res) => {
       console.log(res);
+      handleClose();
+      setDescription("");
+      const id = list.filter((el) => el.cat_nombre === name)[0].cat_id;
+      setData([
+        ...data,
+        {
+          cat_id: id,
+          cat_nombre: name,
+          ser_descripcion: description,
+        },
+      ]);
+      reset();
     });
-
-    handleClose();
-    setDescription("");
-    const id = list.filter((el) => el.cat_nombre === name)[0].cat_id;
-    setData([
-      ...data,
-      {
-        cat_id: id,
-        cat_nombre: name,
-        ser_descripcion: description,
-      },
-    ]);
-    reset();
   };
 
   // Función para editar un servicio
@@ -241,9 +238,9 @@ const ServiceModal = ({
       newData
     ).then((res) => {
       console.log(res);
+      handleClose();
+      reset();
     });
-    handleClose();
-    reset();
   };
 
   // Función para comprobar la existencia de un nombre por defecto en el select que se encuentra deshabilitado (en editModal)
@@ -349,10 +346,11 @@ const ServiceModal = ({
                   </Container>
                   {/*Aquí irá la imagen del servicio, primero importamos la imagen y luego la colocamos dentro del src, no olvidar poner el alt */}
                   <Container className={classes.containerImage}>
-                    <IconButton aria-label="add" className={classes.addIcon}>
-                      <AddCircleIcon />
-                    </IconButton>
-                    {/*<img src={imgService} alt={"Servicio"} className={classes.image} />*/}
+                    <img
+                      src={image}
+                      alt={"Servicio"}
+                      className={classes.image}
+                    />
                   </Container>
                 </Container>
                 <Container className={classes.containerButton}>
@@ -411,10 +409,11 @@ const ServiceModal = ({
                   </Container>
                   {/*Aquí irá la imagen del servicio, primero importamos la imagen y luego la colocamos dentro del src, no olvidar poner el alt */}
                   <Container className={classes.containerImage}>
-                    <IconButton aria-label="add" className={classes.addIcon}>
-                      <AddCircleIcon />
-                    </IconButton>
-                    {/*<img src={imgService} alt={"Servicio"} className={classes.image} />*/}
+                    <img
+                      src={image}
+                      alt={"Servicio"}
+                      className={classes.image}
+                    />
                   </Container>
                 </Container>
                 <Container className={classes.containerButton}>

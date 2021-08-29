@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
+import { useHistory } from "react-router";
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import InputBase from "@material-ui/core/InputBase";
 import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from "@material-ui/icons/Search";
 import theme from "../../themes/themes";
-import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-
+import TextField from "@material-ui/core/TextField";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import axios from "axios";
+import GlobalEnv from "../../GlobalEnv";
 
 const StyledSearchField = withStyles({
   root: {
@@ -44,27 +46,73 @@ const StyledAutocomplete = withStyles({
   },
 })(Autocomplete);
 
-const Prueba1 = [
-  { Name: 'Arian Zambrano', Servicio: "Albañilería" },
-  { Name: 'Gianela Malqui', Servicio: "Secretaría" },
-  { Name: 'Jose Caicedo', Servicio: "Limpieza" },
-];
-
-
 const SearchField = (props) => {
+  const [searched, setSearched] = useState([]);
+  const history = useHistory();
+
+  const handleChange = (evt) => {
+    axios
+      .post(
+        `${GlobalEnv.host}/user-auth`,
+        {
+          command: "SEARCH",
+          transaction: evt.target.value,
+        },
+        {
+          headers: {
+            authorization: `Bearer ${props.token}`,
+          },
+        }
+      )
+      .then((res) => {
+        setSearched(res.data.resultado);
+      });
+  };
+
+  const redirect = (evt, value) => {
+    evt.preventDefault();
+    const email = value.split("-")[1];
+    let elementFound = searched.find((el) => el.extra === email);
+    console.log(elementFound);
+    if (elementFound.type === "user") {
+      history.push({
+        pathname: "/profile",
+        search: `email=${elementFound.extra}`,
+        state: {
+          token: props.token,
+          idUser: elementFound["id user"],
+        },
+      });
+    } else if (elementFound.type === "service") {
+      const servicio = value.split("-")[0];
+      const usuario = value.split("-")[1];
+      elementFound = searched.find(
+        (el) => el.nombre === servicio && el.extra === usuario
+      );
+      history.push({
+        pathname: "/serviceDetails",
+        search: `user=${elementFound["id user"]}&?service=${elementFound["id extra"]}`,
+        state: {
+          token: props.token,
+          us_id: elementFound["id user"],
+          cat_id: elementFound["id extra"],
+        },
+      });
+    }
+    window.location.replace("");
+  };
+
   return (
     <StyledSearchField>
       <IconButton>
         <SearchIcon />
       </IconButton>
       <StyledAutocomplete
-
         /*Mostrará info de service y user */
-        options={Prueba1.map((option) => option.Name)}
-        
+        options={searched.map((option) => `${option.nombre}-${option.extra}`)}
+        onChange={redirect}
         renderInput={(params) => (
-          <TextField {...params} width="577px"
-          />
+          <TextField {...params} width="577px" onChange={handleChange} />
         )}
       />
     </StyledSearchField>

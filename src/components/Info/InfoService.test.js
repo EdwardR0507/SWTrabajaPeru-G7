@@ -2,7 +2,6 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { render } from "@testing-library/react";
-import { renderHook } from '@testing-library/react-hooks';
 import { shallow } from 'enzyme';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory  } from "history";
@@ -30,7 +29,6 @@ describe("<InfoService />", () => {
     component.getByText(descripcion)
   })
   test("handleEdit test", () => {
-    const history = createMemoryHistory();
     const wrapper = shallow(<Router history={history}>
       <InfoService />
     </Router>);
@@ -39,7 +37,6 @@ describe("<InfoService />", () => {
         expect(wrapper.state().modalDescription).toBe(false)
   })
   test("handleEdit test", () => {
-    const history = createMemoryHistory();
     const wrapper = shallow(<Router history={history}>
       <InfoService />
     </Router>);

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router";
 import { withStyles } from "@material-ui/styles";
-import { Container, Link, Typography, IconButton } from "@material-ui/core/";
+import { Container, Typography, IconButton } from "@material-ui/core/";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import NavBar from "../../layouts/NavBar";
@@ -42,19 +42,16 @@ const StyledH2 = withStyles({
   },
 })(Typography);
 
-const StyledLink = withStyles({
-  root: {
-    color: theme.palette.primary.main,
-    marginRight: "40px",
-    marginTop: "12px",
-    letterSpacing: "0.18px",
-  },
-})(Link);
-
 export default function Home() {
+  //Paginación
+  const [pageServices, setPageServices] = useState(0);
+  const [pageWorkers, setPageWorkers] = useState(0);
+
   const location = useLocation();
   const [services, setServices] = useState();
+  // Servicios que se reenderizan por página
   const [workers, setWorkers] = useState();
+  // Trabajadores que se renderizan por página
   const [user, setUser] = useState();
   const state = location.state;
 
@@ -87,55 +84,79 @@ export default function Home() {
     }
   }, [state?.token]);
 
+  const handleServiceBefore = () => {
+    if (pageServices > 0) {
+      setPageServices(pageServices - 1);
+    }
+  };
+
+  const handleWorkerBefore = () => {
+    if (pageWorkers > 0) {
+      setPageWorkers(pageWorkers - 1);
+    }
+  };
+
+  const handleServiceAfter = () => {
+    if (pageServices < services.length - 4) {
+      setPageServices(pageServices + 1);
+    }
+  };
+
+  const handleWorkerAfter = () => {
+    if (pageWorkers < workers.length - 4) {
+      setPageWorkers(pageWorkers + 1);
+    }
+  };
+
+  const conditionalNavBar = () => {
+    return user ? <NavBar user={user} token={state?.token} /> : <NavBar />;
+  }
+
   return workers && services ? (
     <>
-      {user ? <NavBar user={user} token={state?.token} /> : <NavBar />}
+      {conditionalNavBar()}
       <Container role="home">
         <StyledContentContainer>
           <StyledH2 variant="h2">Servicios</StyledH2>
-          <StyledLink href="#">
-            <Typography variant="h5">VER TODO</Typography>
-          </StyledLink>
         </StyledContentContainer>
         <StyledCardContainer>
           {/*Extensión a cantidad de servicios aleatorios
                        con información desde la base de datos 
                        Iterar y por cada info generar un service card*/}
-          <StyledIconButton>
+          <StyledIconButton onClick={handleServiceBefore}>
             <NavigateBeforeIcon />
           </StyledIconButton>
-          {services?.map((service) =>
-            user ? (
-              <ServiceCard
-                key={`${service.us_id}-${service.cat_id}`}
-                service={service}
-                token={state?.token}
-              />
-            ) : (
-              <ServiceCard
-                key={`${service.us_id}-${service.cat_id}`}
-                service={service}
-              />
-            )
-          )}
-          <StyledIconButton>
+          {services
+            ?.slice(pageServices, pageServices + 3)
+            .map((service) =>
+              user ? (
+                <ServiceCard
+                  key={`${service.us_id}-${service.cat_id}`}
+                  service={service}
+                  token={state?.token}
+                />
+              ) : (
+                <ServiceCard
+                  key={`${service.us_id}-${service.cat_id}`}
+                  service={service}
+                />
+              )
+            )}
+          <StyledIconButton onClick={handleServiceAfter}>
             <NavigateNextIcon />
           </StyledIconButton>
         </StyledCardContainer>
         <StyledContentContainer>
           <StyledH2 variant="h2">Trabajadores</StyledH2>
-          <StyledLink href="#">
-            <Typography variant="h5">VER TODO</Typography>
-          </StyledLink>
         </StyledContentContainer>
         <StyledCardContainer>
-          <StyledIconButton>
+          <StyledIconButton onClick={handleWorkerBefore}>
             <NavigateBeforeIcon />
           </StyledIconButton>
-          {workers?.map((worker) => (
+          {workers?.slice(pageWorkers, pageWorkers + 3).map((worker) => (
             <WorkerCard worker={worker} />
           ))}
-          <StyledIconButton>
+          <StyledIconButton onClick={handleWorkerAfter}>
             <NavigateNextIcon />
           </StyledIconButton>
         </StyledCardContainer>

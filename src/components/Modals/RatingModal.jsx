@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import { React, useState } from "react";
 import {
   makeStyles,
   Container,
@@ -6,11 +6,8 @@ import {
   Modal,
   Backdrop,
   Fade,
-  Button,
   Grid,
 } from "@material-ui/core/";
-import { useForm } from "react-hook-form";
-import AddIcon from "@material-ui/icons/Add";
 import PrimaryButton from "../Buttons/PrimaryButton";
 import SecondaryButton from "../Buttons/SecondaryButton";
 import theme from "../../themes/themes";
@@ -56,34 +53,24 @@ const useStyles = makeStyles(() => ({
   wrapp: {
     width: "200px",
   },
-    start: {
-    display: 'flex',
-    flexDirection: 'column',
-    '& > * + *': {
+  button: {},
+  start: {
+    display: "flex",
+    flexDirection: "column",
+    "& > * + *": {
       marginTop: theme.spacing(1),
     },
-    },
+  },
 }));
 
-const RatingModal = ({ service, token, user }) => {
-  const {
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm();
-
+const RatingModal = ({ mood, token, solId }) => {
   // Variable para customizar los componentes
   const classes = useStyles();
 
   // Estado para controlar la apertura y cierre de los modales
   const [open, setOpen] = useState(false);
-  const [serviceData, setServiceData] = useState({});
+  const [rating, setRating] = useState(0);
 
-  useEffect(() => {
-    setServiceData(service);
-  }, [service, user]);
-
-  // Función para abrir el modal
   const handleOpen = () => {
     setOpen(true);
   };
@@ -93,39 +80,54 @@ const RatingModal = ({ service, token, user }) => {
     setOpen(false);
   };
 
-  const onSubmit = async (datos, e) => {
-    const newData = {
-      cat_id: serviceData.cat_id,
-      us_id_trabajador: serviceData.us_id,
-      sol_mensaje: datos.sol_mensaje,
-    };
-    fetchData(
-      token,
-      "POST",
-      "solicitud-auth",
-      "CREATE_SOLICITUD",
-      newData
-    ).then((res) => {
-      console.log("respuesta creación de solicitud:");
-      console.log(res);
-    });
+  const handleChange = (e, value) => {
+    setRating(value);
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    reset();
-    handleClose();
+    const ratingCli = {
+      id_solicitud: solId,
+      calif_cli: rating,
+    };
+
+    const ratingSer = {
+      id_solicitud: solId,
+      calif_tra: rating,
+    };
+    mood === "CLIENT"
+      ? fetchData(
+          token,
+          "POST",
+          "solicitud-auth",
+          "RATE_SERVICE",
+          ratingSer
+        ).then(() => {
+          window.location.replace("");
+          setOpen(false);
+        })
+      : fetchData(
+          token,
+          "POST",
+          "solicitud-auth",
+          "RATE_CLIENT",
+          ratingCli
+        ).then(() => {
+          window.location.replace("");
+          setOpen(false);
+        });
   };
 
   return (
     <>
-      <Button
-        className={classes.button}
-        // Funcion para abrir modal
-        onClick={handleOpen}
-        variant="contained"
-        color="primary"
-        endIcon={<AddIcon />}
-      >
-        CALIFICAR
-      </Button>
+      <Container className={classes.wrapp}>
+        <PrimaryButton
+          type="submit"
+          name="Calificar"
+          className={classes.submit}
+          onClick={handleOpen}
+        ></PrimaryButton>
+      </Container>
 
       <Modal
         aria-labelledby="transition-modal-title"
@@ -142,31 +144,46 @@ const RatingModal = ({ service, token, user }) => {
       >
         <Fade in={open}>
           <div className={classes.paper}>
-            <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
-              <Typography className={classes.title} variant="h5">
-                CALIFICAR TRABAJADOR
-              </Typography>  
-            
-              <Grid className={classes.start} container justifycontent="center" alignItems="center">
-                    <Grid item>
-                      <Rating name="size-large" size="large"/>  
-                    </Grid>                   
+            <form className={classes.form} onSubmit={handleSubmit}>
+              {mood === "CLIENT" ? (
+                <Typography className={classes.title} variant="h5">
+                  CALIFICAR SERVICIO
+                </Typography>
+              ) : (
+                <Typography className={classes.title} variant="h5">
+                  CALIFICAR CLIENTE
+                </Typography>
+              )}
+              <Grid
+                className={classes.start}
+                container
+                justifycontent="center"
+                alignItems="center"
+              >
+                <Grid item>
+                  <Rating
+                    name="simple-controlled"
+                    size="large"
+                    value={parseInt(rating)}
+                    onChange={handleChange}
+                  />
+                </Grid>
               </Grid>
 
               {/* Contenedor de botones finales */}
               <Container className={classes.containerButton}>
                 <SecondaryButton
                   variant="contained"
-                  name="CANCELAR"
+                  name="RECHAZAR"
                   onClick={handleClose}
                 ></SecondaryButton>
 
                 <Container className={classes.wrapp}>
                   <PrimaryButton
                     type="submit"
-                    name="ENVIAR"
+                    name="ACEPTAR"
                     className={classes.submit}
-                    onClick={handleSubmit(onSubmit)}
+                    onClick={handleSubmit}
                   ></PrimaryButton>
                 </Container>
               </Container>

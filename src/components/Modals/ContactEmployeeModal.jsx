@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import { Fragment, React, useState, useEffect } from "react";
 import {
   makeStyles,
   Container,
@@ -8,7 +8,10 @@ import {
   Backdrop,
   Fade,
   Button,
+  IconButton,
+  Snackbar
 } from "@material-ui/core/";
+import CloseIcon from "@material-ui/icons/Close";
 import { useForm } from "react-hook-form";
 import AddIcon from "@material-ui/icons/Add";
 import PrimaryButton from "../Buttons/PrimaryButton";
@@ -59,6 +62,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const ContactEmployeeModal = ({ service, token, user }) => {
+  const [openSnack, setOpenSnack] = useState(false)
   const {
     handleSubmit,
     register,
@@ -82,11 +86,20 @@ const ContactEmployeeModal = ({ service, token, user }) => {
     console.log("user data nombres");
     console.log(user.us_nombres);
     setOpen(true);
+    reset();
   };
 
   // Función para cerrar el modal
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleCloseSnack = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnack(false);
+    handleClose();
   };
 
   const onSubmit = async (datos, e) => {
@@ -104,10 +117,13 @@ const ContactEmployeeModal = ({ service, token, user }) => {
     ).then((res) => {
       console.log("respuesta creación de solicitud:");
       console.log(res);
+      e.preventDefault();
+      reset();
+      setOpenSnack(true)
+      setTimeout(()=>{
+        handleCloseSnack();
+      }, 4000)
     });
-    e.preventDefault();
-    reset();
-    handleClose();
   };
 
   return (
@@ -206,6 +222,29 @@ const ContactEmployeeModal = ({ service, token, user }) => {
                 </Container>
               </Container>
               {/*Fin Contenedor de botones finales */}
+              <Snackbar
+                open={openSnack}
+                autoHideDuration={6000}
+                role="close"
+                onClose={handleCloseSnack}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "center",
+                }}
+                message="Solicitud enviada"
+                action={
+                  <Fragment>
+                    <IconButton
+                      aria-label="close"
+                      color="inherit"
+                      className={classes.close}
+                      onClick={handleCloseSnack}
+                    >
+                      <CloseIcon />
+                    </IconButton>
+                  </Fragment>
+                }
+              />
             </form>
           </div>
         </Fade>

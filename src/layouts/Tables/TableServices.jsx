@@ -9,7 +9,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Rating from "@material-ui/lab/Rating";
 import DetailsRequestModal from "../../components/Modals/DetailsRequestModal";
-
+import image from "../../assets/services.jpg";
 /*Declarando los estilos de la tabla*/
 
 const StyledTableCell = withStyles((theme) => ({
@@ -47,15 +47,14 @@ const useStyles = makeStyles({
   },
 });
 
-export default function TableServices({ getToken, serviceData }) {
+export default function TableServices({ mood, getToken, serviceData }) {
   const classes = useStyles();
   const [dataTable, setDataTable] = useState([]);
 
   useEffect(() => {
-    console.log("service data");
-    console.log(serviceData);
     setDataTable(serviceData);
   }, [serviceData]);
+
   return (
     <TableContainer component={Paper} className={classes.container}>
       <Table
@@ -68,8 +67,21 @@ export default function TableServices({ getToken, serviceData }) {
             <StyledTableCell align="center">Imagen</StyledTableCell>
             <StyledTableCell align="center">Servicio</StyledTableCell>
             <StyledTableCell align="center">Descripción</StyledTableCell>
-            <StyledTableCell align="center">Cliente</StyledTableCell>
-            <StyledTableCell align="center">Calificación</StyledTableCell>
+            {mood === "CLIENT" ? (
+              <>
+                <StyledTableCell align="center">Trabajador</StyledTableCell>
+                <StyledTableCell align="center">
+                  Calificación del servicio
+                </StyledTableCell>
+              </>
+            ) : (
+              <>
+                <StyledTableCell align="center">Cliente</StyledTableCell>
+                <StyledTableCell align="center">
+                  Calificación del trato del cliente
+                </StyledTableCell>
+              </>
+            )}
             <StyledTableCell align="center">Estado</StyledTableCell>
             <StyledTableCell align="center">
               Gestión de Solicitud
@@ -78,18 +90,10 @@ export default function TableServices({ getToken, serviceData }) {
         </TableHead>
         <TableBody>
           {dataTable.map((row) => (
-            <StyledTableRow
-              key={`${serviceData[0].sol_id}-${serviceData[0].cat_nombre}`}
-            >
+            <StyledTableRow key={`${row.sol_id}-${row.cat_nombre}`}>
               <StyledTableCell align="center">
                 <div className={classes.containerImage}>
-                  <img
-                    src={
-                      "https://www.azulweb.net/wp-content/uploads/2020/07/El-camino-para-ser-un-desarrollador-web-profesional.jpg"
-                    }
-                    className={classes.image}
-                    alt={"imagen"}
-                  />
+                  <img src={image} className={classes.image} alt={"imagen"} />
                 </div>
               </StyledTableCell>
               <StyledTableCell align="center">{row.cat_nombre}</StyledTableCell>
@@ -98,14 +102,28 @@ export default function TableServices({ getToken, serviceData }) {
               </StyledTableCell>
               <StyledTableCell align="center">{row.us_nombres}</StyledTableCell>
               <StyledTableCell align="center">
-                <Rating name="read-only" value={row.ser_calificacion} />
+                {mood === "CLIENT" ? (
+                  <Rating
+                    name="read-only"
+                    value={parseInt(row.ser_calificacion)}
+                    readOnly
+                  />
+                ) : (
+                  <Rating
+                    name="read-only"
+                    value={parseInt(row.us_calificacion)}
+                    readOnly
+                  />
+                )}
               </StyledTableCell>
               <StyledTableCell align="center">{row.sol_estado}</StyledTableCell>
               <StyledTableCell align="center">
                 <DetailsRequestModal
+                  solEstado={row.sol_estado}
                   getToken={getToken}
                   serviceData={serviceData}
                   solId={row.sol_id}
+                  mood={mood}
                 />
               </StyledTableCell>
             </StyledTableRow>
