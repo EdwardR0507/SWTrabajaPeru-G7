@@ -1,4 +1,5 @@
 import { React, useState, useEffect } from "react";
+import { useHistory } from "react-router";
 import NavBar from "../../layouts/NavBar";
 import HeadingBar from "../../layouts/HeadingBar/HeadingBar";
 import {
@@ -30,22 +31,33 @@ const useStyles = makeStyles(() => ({
 const HiredServices = () => {
   const location = useLocation();
   const state = location.state;
+  const history = useHistory();
   const classes = useStyles();
   const [user, setUser] = useState({});
   const [solData, setSolData] = useState([]);
 
+  let token = localStorage.getItem("User_session")
+  token = token.slice(1, -1)
+
   useEffect(() => {
-    fetchData(state?.token, "GET", "user-auth", "GET_MY_USER")
+    if(!localStorage.hasOwnProperty("User_session")){
+      history.push({
+        pathname: "/signup"
+      })
+    }
+    else{
+      fetchData(token, "GET", "user-auth", "GET_MY_USER")
       .then((res) => {
         setUser(res);
       })
       .catch((err) => {
         console.log(err);
       });
+    }
   }, [state?.token]);
 
   useEffect(() => {
-    fetchData(state?.token, "GET", "solicitud-auth", "GET_MY_SOLICITUDES")
+    fetchData(token, "GET", "solicitud-auth", "GET_MY_SOLICITUDES")
       .then((res) => {
         console.log("res data service:");
         console.log(res);

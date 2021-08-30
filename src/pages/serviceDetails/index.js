@@ -1,6 +1,7 @@
 /*Importamos las librerias principales*/
 import { React, useState, useEffect } from "react";
 import { useLocation } from "react-router";
+import { useHistory } from "react-router";
 import NavBar from "../../layouts/NavBar";
 import { Container, withStyles, Grid } from "@material-ui/core/";
 import ServiceDetailsCard from "../../components/Cards/ServiceDetailsCard";
@@ -25,14 +26,25 @@ const ServiceDetails = () => {
   const location = useLocation();
   const [user, setUser] = useState({});
   const state = location.state;
+  const history = useHistory();
   const [service, setService] = useState({});
   const [worker, setWorker] = useState();
   /*Declaramos lo que nos va a retornar la funcion*/
   //Información del usuario
+  let token = localStorage.getItem("User_session")
+  token = token.slice(1, -1)
+  
   useEffect(() => {
-    fetchData(state?.token, "GET", "user-auth", "GET_MY_USER").then((res) => {
+    if(!localStorage.hasOwnProperty("User_session")){
+      history.push({
+        pathname: "/signup"
+      })
+    }
+    else{
+    fetchData(token, "GET", "user-auth", "GET_MY_USER").then((res) => {
       setUser(res);
     });
+    }
   }, [state?.token]);
 
   useEffect(() => {
@@ -41,7 +53,7 @@ const ServiceDetails = () => {
       cat_id: state?.cat_id,
     };
     fetchData(
-      state?.token,
+      token,
       "POST",
       "service-auth",
       "OBTAIN_SERVICE",
@@ -53,7 +65,7 @@ const ServiceDetails = () => {
 
   useEffect(() => {
     const newData = { us_id: state?.us_id };
-    fetchData(state?.token, "POST", "user-auth", "OBTAIN_USER", newData).then(
+    fetchData(token, "POST", "user-auth", "OBTAIN_USER", newData).then(
       (res) => {
         setWorker(res[0]);
       }

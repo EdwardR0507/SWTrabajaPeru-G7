@@ -10,6 +10,7 @@ import {
 } from "@material-ui/core/";
 import TableServices from "../../layouts/Tables/TableServices";
 import { useLocation } from "react-router";
+import { useHistory } from "react-router";
 import { fetchData } from "../../services/services";
 
 const useStyles = makeStyles(() => ({
@@ -30,22 +31,33 @@ const useStyles = makeStyles(() => ({
 const SolicitedServices = () => {
   const location = useLocation();
   const state = location.state;
+  const history = useHistory();
   const classes = useStyles();
   const [user, setUser] = useState({});
   const [serviceData, setServiceData] = useState([]);
 
+  let token = localStorage.getItem("User_session")
+  token = token.slice(1, -1)
+
   useEffect(() => {
-    fetchData(state?.token, "GET", "user-auth", "GET_MY_USER")
+    if(!localStorage.hasOwnProperty("User_session")){
+      history.push({
+        pathname: "/signup"
+      })
+    }
+    else{
+      fetchData(token, "GET", "user-auth", "GET_MY_USER")
       .then((res) => {
         setUser(res);
       })
       .catch((err) => {
         console.log(err);
       });
+    }
   }, [state?.token]);
 
   useEffect(() => {
-    fetchData(state?.token, "GET", "solicitud-auth", "GET_SOLICITUDES")
+    fetchData(token, "GET", "solicitud-auth", "GET_SOLICITUDES")
       .then((res) => {
         console.log("res data service:");
         console.log(res);

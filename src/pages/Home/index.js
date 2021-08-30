@@ -69,9 +69,14 @@ export default function Home() {
     });
   }, []);
 
+  let token;
+
   useEffect(() => {
-    if (state?.token) {
-      fetchData(state?.token, "GET", "user-auth", "GET_MY_USER")
+    console.log(localStorage.getItem("User_session"))
+    if (localStorage.hasOwnProperty("User_session")) {
+      token = localStorage.getItem("User_session")
+      token = token.slice(1, -1)
+      fetchData(token, "GET", "user-auth", "GET_MY_USER")
         .then((res) => {
           console.log(res);
           setUser(res);
@@ -109,7 +114,7 @@ export default function Home() {
   };
 
   const conditionalNavBar = () => {
-    return user ? <NavBar user={user} token={state?.token} /> : <NavBar />;
+    return user ? <NavBar user={user} token={token} /> : <NavBar />;
   }
 
   return workers && services ? (
@@ -133,7 +138,7 @@ export default function Home() {
                 <ServiceCard
                   key={`${service.us_id}-${service.cat_id}`}
                   service={service}
-                  token={state?.token}
+                  token={token}
                 />
               ) : (
                 <ServiceCard

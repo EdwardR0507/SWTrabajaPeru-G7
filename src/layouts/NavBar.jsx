@@ -87,6 +87,9 @@ const NavBar = (props) => {
 
   const history = useHistory();
 
+  let token = localStorage.getItem("User_session")
+  token = token.slice(1, -1)
+
   return (
     <StyledNavBar>
       <StyledToolbar>
@@ -98,11 +101,11 @@ const NavBar = (props) => {
             </>
             <SearchField
               placeholder="Buscar Cliente o Servicio"
-              token={props.token}
+              token={token}
             />
             <>
               <StyledIconButton>
-                <NotificationList token={props.token} history={history} />
+                <NotificationList token={token} history={history} />
               </StyledIconButton>
               <IconButton onClick={handleClick}>
                 <Avatar src={image} />
@@ -120,7 +123,7 @@ const NavBar = (props) => {
                   onClick={() => {
                     history.push({
                       pathname: "/myAccount",
-                      state: { token: props.token },
+                      state: { token: token },
                     });
                   }}
                 >
@@ -133,7 +136,7 @@ const NavBar = (props) => {
                   onClick={() => {
                     history.push({
                       pathname: "/editProfile",
-                      state: { token: props.token },
+                      state: { token: token },
                     });
                   }}
                 >
@@ -144,9 +147,15 @@ const NavBar = (props) => {
                 </MenuItem>
                 <MenuItem
                   onClick={() => {
-                    history.push({
-                      pathname: "/",
-                    });
+                    localStorage.removeItem("User_session")
+                    if (window.location.pathname === "/"){
+                      window.location.reload();
+                    }
+                    else{
+                      history.push({
+                        pathname: "/",
+                      });
+                    }
                   }}
                 >
                   <ListItemIcon>

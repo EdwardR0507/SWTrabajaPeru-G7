@@ -1,5 +1,5 @@
 /*Importamos las librerias principales*/
-import React from "react";
+import React, { useState } from "react";
 import { Link as RouterLink, useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import {
@@ -12,6 +12,7 @@ import {
   makeStyles,
   withStyles,
 } from "@material-ui/core/";
+import FormError from "../../components/Errors/FormError";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
 import NavBar from "../../layouts/NavBar";
 import { fetchUserData } from "../../services/services";
@@ -40,13 +41,7 @@ const StyledTypography = withStyles({
     fontWeigth: "400",
   },
 })(Typography);
-/*Declaramos el estilo de la letra*/
-const StyledErrorSpan = withStyles({
-  root: {
-    color: "#FF4D4D",
-    float: "left",
-  },
-})(Typography);
+
 /*Declaramos la función principal*/
 export default function SignIn() {
   const classes = useStyles();
@@ -57,15 +52,22 @@ export default function SignIn() {
     formState: { errors },
     handleSubmit,
   } = useForm();
+  const [errorMessage, setErrorMessage] = useState("");
 
   const onSubmit = async (getUser, evt) => {
     evt.preventDefault();
     fetchUserData("POST", "user", "LOGIN_USER", getUser).then((res) => {
-      localStorage.setItem("User_session", JSON.stringify(res));
-      history.push({
-        pathname: "/",
-        state: { token: res.token },
-      });
+      console.log(res);
+      if (res.status != "SUCCESS") {
+        setErrorMessage(res.message)
+      }
+      else {
+        localStorage.setItem("User_session", JSON.stringify(res.token));
+        history.push({
+          pathname: "/",
+          state: { token: res.token },
+        });
+      }
     });
   };
   /* Renderizado de la vista de Inicio de Sesión */
@@ -92,12 +94,14 @@ export default function SignIn() {
                     pattern: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
                   })}
                 />
-                <StyledErrorSpan>
-                  {errors.us_correo?.type === "required" && "Ingrese el correo"}
-                </StyledErrorSpan>
-                <StyledErrorSpan>
-                  {errors.us_correo?.type === "pattern" && "Correo no válido"}
-                </StyledErrorSpan>
+                <FormError
+                  condition={errors.us_correo?.type === "required"}
+                  content="Ingrese correo electrónico"
+                />
+                <FormError
+                  condition={errors.us_correo?.type === "pattern"}
+                  content="Dirección de correo no válido"
+                />
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -114,18 +118,24 @@ export default function SignIn() {
                     maxLength: 14,
                   })}
                 />
-                <StyledErrorSpan>
-                  {errors.us_contrasena?.type === "required" &&
-                    "Ingrese la contraseña"}
-                </StyledErrorSpan>
-                <StyledErrorSpan>
-                  {errors.us_contrasena?.type === "minLength" &&
-                    "Contraseña no válida"}
-                </StyledErrorSpan>
-                <StyledErrorSpan>
-                  {errors.us_contrasena?.type === "maxLength" &&
-                    "Contraseña no válida"}
-                </StyledErrorSpan>
+                <FormError
+                  condition={errors.us_contrasena?.type === "required"}
+                  content="Ingrese contraseña"
+                />
+                <FormError
+                  condition={errors.us_contrasena?.type === "minLength"}
+                  content="Contraseña no válida"
+                />
+                <FormError
+                  condition={errors.us_contrasena?.type === "maxLength"}
+                  content="Contraseña no válida"
+                />
+              </Grid>
+              <Grid>
+                <FormError
+                  condition={errorMessage != ""}
+                  content={errorMessage}
+                />
               </Grid>
               <Grid item xs={12}>
                 <PrimaryButton
