@@ -31,7 +31,7 @@ const ServiceDetails = () => {
   const [worker, setWorker] = useState();
   /*Declaramos lo que nos va a retornar la funcion*/
   //Información del usuario
-  let troken;
+  let token;
   useEffect(() => {
     if(!localStorage.hasOwnProperty("User_session")){
       history.push({

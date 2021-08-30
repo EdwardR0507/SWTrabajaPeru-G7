@@ -87,10 +87,8 @@ const NavBar = (props) => {
 
   const history = useHistory();
 
-  if (locaStorage.hasOwnProperty("User_session")){
-    let token = localStorage.getItem("User_session")
-    token = token.slice(1, -1)
-  }
+  let token = localStorage.getItem("User_session")
+  token = token?.slice(1, -1)
 
   return (
     <StyledNavBar>
