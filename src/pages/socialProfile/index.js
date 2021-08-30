@@ -28,8 +28,7 @@ export default function SocialProfile() {
   const state = location.state;
   const history = useHistory();
 
-  let token = localStorage.getItem("User_session")
-  token = token.slice(1, -1)
+  let token;
 
   //Información del usuario
   useEffect(() => {
@@ -41,6 +40,8 @@ export default function SocialProfile() {
       })
     }
     else{
+      token = localStorage.getItem("User_session")
+      token = token.slice(1, -1)
       fetchData(token, "GET", "user-auth", "GET_MY_USER")
       .then((res) => {
         console.log(res);
@@ -64,6 +65,8 @@ export default function SocialProfile() {
   }, [state]);
 
   useEffect(() => {
+    token = localStorage.getItem("User_session")
+    token = token.slice(1, -1)
     if (location.pathname === "/myAccount") {
       fetchData(token, "GET", "service-auth", "GET_MY_SERVICES").then(
         (res) => {

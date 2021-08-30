@@ -36,8 +36,7 @@ const SolicitedServices = () => {
   const [user, setUser] = useState({});
   const [serviceData, setServiceData] = useState([]);
 
-  let token = localStorage.getItem("User_session")
-  token = token.slice(1, -1)
+  let roken;
 
   useEffect(() => {
     if(!localStorage.hasOwnProperty("User_session")){
@@ -46,6 +45,8 @@ const SolicitedServices = () => {
       })
     }
     else{
+      token = localStorage.getItem("User_session")
+  token = token.slice(1, -1)
       fetchData(token, "GET", "user-auth", "GET_MY_USER")
       .then((res) => {
         setUser(res);
@@ -57,6 +58,8 @@ const SolicitedServices = () => {
   }, [state?.token]);
 
   useEffect(() => {
+    token = localStorage.getItem("User_session")
+  token = token.slice(1, -1)
     fetchData(token, "GET", "solicitud-auth", "GET_SOLICITUDES")
       .then((res) => {
         console.log("res data service:");

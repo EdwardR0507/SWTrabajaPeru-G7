@@ -96,8 +96,7 @@ export default function EditProfile() {
     setOpen(false);
   };
 
-  let token = localStorage.getItem("User_session")
-  token = token.slice(1, -1)
+  let token;
 
   useEffect(() => {
     console.log(state);
@@ -108,6 +107,8 @@ export default function EditProfile() {
       })
     }
     else{
+      token = localStorage.getItem("User_session")
+      token = token.slice(1, -1)
       fetchData(token, "GET", "user-auth", "GET_MY_USER")
       .then((res) => {
         console.log(res);
@@ -126,6 +127,8 @@ export default function EditProfile() {
   const onSubmit = async (userEdited, event) => {
     event.preventDefault();
     console.log(userEdited);
+    token = localStorage.getItem("User_session")
+    token = token.slice(1, -1)
     fetchData(token, "POST", "user-auth", "EDIT_USER", userEdited).then(
       (res) => {
         setOpen(true);

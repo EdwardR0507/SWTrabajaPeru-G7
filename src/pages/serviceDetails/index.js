@@ -31,9 +31,7 @@ const ServiceDetails = () => {
   const [worker, setWorker] = useState();
   /*Declaramos lo que nos va a retornar la funcion*/
   //Información del usuario
-  let token = localStorage.getItem("User_session")
-  token = token.slice(1, -1)
-  
+  let troken;
   useEffect(() => {
     if(!localStorage.hasOwnProperty("User_session")){
       history.push({
@@ -41,6 +39,8 @@ const ServiceDetails = () => {
       })
     }
     else{
+    token = localStorage.getItem("User_session")
+    token = token.slice(1, -1)
     fetchData(token, "GET", "user-auth", "GET_MY_USER").then((res) => {
       setUser(res);
     });
@@ -52,6 +52,8 @@ const ServiceDetails = () => {
       us_id: state?.us_id,
       cat_id: state?.cat_id,
     };
+    token = localStorage.getItem("User_session")
+    token = token.slice(1, -1)
     fetchData(
       token,
       "POST",
@@ -65,6 +67,8 @@ const ServiceDetails = () => {
 
   useEffect(() => {
     const newData = { us_id: state?.us_id };
+    token = localStorage.getItem("User_session")
+    token = token.slice(1, -1)
     fetchData(token, "POST", "user-auth", "OBTAIN_USER", newData).then(
       (res) => {
         setWorker(res[0]);
