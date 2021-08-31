@@ -45,6 +45,7 @@ const ManageServices = () => {
   useEffect(() => {
     fetchData(state?.token, "GET", "service-auth", "GET_MY_SERVICES")
       .then((res) => {
+        console.log("get my services: ", res);
         setData(res);
       })
       .catch((err) => {

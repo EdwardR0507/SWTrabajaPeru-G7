@@ -9,7 +9,6 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Rating from "@material-ui/lab/Rating";
 import DetailsRequestModal from "../../components/Modals/DetailsRequestModal";
-import image from "../../assets/services.jpg";
 /*Declarando los estilos de la tabla*/
 
 const StyledTableCell = withStyles((theme) => ({
@@ -50,7 +49,7 @@ const useStyles = makeStyles({
 export default function TableServices({ mood, getToken, serviceData }) {
   const classes = useStyles();
   const [dataTable, setDataTable] = useState([]);
-
+  console.log(serviceData);
   useEffect(() => {
     setDataTable(serviceData);
   }, [serviceData]);
@@ -93,7 +92,11 @@ export default function TableServices({ mood, getToken, serviceData }) {
             <StyledTableRow key={`${row.sol_id}-${row.cat_nombre}`}>
               <StyledTableCell align="center">
                 <div className={classes.containerImage}>
-                  <img src={image} className={classes.image} alt={"imagen"} />
+                  <img
+                    src={row.ser_imagen}
+                    className={classes.image}
+                    alt={"imagen"}
+                  />
                 </div>
               </StyledTableCell>
               <StyledTableCell align="center">{row.cat_nombre}</StyledTableCell>

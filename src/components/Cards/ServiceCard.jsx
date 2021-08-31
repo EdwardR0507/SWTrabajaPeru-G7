@@ -8,12 +8,9 @@ import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
-import ShareIcon from "@material-ui/icons/Share";
 import Avatar from "@material-ui/core/Avatar";
 import DialogLogin from "../Dialog/DialogLogin";
 import theme from "../../themes/themes";
-import image from "../../assets/services.jpg";
 import imageWorker from "../../assets/worker.jpg";
 const StyledCard = withStyles({
   root: {
@@ -44,13 +41,6 @@ const StyledButton = withStyles({
 
 const StyledBody2 = withStyles({
   root: {
-    color: theme.cardLetter.primary.main,
-  },
-})(Typography);
-
-const StyledCaption = withStyles({
-  root: {
-    marginRight: "5%",
     color: theme.cardLetter.primary.main,
   },
 })(Typography);
@@ -95,7 +85,7 @@ const ServiceCard = (props) => {
         title={service.cat_nombre}
         subheader={service.us_nombres}
       />
-      <StyledCardMedia image={image} />
+      <StyledCardMedia image={service.ser_imagen} />
       <CardContent>
         <StyledBody2 variant="body2">{service.ser_descripcion}</StyledBody2>
       </CardContent>

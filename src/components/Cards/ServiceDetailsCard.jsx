@@ -8,7 +8,6 @@ import Rating from "@material-ui/lab/Rating";
 import theme from "../../themes/themes";
 import ContactEmployeeModal from "../Modals/ContactEmployeeModal";
 import { Divider, Grid, Box, Typography } from "@material-ui/core";
-import image from "../../assets/services.jpg";
 /*Declaramos los estilos que se van a usar por cada componente*/
 /*Declaramos el estilo del card*/
 
@@ -112,7 +111,7 @@ const ServiceDetailsCard = (props) => {
           </Box>
         </Grid>
       </Grid>
-      <StyledCardMedia image={image} />
+      <StyledCardMedia image={service.ser_imagen} />
       <Grid container spacing={12} justifycontent="center">
         <Boxes>
           <StyledBody>Descripción</StyledBody>

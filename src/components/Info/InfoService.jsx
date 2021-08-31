@@ -9,7 +9,6 @@ import ServiceModal from "../Modals/ServiceModal";
 import DialogDelete from "../Dialog/DialogDelete";
 import { useLocation } from "react-router";
 import { fetchData } from "../../services/services";
-import image from "../../assets/services.jpg";
 const useStyles = makeStyles(() => ({
   root: {
     display: "flex",
@@ -62,7 +61,7 @@ const WrapContainer = withStyles({
   },
 })(Container);
 
-const InfoService = ({ cat_id, cat_nombre, ser_descripcion }) => {
+const InfoService = ({ cat_id, cat_nombre, ser_descripcion, ser_imagen }) => {
   const classes = useStyles();
 
   const [descriptionService, setDescriptionService] = useState(ser_descripcion);
@@ -91,7 +90,11 @@ const InfoService = ({ cat_id, cat_nombre, ser_descripcion }) => {
           <StyledContainerData>
             {/*Aquí irá la imagen del servicio, primero importamos la imagen y luego la colocamos dentro del src, no olvidar poner el alt */}
             <StyledContainerImage>
-              <img src={image} alt={"servicio"} className={classes.image} />
+              <img
+                src={ser_imagen}
+                alt={"servicio"}
+                className={classes.image}
+              />
             </StyledContainerImage>
             <Container className={classes.description}>
               <Typography color="primary" variant="subtitle1">
@@ -106,6 +109,7 @@ const InfoService = ({ cat_id, cat_nombre, ser_descripcion }) => {
             <ServiceModal
               cat_nombre={cat_nombre}
               serviceDescription={descriptionService}
+              ser_imagen={ser_imagen}
               role="edit"
               handleEdit={handleEdit}
               modalDescription={modalDescription}

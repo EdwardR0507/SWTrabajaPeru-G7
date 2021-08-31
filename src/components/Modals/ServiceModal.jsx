@@ -9,6 +9,7 @@ import {
   Button,
   TextField,
   Select,
+  IconButton,
   Modal,
   Backdrop,
   Fade,
@@ -17,12 +18,12 @@ import {
 } from "@material-ui/core/";
 import AddIcon from "@material-ui/icons/Add";
 import CreateIcon from "@material-ui/icons/Create";
+import AddCircleIcon from "@material-ui/icons/AddCircle";
 import PrimaryButton from "../Buttons/PrimaryButton";
 import SecondaryButton from "../Buttons/SecondaryButton";
 import FormError from "../../components/Errors/FormError";
 import theme from "../../themes/themes";
 import { fetchData } from "../../services/services";
-import image from "../../assets/services.jpg";
 const useStyles = makeStyles(() => ({
   //Estilos para la customización del modal
   modal: {
@@ -119,6 +120,7 @@ const ServiceModal = ({
   cat_nombre,
   modalDescription,
   setDescriptionService,
+  ser_imagen,
 }) => {
   // Hook useForm para almacenar los datos de los forms
   const {
@@ -142,6 +144,8 @@ const ServiceModal = ({
   const [selectName, setSelectName] = useState("");
 
   const [catSelect, setCatSelect] = useState([]);
+
+  const [fileUrl, setFileUrl] = useState(ser_imagen);
 
   const [list, setList] = useState([
     {
@@ -192,16 +196,35 @@ const ServiceModal = ({
     setName(e.target.value);
     setSelectName(e.target.value);
   };
+  const toBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+
+  const conversion = async () => {
+    const file = document.querySelector("#image").files[0];
+    const fileTosend = await toBase64(file);
+    return fileTosend;
+  };
 
   //Función que crea un nuevo componente InfoService y envía datos al backend
   const onSubmit = async (datos, e) => {
+    const imageB64 = await conversion();
+    const dataToSend = {
+      ...datos,
+      ser_imagen: imageB64,
+    };
     e.preventDefault();
+    console.log("datosToSend: ", dataToSend);
     fetchData(
       state?.token,
       "POST",
       "service-auth",
       "CREATE_SERVICE",
-      datos
+      dataToSend
     ).then((res) => {
       console.log(res);
       handleClose();
@@ -216,16 +239,19 @@ const ServiceModal = ({
         },
       ]);
       reset();
+      window.location.replace("");
     });
   };
 
   // Función para editar un servicio
   const onSubmitEdit = async (datos, e) => {
     setDescriptionService(modalDescription);
+    const imageToB64 = await conversion();
     e.preventDefault();
     const newData = {
       cat_id: catSelect[0].cat_id,
       ser_descripcion: datos.ser_descripcion,
+      ser_imagen: imageToB64,
     };
     if (datos.ser_descripcion === undefined) {
       newData.ser_descripcion = serviceDescription;
@@ -241,10 +267,18 @@ const ServiceModal = ({
       handleClose();
       reset();
     });
+    window.location.replace("");
   };
 
   // Función para comprobar la existencia de un nombre por defecto en el select que se encuentra deshabilitado (en editModal)
   const existName = (e) => (e ? e : "");
+
+  function processImage(event) {
+    const imageFile = event.target.files[0];
+    const imageUrl = URL.createObjectURL(imageFile);
+    setFileUrl(imageUrl);
+  }
+
   return (
     // Renderizado condicional para diferenciar entre el boton Agregar y el botón Editar
     <>
@@ -346,11 +380,20 @@ const ServiceModal = ({
                   </Container>
                   {/*Aquí irá la imagen del servicio, primero importamos la imagen y luego la colocamos dentro del src, no olvidar poner el alt */}
                   <Container className={classes.containerImage}>
-                    <img
-                      src={image}
-                      alt={"Servicio"}
-                      className={classes.image}
-                    />
+                    <IconButton
+                      aria-label="delete"
+                      component="label"
+                      className={classes.addIcon}
+                    >
+                      <AddCircleIcon fontSize="large" />
+                      <input
+                        type="file"
+                        hidden
+                        onChange={processImage}
+                        id="image"
+                      />
+                    </IconButton>
+                    <img src={fileUrl} alt={"service"} />
                   </Container>
                 </Container>
                 <Container className={classes.containerButton}>
@@ -409,11 +452,21 @@ const ServiceModal = ({
                   </Container>
                   {/*Aquí irá la imagen del servicio, primero importamos la imagen y luego la colocamos dentro del src, no olvidar poner el alt */}
                   <Container className={classes.containerImage}>
-                    <img
-                      src={image}
-                      alt={"Servicio"}
-                      className={classes.image}
-                    />
+                    <IconButton
+                      aria-label="delete"
+                      component="label"
+                      className={classes.addIcon}
+                    >
+                      <AddCircleIcon fontSize="large" />
+                      <input
+                        type="file"
+                        accept="image/*"
+                        hidden
+                        onChange={processImage}
+                        id="image"
+                      />
+                    </IconButton>
+                    <img src={fileUrl} alt={"service"} />
                   </Container>
                 </Container>
                 <Container className={classes.containerButton}>
