@@ -372,6 +372,7 @@ const ServiceModal = ({
                   <Container className={classes.wrapp}>
                     <PrimaryButton
                       type="submit"
+                      role="button"
                       name="ACEPTAR"
                       className={classes.submit}
                       onClick={handleSubmit(onSubmit)}
