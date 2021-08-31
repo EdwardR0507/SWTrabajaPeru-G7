@@ -1,6 +1,7 @@
 /*Importamos las librerias principales*/
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router";
+import { useHistory } from "react-router";
 import { Container, Grid, Box } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import ProfileCard from "../../components/Cards/ProfileCard";
@@ -25,12 +26,23 @@ export default function SocialProfile() {
   const [services, setServices] = useState([]);
   const location = useLocation();
   const state = location.state;
+  const history = useHistory();
+
+  let token;
 
   //Información del usuario
   useEffect(() => {
     console.log(state)
     //Cambiar post por get cuando se arregle
-    fetchData(state?.token, "GET", "user-auth", "GET_MY_USER")
+    if(!localStorage.hasOwnProperty("User_session")){
+      history.push({
+        pathname: "/signup"
+      })
+    }
+    else{
+      token = localStorage.getItem("User_session")
+      token = token.slice(1, -1)
+      fetchData(token, "GET", "user-auth", "GET_MY_USER")
       .then((res) => {
         console.log(res);
         setUser(res);
@@ -38,7 +50,7 @@ export default function SocialProfile() {
           setProfile(res)
         }
         else if (location.pathname === "/profile") {
-          fetchData(state?.token, "POST", "user-auth", "OBTAIN_USER", { us_id: state?.idUser }).then(
+          fetchData(token, "POST", "user-auth", "OBTAIN_USER", { us_id: state?.idUser }).then(
             (res) => {
               console.log(res);
               setProfile(res[0])
@@ -49,11 +61,14 @@ export default function SocialProfile() {
       .catch((err) => {
         console.log(err);
       });
+    }
   }, [state]);
 
   useEffect(() => {
+    token = localStorage.getItem("User_session")
+    token = token.slice(1, -1)
     if (location.pathname === "/myAccount") {
-      fetchData(state?.token, "GET", "service-auth", "GET_MY_SERVICES").then(
+      fetchData(token, "GET", "service-auth", "GET_MY_SERVICES").then(
         (res) => {
           console.log(res);
           setServices(res);
@@ -62,7 +77,7 @@ export default function SocialProfile() {
     }
     //Falta agregar la obtención de servicios de otro usuario
     else if (location.pathname === "/profile") {
-      fetchData(state?.token, "POST", "service-auth", "GET_OTHERS_SERVICES", { us_id: state?.idUser })
+      fetchData(token, "POST", "service-auth", "GET_OTHERS_SERVICES", { us_id: state?.idUser })
         .then((res) => {
           console.log(res);
           setServices(res)
