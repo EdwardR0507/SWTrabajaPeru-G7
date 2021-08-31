@@ -53,18 +53,22 @@ const ServiceCard = (props) => {
     setService(props.service);
   }, []);
 
+  let token;
+
   const conditionalToken = () => {
-    return props.token ? (
+    return localStorage.hasOwnProperty("User_session") ? (
       <StyledButton
         role="redirect"
         onClick={() => {
+          token = localStorage.getItem("User_session")
+          token = token.slice(1, -1)
           history.push({
             pathname: "/serviceDetails",
             search: `user=${service.us_correo.split("@")}&?service=${
               service.cat_id
             }`,
             state: {
-              token: props.token,
+              token: token,
               us_id: service.us_id,
               cat_id: service.cat_id,
             },

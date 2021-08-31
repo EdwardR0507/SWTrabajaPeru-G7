@@ -57,7 +57,10 @@ const WrapContainer = withStyles({
   root: {
     width: "100%",
     padding: "0.1em",
+    marginBottom: "2em",
     overflowWrap: "break-word",
+    display: "inline-block",
+    wordBreak: "break-word"
   },
 })(Container);
 

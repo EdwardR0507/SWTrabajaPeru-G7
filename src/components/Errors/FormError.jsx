@@ -5,6 +5,7 @@ import Typography from '@material-ui/core/Typography';
 const StyledFormError = withStyles({
     root: {
         color: "#FF4D4D",
+        float: "left"
     }
 })(Typography)
 

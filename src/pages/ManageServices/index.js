@@ -1,5 +1,6 @@
 import { React, useState, useEffect } from "react";
 import { useLocation } from "react-router";
+import { useHistory } from "react-router";
 import NavBar from "../../layouts/NavBar";
 import HeadingBar from "../../layouts/HeadingBar/HeadingBar";
 import { Container, Typography, withStyles } from "@material-ui/core/";
@@ -29,21 +30,34 @@ const ManageServices = () => {
   const location = useLocation();
   const state = location.state;
 
+  const history = useHistory();
+
   const [user, setUser] = useState({});
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetchData(state?.token, "GET", "user-auth", "GET_MY_USER")
+    if(!localStorage.hasOwnProperty("User_session")){
+      history.push({
+        pathname: "/signup"
+      })
+    }
+    else{
+      let token = localStorage.getItem("User_session")
+      token = token.slice(1, -1)
+      fetchData(token, "GET", "user-auth", "GET_MY_USER")
       .then((res) => {
         setUser(res);
       })
       .catch((err) => {
         console.log(err);
       });
+    }
   }, [state?.token]);
 
   useEffect(() => {
-    fetchData(state?.token, "GET", "service-auth", "GET_MY_SERVICES")
+    let token = localStorage.getItem("User_session")
+    token = token.slice(1, -1)
+    fetchData(token, "GET", "service-auth", "GET_MY_SERVICES")
       .then((res) => {
         console.log("get my services: ", res);
         setData(res);

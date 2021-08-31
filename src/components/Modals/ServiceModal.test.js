@@ -9,6 +9,8 @@ import ServiceModal from "./ServiceModal";
 import { createMemoryHistory } from "history";
 import GlobalEnv from "../../GlobalEnv";
 import { Router } from "react-router-dom";
+import { fireEvent } from '@testing-library/react';
+import { act } from 'react-dom/test-utils';
 
 /*Renderizado del componente ServiceModal*/
 describe("ServiceModal", () => {
@@ -70,7 +72,7 @@ describe("ServiceModal", () => {
     const button = wrapper.find({ role: "open" });
     const open = wrapper.find({ role: "Modal" });
     button.simulate("click")
-    serverService.use(
+    server.use(
       rest.post(`${GlobalEnv.host}/service-auth`, (req, res, ctx) => {
         return res(ctx.status(500))
       }),
@@ -81,34 +83,27 @@ describe("ServiceModal", () => {
     const wrapper = shallow(<ServiceModal />);
     const button = wrapper.find({ type: "submit" });
     button.simulate("click")
-    serverService.use(
+    server.use(
       rest.post(`${GlobalEnv.host}/service-auth`, (req, res, ctx) => {
         return res(ctx.status(500))
       }))
     expect(wrapper.props("onSubmit")).toBeCalled()
   })
-  /* NO SIRVE
-  it("renders without crashing ServiceModal", () => {
-    const handleClose = jest.fn(),
-      handleOpen = jest.fn(),
-      handleOpenEdit = jest.fn(),
-      open = jest.fn();
-
-    const component = shallow(
-      <ServiceModal
-        open={open}
-        handleOpen={handleOpen}
-        handleOpenEdit={handleOpenEdit}
-        handleClose={handleClose}
-      />
+  
+  it("calls the onSubmit function", async () => {
+    const history = createMemoryHistory();
+    const mockOnSubmit = jest.fn();
+    const { getByLabelText, getByRole } = render(<Router history={history}>
+      <ServiceModal onSubmit={mockOnSubmit} />
+    </Router>
     );
-
-    component.find("Button").toHaveTextContent("Agregar").simulate("click");
-    expect(handleOpen).toHaveBeenCalledTimes(1);
-    component.find("Button").toHaveTextContent("Editar").simulate("click");
-    expect(handleOpenEdit).toHaveBeenCalledTimes(1);
-    component.find('SecondaryButton[name="CANCELAR"]').simulate("click");
-    expect(handleClose).toHaveBeenCalledTimes(1);
-  });
-  */
+    await act(async () => {
+      fireEvent.change(getByLabelText("Nombre del Servicio"), { target: { value: "Mudanzas" } });
+      fireEvent.change(getByLabelText("Descripción"), { target: { value: "Servicio de mudanzas" } });
+    })
+    await act(async () => {
+      fireEvent.click(getByRole("button"))
+    })
+  })
+  
 });
