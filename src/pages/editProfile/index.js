@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router";
 import { useForm } from "react-hook-form";
+import { useHistory } from "react-router";
 import NavBar from "../../layouts/NavBar";
 import {
   Container,
@@ -75,6 +76,7 @@ export default function EditProfile() {
   });
   const location = useLocation();
   const state = location.state;
+  const history = useHistory();
 
   const locations = useLocations();
 
@@ -94,10 +96,20 @@ export default function EditProfile() {
     setOpen(false);
   };
 
+  let token;
+
   useEffect(() => {
     console.log(state);
     //Cambiar post por get cuando se arregle
-    fetchData(state?.token, "GET", "user-auth", "GET_MY_USER")
+    if(!localStorage.hasOwnProperty("User_session")){
+      history.push({
+        pathname: "/signup"
+      })
+    }
+    else{
+      token = localStorage.getItem("User_session")
+      token = token.slice(1, -1)
+      fetchData(token, "GET", "user-auth", "GET_MY_USER")
       .then((res) => {
         console.log(res);
         setUser(res);
@@ -109,12 +121,15 @@ export default function EditProfile() {
       .catch((err) => {
         console.log(err);
       });
+    }
   }, [reset]);
 
   const onSubmit = async (userEdited, event) => {
     event.preventDefault();
     console.log(userEdited);
-    fetchData(state?.token, "POST", "user-auth", "EDIT_USER", userEdited).then(
+    token = localStorage.getItem("User_session")
+    token = token.slice(1, -1)
+    fetchData(token, "POST", "user-auth", "EDIT_USER", userEdited).then(
       (res) => {
         setOpen(true);
         console.log(res);
