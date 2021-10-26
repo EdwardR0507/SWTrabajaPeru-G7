@@ -111,17 +111,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 /*Props: objeto, setter del objeto, modo que tomará el modal que se va a renderizar (agregar o editar, basta con pasarle Agregar), nombre del servicio, descripción del servicio, función para poder editar el servicio*/
-const ServiceModal = ({
-  data,
-  setData,
-  mood,
-  serviceDescription,
-  handleEdit,
-  cat_nombre,
-  modalDescription,
-  setDescriptionService,
-  ser_imagen,
-}) => {
+const ServiceModal = ({ mood, ser_imagen, service, handleAdd }) => {
   // Hook useForm para almacenar los datos de los forms
   const {
     handleSubmit,
@@ -134,16 +124,10 @@ const ServiceModal = ({
 
   // Variable para customizar los componentes
   const classes = useStyles();
-  // Estado para controlar la apertura y cierre de los modales
+
   const [open, setOpen] = useState(false);
-  // Estado para controlar el nombre del servicio
-  const [name, setName] = useState("");
-  // Estado para controlar la descripción del servicio
-  const [description, setDescription] = useState("");
 
   const [selectName, setSelectName] = useState("");
-
-  const [catSelect, setCatSelect] = useState([]);
 
   const [fileUrl, setFileUrl] = useState(ser_imagen);
 
@@ -156,44 +140,27 @@ const ServiceModal = ({
 
   // Función para abrir el modal
   const handleOpen = () => {
-    fetchData(state?.token, "GET", "service-auth", "GET_CATEGORIES")
-      .then((res) => {
-        setList(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    setSelectName("");
+    if (mood === "Agregar") {
+      fetchData(state?.token, "GET", "service-auth", "GET_CATEGORIES")
+        .then((res) => {
+          setList(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      setSelectName("");
+    }
     setOpen(true);
   };
 
-  const handleOpenEdit = () => {
-    setOpen(true);
-    fetchData(state?.token, "GET", "service-auth", "GET_MY_SERVICES")
-      .then((res) => {
-        const cat = res.filter((el) => el.cat_nombre === cat_nombre);
-        setCatSelect(cat);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
   // Función para cerrar el modal
   const handleClose = () => {
     reset();
     setOpen(false);
   };
 
-  // Función para capturar lo que se escriba la descripción
-  const handleDescription = (e) => {
-    setDescription(e.target.value);
-  };
-
-  // Función para capturar lo que se seleccione(setSelectName) y a su vez agregar el nombre que se mostrará en el componente InfoService (setName)
+  // Función para capturar lo que se seleccione(setSelectName)
   const handleSelect = (e) => {
-    console.log(list);
-    console.log(e.target);
-    setName(e.target.value);
     setSelectName(e.target.value);
   };
   const toBase64 = (file) =>
@@ -217,61 +184,26 @@ const ServiceModal = ({
       ...datos,
       ser_imagen: imageB64,
     };
-    e.preventDefault();
     console.log("datosToSend: ", dataToSend);*/
-    fetchData(
-      state?.token,
-      "POST",
-      "service-auth",
-      "CREATE_SERVICE",
-      datos
-    ).then((res) => {
-      console.log(res);
-      handleClose();
-      setDescription("");
-      const id = list.filter((el) => el.cat_nombre === name)[0].cat_id;
-      setData([
-        ...data,
-        {
-          cat_id: id,
-          cat_nombre: name,
-          ser_descripcion: description,
-        },
-      ]);
-      reset();
-      window.location.replace("");
-    });
-  };
-
-  // Función para editar un servicio
-  const onSubmitEdit = async (datos, e) => {
-    setDescriptionService(modalDescription);
-    const imageToB64 = await conversion();
     e.preventDefault();
-    const newData = {
-      cat_id: catSelect[0].cat_id,
-      ser_descripcion: datos.ser_descripcion,
-      ser_imagen: imageToB64,
-    };
-    if (datos.ser_descripcion === undefined) {
-      newData.ser_descripcion = serviceDescription;
+    console.log("datos: ", datos);
+    if (mood === "Agregar") {
+      handleAdd(datos, service?.cat_id);
+    } else {
+      let newData = {
+        cat_id: service?.cat_id,
+        ser_descripcion: datos.ser_descripcion,
+        //ser_imagen: imageToB64,
+      };
+      if (datos.ser_descripcion === undefined) {
+        newData.ser_descripcion = service?.ser_descripcion;
+      }
+      fetchData(state?.token, "POST", "service-auth", "EDIT_SERVICE", newData);
+      window.location.reload();
     }
-    fetchData(
-      state?.token,
-      "POST",
-      "service-auth",
-      "EDIT_SERVICE",
-      newData
-    ).then((res) => {
-      console.log(res);
-      handleClose();
-      reset();
-    });
-    window.location.replace("");
+    handleClose();
+    reset();
   };
-
-  // Función para comprobar la existencia de un nombre por defecto en el select que se encuentra deshabilitado (en editModal)
-  const existName = (e) => (e ? e : "");
 
   function processImage(event) {
     const imageFile = event.target.files[0];
@@ -282,28 +214,16 @@ const ServiceModal = ({
   return (
     // Renderizado condicional para diferenciar entre el boton Agregar y el botón Editar
     <>
-      {mood === "Agregar" ? (
-        <Button
-          variant="contained"
-          role="open"
-          color="primary"
-          className={classes.button}
-          onClick={handleOpen}
-          endIcon={<AddIcon />}
-        >
-          Agregar
-        </Button>
-      ) : (
-        <Button
-          variant="contained"
-          color="primary"
-          className={classes.button}
-          onClick={handleOpenEdit}
-          endIcon={<CreateIcon />}
-        >
-          Editar
-        </Button>
-      )}
+      <Button
+        variant="contained"
+        role="open"
+        color="primary"
+        className={classes.button}
+        onClick={handleOpen}
+        endIcon={mood === "Agregar" ? <AddIcon /> : <CreateIcon />}
+      >
+        {mood === "Agregar" ? "Agregar" : "Editar"}
+      </Button>
 
       <Modal
         aria-labelledby="transition-modal-title"
@@ -325,22 +245,20 @@ const ServiceModal = ({
             <Typography className={classes.title}>
               {mood === "Agregar" ? "Nuevo" : "Editar"} Servicio
             </Typography>
-            {/*Renderizado condicional para los formularios*/}
-            {mood === "Agregar" ? (
-              /* Formulario donde se llenarán los datos para crear un nuevo servicio */
-              <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
-                <Container className={classes.container}>
-                  <Container className={classes.containerData}>
-                    <Container className={classes.containerService}>
-                      <FormControl className={classes.formControl}>
-                        <InputLabel id="demo-simple-select-required-label">
-                          Nombre del Servicio
-                        </InputLabel>
+            <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
+              <Container className={classes.container}>
+                <Container className={classes.containerData}>
+                  <Container className={classes.containerService}>
+                    <FormControl className={classes.formControl}>
+                      <InputLabel id="demo-simple-select-required-label">
+                        Nombre del Servicio
+                      </InputLabel>
+                      {mood === "Agregar" ? (
                         <Select
                           labelId="demo-simple-select-required-label"
                           id="demo-simple-select-required"
                           name="cat_nombre"
-                          value={existName(selectName)}
+                          value={selectName}
                           {...register("cat_nombre", {
                             required: true,
                           })}
@@ -352,174 +270,111 @@ const ServiceModal = ({
                             </MenuItem>
                           ))}
                         </Select>
+                      ) : (
+                        <Select
+                          native
+                          disabled
+                          name="cat_id"
+                          value={selectName}
+                          {...register("cat_id")}
+                        >
+                          <option>{service?.cat_nombre}</option>
+                        </Select>
+                      )}
+                      <FormError
+                        condition={errors.cat_nombre?.type === "required"}
+                        content="Debe seleccionar un servicio"
+                      />
+                    </FormControl>
+                  </Container>
+                  {mood === "Agregar" ? (
+                    <>
+                      <TextField
+                        id="filled-multiline-flexible"
+                        label="Descripción"
+                        multiline
+                        name="ser_descripcion"
+                        {...register("ser_descripcion", {
+                          required: true,
+                          maxLength: 300,
+                          pattern: /^[a-zA-ZñÑáéíóúÁÉÍÓÚ0-9\s]+$/,
+                        })}
+                        rowsMax={3}
+                        variant="filled"
+                      />
+                      {errors.ser_descripcion?.type === "required" && (
                         <FormError
-                          condition={errors.cat_nombre?.type === "required"}
-                          content="Debe seleccionar un servicio"
+                          condition={
+                            errors.ser_descripcion?.type === "required"
+                          }
+                          content="El campo descripción no puede estar vacío"
                         />
-                      </FormControl>
-                    </Container>
+                      )}
+                    </>
+                  ) : (
+                    <TextField
+                      id="filled-multiline-flexible"
+                      label="Descripción"
+                      multiline
+                      name="ser_descripcion"
+                      defaultValue={service?.ser_descripcion}
+                      {...register("ser_descripcion", {
+                        maxLength: 300,
+                        pattern: /^[a-zA-ZñÑáéíóúÁÉÍÓÚ0-9\s]+$/,
+                      })}
+                      rowsMax={3}
+                      variant="filled"
+                    />
+                  )}
 
-                    <TextField
-                      id="filled-multiline-flexible"
-                      label="Descripción"
-                      multiline
-                      name="ser_descripcion"
-                      {...register("ser_descripcion", {
-                        required: true,
-                        maxLength: 300,
-                        pattern: /^[a-zA-ZñÑáéíóúÁÉÍÓÚ0-9\s]+$/,
-                      })}
-                      onChange={handleDescription}
-                      rowsMax={3}
-                      variant="filled"
+                  {errors.ser_descripcion?.type === "pattern" && (
+                    <FormError
+                      condition={errors.ser_descripcion?.type === "pattern"}
+                      content="Ingrese solo numeros y letras"
                     />
-                    {errors.ser_descripcion?.type === "required" && (
-                      <FormError
-                        condition={errors.ser_descripcion?.type === "required"}
-                        content="El campo descripción no puede estar vacío"
-                      />
-                    )}
-                    {errors.ser_descripcion?.type === "pattern" && (
-                      <FormError
-                        condition={errors.ser_descripcion?.type === "pattern"}
-                        content="Ingrese solo numeros y letras"
-                      />
-                    )}
-                    {errors.ser_descripcion?.type === "maxLength" && (
-                      <FormError
-                        condition={errors.ser_descripcion?.type === "maxLength"}
-                        content="Ingrese máximo 300 caracteres"
-                      />
-                    )}
-                  </Container>
-                  {/*Aquí irá la imagen del servicio, primero importamos la imagen y luego la colocamos dentro del src, no olvidar poner el alt */}
-                  <Container className={classes.containerImage}>
-                    <IconButton
-                      aria-label="delete"
-                      component="label"
-                      className={classes.addIcon}
-                    >
-                      <AddCircleIcon fontSize="large" />
-                      <input
-                        type="file"
-                        hidden
-                        onChange={processImage}
-                        id="image"
-                      />
-                    </IconButton>
-                    <img src={fileUrl} alt={"service"} />
-                  </Container>
-                </Container>
-                <Container className={classes.containerButton}>
-                  <SecondaryButton
-                    variant="contained"
-                    name="CANCELAR"
-                    onClick={handleClose}
-                  ></SecondaryButton>
-                  <Container className={classes.wrapp}>
-                    <PrimaryButton
-                      type="submit"
-                      role="button"
-                      name="ACEPTAR"
-                      className={classes.submit}
-                      onClick={handleSubmit(onSubmit)}
-                    ></PrimaryButton>
-                  </Container>
-                </Container>
-              </form>
-            ) : (
-              /* Formulario donde se llenarán los datos para editar un servicio */
-              <form
-                className={classes.form}
-                onSubmit={handleSubmit(onSubmitEdit)}
-              >
-                <Container className={classes.container}>
-                  <Container className={classes.containerData}>
-                    <Container className={classes.containerService}>
-                      <InputLabel id="demo-simple-select-required-label">
-                        Nombre del Servicio
-                      </InputLabel>
-                      <Select
-                        native
-                        disabled
-                        name="cat_id"
-                        value={existName(selectName)}
-                        {...register("cat_id")}
-                      >
-                        <option>{cat_nombre}</option>
-                      </Select>
-                    </Container>
-                    <TextField
-                      id="filled-multiline-flexible"
-                      label="Descripción"
-                      multiline
-                      name="ser_descripcion"
-                      {...register("ser_descripcion", {
-                        required: true,
-                        maxLength: 300,
-                        pattern: /^[a-zA-ZñÑáéíóúÁÉÍÓÚ0-9\s]+$/,
-                      })}
-                      defaultValue={serviceDescription}
-                      onChange={handleEdit}
-                      rowsMax={3}
-                      variant="filled"
+                  )}
+                  {errors.ser_descripcion?.type === "maxLength" && (
+                    <FormError
+                      condition={errors.ser_descripcion?.type === "maxLength"}
+                      content="Ingrese máximo 300 caracteres"
                     />
-                    {errors.ser_descripcion?.type === "pattern" && (
-                      <FormError
-                        condition={errors.ser_descripcion?.type === "pattern"}
-                        content="Ingrese solo numeros y letras"
-                      />
-                    )}
-                    {errors.ser_descripcion?.type === "required" && (
-                      <FormError
-                        condition={errors.ser_descripcion?.type === "required"}
-                        content="El campo descripción no puede estar vacío"
-                      />
-                    )}
-                    {errors.ser_descripcion?.type === "maxLength" && (
-                      <FormError
-                        condition={errors.ser_descripcion?.type === "maxLength"}
-                        content="Ingrese máximo 300 caracteres"
-                      />
-                    )}
-                  </Container>
-                  {/*Aquí irá la imagen del servicio, primero importamos la imagen y luego la colocamos dentro del src, no olvidar poner el alt */}
-                  <Container className={classes.containerImage}>
-                    <IconButton
-                      aria-label="delete"
-                      component="label"
-                      className={classes.addIcon}
-                    >
-                      <AddCircleIcon fontSize="large" />
-                      <input
-                        type="file"
-                        accept="image/*"
-                        hidden
-                        onChange={processImage}
-                        id="image"
-                      />
-                    </IconButton>
-                    <img src={fileUrl} alt={"service"} />
-                  </Container>
+                  )}
                 </Container>
-                <Container className={classes.containerButton}>
-                  <SecondaryButton
-                    variant="contained"
-                    name="CANCELAR"
-                    onClick={handleClose}
-                  ></SecondaryButton>
-                  <Container className={classes.wrapp}>
-                    <PrimaryButton
-                      type="submit"
-                      className={classes.submit}
-                      variant="contained"
-                      name="ACEPTAR"
-                      onClick={handleSubmit(onSubmitEdit)}
-                    ></PrimaryButton>
-                  </Container>
+                {/*Aquí irá la imagen del servicio, primero importamos la imagen y luego la colocamos dentro del src, no olvidar poner el alt */}
+                <Container className={classes.containerImage}>
+                  <IconButton
+                    aria-label="delete"
+                    component="label"
+                    className={classes.addIcon}
+                  >
+                    <AddCircleIcon fontSize="large" />
+                    <input
+                      type="file"
+                      hidden
+                      onChange={processImage}
+                      id="image"
+                    />
+                  </IconButton>
+                  <img src={fileUrl} alt={"service"} />
                 </Container>
-              </form>
-            )}
+              </Container>
+              <Container className={classes.containerButton}>
+                <SecondaryButton
+                  variant="contained"
+                  name="CANCELAR"
+                  onClick={handleClose}
+                ></SecondaryButton>
+                <Container className={classes.wrapp}>
+                  <PrimaryButton
+                    type="submit"
+                    role="button"
+                    name="ACEPTAR"
+                    className={classes.submit}
+                    onClick={handleSubmit(onSubmit)}
+                  ></PrimaryButton>
+                </Container>
+              </Container>
+            </form>
           </div>
         </Fade>
       </Modal>

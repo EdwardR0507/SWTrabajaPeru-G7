@@ -160,7 +160,7 @@ export default function Home() {
             <NavigateBeforeIcon />
           </StyledIconButton>
           {workers?.slice(pageWorkers, pageWorkers + 3).map((worker) => (
-            <WorkerCard worker={worker} />
+            <WorkerCard key={worker.us_id} worker={worker} />
           ))}
           <StyledIconButton onClick={handleWorkerAfter}>
             <NavigateNextIcon />

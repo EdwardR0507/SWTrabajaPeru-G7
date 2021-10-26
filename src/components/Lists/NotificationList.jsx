@@ -37,8 +37,6 @@ const NotificationList = ({ token }) => {
     setOpen(!open);
     fetchData(token, "GET", "solicitud-auth", "GET_NOTIFICATIONS").then(
       (res) => {
-        console.log("res:");
-        console.log(res);
         setSolData(res);
       }
     );
@@ -74,7 +72,6 @@ const NotificationList = ({ token }) => {
         <NotificationsIcon
           fontSize="large"
           style={{ color: "#FFF" }}
-          role="toggle"
           ref={anchorRef}
           aria-haspopup="true"
           onClick={handleToggle}
@@ -83,7 +80,6 @@ const NotificationList = ({ token }) => {
         <Popper
           open={open}
           anchorEl={anchorRef.current}
-          role={undefined}
           transition
           disablePortal
         >
@@ -96,7 +92,7 @@ const NotificationList = ({ token }) => {
               }}
             >
               <Paper>
-                <ClickAwayListener role="close" onClickAway={handleClose}>
+                <ClickAwayListener onClickAway={handleClose}>
                   <MenuList
                     autoFocusItem={open}
                     id="menu-list-grow"
@@ -105,7 +101,11 @@ const NotificationList = ({ token }) => {
                   >
                     {solData.map((el) => {
                       return (
-                        <MenuItem className={classes.card} onClick={handlePush}>
+                        <MenuItem
+                          key={el.sol_id}
+                          className={classes.card}
+                          onClick={handlePush}
+                        >
                           <ClientCard
                             imagen={el.us_imagen}
                             nombres={el.us_nombres}

@@ -76,7 +76,18 @@ const ManageServices = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [state?.token]);
+  }, []);
+
+  const handleAdd = (datos, cat_id) => {
+    fetchData(state?.token, "POST", "service-auth", "CREATE_SERVICE", datos);
+    setData([
+      ...data,
+      {
+        cat_id,
+        ...datos,
+      },
+    ]);
+  };
 
   const handleDelete = (cat_id) => {
     const newData = data.filter((item) => item.cat_id !== cat_id);
@@ -87,12 +98,13 @@ const ManageServices = () => {
   };
 
   const renderServices = () => {
+    console.log("data: ", data);
     return data.length > 0 ? (
       data.map((service) => {
         return (
           <InfoService
             key={`${service.cat_id}-${service.cat_nombre}-${service.ser_descripcion}`}
-            {...service}
+            service={service}
             handleDelete={handleDelete}
           />
         );
@@ -110,7 +122,7 @@ const ManageServices = () => {
       <HeadingBar before={"TRABAJADOR"} after={"MIS SERVICIOS"} />
       <StyledContainer>
         <StyledTypography>Mis Servicios</StyledTypography>
-        <ServiceModal data={data} setData={setData} mood="Agregar" />
+        <ServiceModal mood="Agregar" handleAdd={handleAdd} />
       </StyledContainer>
       {renderServices()}
     </>

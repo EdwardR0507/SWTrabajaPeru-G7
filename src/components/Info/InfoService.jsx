@@ -1,4 +1,3 @@
-import { React, useState } from "react";
 import {
   makeStyles,
   withStyles,
@@ -62,22 +61,10 @@ const WrapContainer = withStyles({
   },
 })(Container);
 
-const InfoService = ({
-  cat_id,
-  cat_nombre,
-  ser_descripcion,
-  ser_imagen,
-  handleDelete,
-}) => {
+const InfoService = ({ service, handleDelete }) => {
+  const { cat_nombre, ser_descripcion, ser_imagen, cat_id } = service;
+
   const classes = useStyles();
-
-  const [descriptionService, setDescriptionService] = useState(ser_descripcion);
-
-  const [modalDescription, setModalDescription] = useState(ser_descripcion);
-
-  const handleEdit = (e) => {
-    setModalDescription(e.target.value);
-  };
 
   return (
     <Container className={classes.root}>
@@ -91,20 +78,12 @@ const InfoService = ({
             {cat_nombre}
           </Typography>
           <WrapContainer>
-            <Typography variant="body2">{descriptionService}</Typography>
+            <Typography variant="body2">{ser_descripcion}</Typography>
           </WrapContainer>
         </Container>
       </StyledContainerData>
       <StyledContainerButtons>
-        <ServiceModal
-          cat_nombre={cat_nombre}
-          serviceDescription={descriptionService}
-          ser_imagen={ser_imagen}
-          role="edit"
-          handleEdit={handleEdit}
-          modalDescription={modalDescription}
-          setDescriptionService={setDescriptionService}
-        />
+        <ServiceModal role="edit" service={service} />
         <DialogDelete
           role="delete"
           cat_id={cat_id}
