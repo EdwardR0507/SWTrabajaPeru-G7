@@ -12,6 +12,7 @@ import NotificationsIcon from "@material-ui/icons/Notifications";
 import ClientCard from "../Cards/ClientCard";
 import { fetchData } from "../../services/services";
 import { useHistory } from "react-router";
+import Spinner from "../Spinner/Spinner";
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -122,7 +123,7 @@ const NotificationList = ({ token }) => {
       </div>
     </div>
   ) : (
-    <div>Cargando...</div>
+    <Spinner />
   );
 };
 export default NotificationList;

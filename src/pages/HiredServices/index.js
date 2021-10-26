@@ -12,6 +12,7 @@ import {
 import TableServices from "../../layouts/Tables/TableServices";
 import { useLocation } from "react-router";
 import { fetchData } from "../../services/services";
+import Spinner from "../../components/Spinner/Spinner";
 
 const useStyles = makeStyles(() => ({
   typography: {
@@ -39,27 +40,26 @@ const HiredServices = () => {
   let token;
 
   useEffect(() => {
-    if(!localStorage.hasOwnProperty("User_session")){
+    if (!localStorage.hasOwnProperty("User_session")) {
       history.push({
-        pathname: "/signup"
-      })
-    }
-    else{
-      token = localStorage.getItem("User_session")
-      token = token.slice(1, -1)
-      fetchData(token, "GET", "user-auth", "GET_MY_USER")
-      .then((res) => {
-        setUser(res);
-      })
-      .catch((err) => {
-        console.log(err);
+        pathname: "/signup",
       });
+    } else {
+      token = localStorage.getItem("User_session");
+      token = token.slice(1, -1);
+      fetchData(token, "GET", "user-auth", "GET_MY_USER")
+        .then((res) => {
+          setUser(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }, [state?.token]);
 
   useEffect(() => {
-    token = localStorage.getItem("User_session")
-    token = token.slice(1, -1)
+    token = localStorage.getItem("User_session");
+    token = token.slice(1, -1);
     fetchData(token, "GET", "solicitud-auth", "GET_MY_SOLICITUDES")
       .then((res) => {
         console.log("res data service:");
@@ -91,7 +91,7 @@ const HiredServices = () => {
       </Container>
     </>
   ) : (
-    <div>Cargando...</div>
+    <Spinner />
   );
 };
 export default HiredServices;

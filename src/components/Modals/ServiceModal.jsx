@@ -212,19 +212,19 @@ const ServiceModal = ({
 
   //Función que crea un nuevo componente InfoService y envía datos al backend
   const onSubmit = async (datos, e) => {
-    const imageB64 = await conversion();
+    /*const imageB64 = await conversion();
     const dataToSend = {
       ...datos,
       ser_imagen: imageB64,
     };
     e.preventDefault();
-    console.log("datosToSend: ", dataToSend);
+    console.log("datosToSend: ", dataToSend);*/
     fetchData(
       state?.token,
       "POST",
       "service-auth",
       "CREATE_SERVICE",
-      dataToSend
+      datos
     ).then((res) => {
       console.log(res);
       handleClose();
@@ -322,11 +322,9 @@ const ServiceModal = ({
         <Fade in={open}>
           <div className={classes.paper}>
             {/* Renderizado condicional para diferenciar entre el título Nuevo o Editar*/}
-            {mood === "Agregar" ? (
-              <Typography className={classes.title}>Nuevo Servicio</Typography>
-            ) : (
-              <Typography className={classes.title}>Editar Servicio</Typography>
-            )}
+            <Typography className={classes.title}>
+              {mood === "Agregar" ? "Nuevo" : "Editar"} Servicio
+            </Typography>
             {/*Renderizado condicional para los formularios*/}
             {mood === "Agregar" ? (
               /* Formulario donde se llenarán los datos para crear un nuevo servicio */
@@ -369,24 +367,30 @@ const ServiceModal = ({
                       {...register("ser_descripcion", {
                         required: true,
                         maxLength: 300,
-                        pattern: /^[a-zA-ZñÑáéíóúÁÉÍÓÚ0-9\s]+$/
+                        pattern: /^[a-zA-ZñÑáéíóúÁÉÍÓÚ0-9\s]+$/,
                       })}
                       onChange={handleDescription}
                       rowsMax={3}
                       variant="filled"
                     />
-                    {errors.ser_descripcion?.type === "required" && <FormError
-                      condition={errors.ser_descripcion?.type === "required"}
-                      content="El campo descripción no puede estar vacío"
-                    /> }
-                    {errors.ser_descripcion?.type === "pattern" && <FormError
-                      condition={errors.ser_descripcion?.type === "pattern"}
-                      content="Ingrese solo numeros y letras"
-                    /> }
-                    {errors.ser_descripcion?.type === "maxLength" && <FormError
-                      condition={errors.ser_descripcion?.type === "maxLength"}
-                      content="Ingrese máximo 300 caracteres"
-                    /> }
+                    {errors.ser_descripcion?.type === "required" && (
+                      <FormError
+                        condition={errors.ser_descripcion?.type === "required"}
+                        content="El campo descripción no puede estar vacío"
+                      />
+                    )}
+                    {errors.ser_descripcion?.type === "pattern" && (
+                      <FormError
+                        condition={errors.ser_descripcion?.type === "pattern"}
+                        content="Ingrese solo numeros y letras"
+                      />
+                    )}
+                    {errors.ser_descripcion?.type === "maxLength" && (
+                      <FormError
+                        condition={errors.ser_descripcion?.type === "maxLength"}
+                        content="Ingrese máximo 300 caracteres"
+                      />
+                    )}
                   </Container>
                   {/*Aquí irá la imagen del servicio, primero importamos la imagen y luego la colocamos dentro del src, no olvidar poner el alt */}
                   <Container className={classes.containerImage}>
@@ -450,27 +454,34 @@ const ServiceModal = ({
                       label="Descripción"
                       multiline
                       name="ser_descripcion"
-                      {...register("ser_descripcion", { 
+                      {...register("ser_descripcion", {
                         required: true,
                         maxLength: 300,
-                        pattern: /^[a-zA-ZñÑáéíóúÁÉÍÓÚ0-9\s]+$/})}
+                        pattern: /^[a-zA-ZñÑáéíóúÁÉÍÓÚ0-9\s]+$/,
+                      })}
                       defaultValue={serviceDescription}
                       onChange={handleEdit}
                       rowsMax={3}
                       variant="filled"
                     />
-                    {errors.ser_descripcion?.type === "pattern" && <FormError
-                      condition={errors.ser_descripcion?.type === "pattern"}
-                      content="Ingrese solo numeros y letras"
-                    /> }
-                    {errors.ser_descripcion?.type === "required" && <FormError
-                      condition={errors.ser_descripcion?.type === "required"}
-                      content="El campo descripción no puede estar vacío"
-                    /> }
-                    {errors.ser_descripcion?.type === "maxLength" && <FormError
-                      condition={errors.ser_descripcion?.type === "maxLength"}
-                      content="Ingrese máximo 300 caracteres"
-                    /> }
+                    {errors.ser_descripcion?.type === "pattern" && (
+                      <FormError
+                        condition={errors.ser_descripcion?.type === "pattern"}
+                        content="Ingrese solo numeros y letras"
+                      />
+                    )}
+                    {errors.ser_descripcion?.type === "required" && (
+                      <FormError
+                        condition={errors.ser_descripcion?.type === "required"}
+                        content="El campo descripción no puede estar vacío"
+                      />
+                    )}
+                    {errors.ser_descripcion?.type === "maxLength" && (
+                      <FormError
+                        condition={errors.ser_descripcion?.type === "maxLength"}
+                        content="Ingrese máximo 300 caracteres"
+                      />
+                    )}
                   </Container>
                   {/*Aquí irá la imagen del servicio, primero importamos la imagen y luego la colocamos dentro del src, no olvidar poner el alt */}
                   <Container className={classes.containerImage}>

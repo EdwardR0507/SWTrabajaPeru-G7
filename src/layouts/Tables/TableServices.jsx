@@ -66,21 +66,13 @@ export default function TableServices({ mood, getToken, serviceData }) {
             <StyledTableCell align="center">Imagen</StyledTableCell>
             <StyledTableCell align="center">Servicio</StyledTableCell>
             <StyledTableCell align="center">Descripción</StyledTableCell>
-            {mood === "CLIENT" ? (
-              <>
-                <StyledTableCell align="center">Trabajador</StyledTableCell>
-                <StyledTableCell align="center">
-                  Calificación del servicio
-                </StyledTableCell>
-              </>
-            ) : (
-              <>
-                <StyledTableCell align="center">Cliente</StyledTableCell>
-                <StyledTableCell align="center">
-                  Calificación del trato del cliente
-                </StyledTableCell>
-              </>
-            )}
+            <StyledTableCell align="center">
+              {mood === "CLIENT" ? "Trabajador" : "Cliente"}
+            </StyledTableCell>
+            <StyledTableCell align="center">
+              Calificación del{" "}
+              {mood === "CLIENT" ? "servicio" : "trato del cliente"}
+            </StyledTableCell>
             <StyledTableCell align="center">Estado</StyledTableCell>
             <StyledTableCell align="center">
               Gestión de Solicitud
@@ -88,49 +80,59 @@ export default function TableServices({ mood, getToken, serviceData }) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {dataTable.map((row) => (
-            <StyledTableRow key={`${row.sol_id}-${row.cat_nombre}`}>
-              <StyledTableCell align="center">
-                <div className={classes.containerImage}>
-                  <img
-                    src={row.ser_imagen}
-                    className={classes.image}
-                    alt={"imagen"}
-                  />
-                </div>
-              </StyledTableCell>
-              <StyledTableCell align="center">{row.cat_nombre}</StyledTableCell>
-              <StyledTableCell align="center">
-                {row.ser_descripcion}
-              </StyledTableCell>
-              <StyledTableCell align="center">{row.us_nombres}</StyledTableCell>
-              <StyledTableCell align="center">
-                {mood === "CLIENT" ? (
+          {dataTable.length !== 0 ? (
+            dataTable.map((row) => (
+              <StyledTableRow key={`${row.sol_id}-${row.cat_nombre}`}>
+                <StyledTableCell align="center">
+                  <div className={classes.containerImage}>
+                    <img
+                      src={row.ser_imagen}
+                      className={classes.image}
+                      alt={"imagen"}
+                    />
+                  </div>
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  {row.cat_nombre}
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  {row.ser_descripcion}
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  {row.us_nombres}
+                </StyledTableCell>
+                <StyledTableCell align="center">
                   <Rating
                     name="read-only"
-                    value={parseInt(row.ser_calificacion)}
+                    value={parseInt(
+                      mood === "CLIENT"
+                        ? row.ser_calificacion
+                        : row.us_calificacion
+                    )}
                     readOnly
                   />
-                ) : (
-                  <Rating
-                    name="read-only"
-                    value={parseInt(row.us_calificacion)}
-                    readOnly
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  {row.sol_estado}
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  <DetailsRequestModal
+                    solEstado={row.sol_estado}
+                    getToken={getToken}
+                    serviceData={serviceData}
+                    solId={row.sol_id}
+                    mood={mood}
                   />
-                )}
-              </StyledTableCell>
-              <StyledTableCell align="center">{row.sol_estado}</StyledTableCell>
-              <StyledTableCell align="center">
-                <DetailsRequestModal
-                  solEstado={row.sol_estado}
-                  getToken={getToken}
-                  serviceData={serviceData}
-                  solId={row.sol_id}
-                  mood={mood}
-                />
+                </StyledTableCell>
+              </StyledTableRow>
+            ))
+          ) : (
+            <StyledTableRow>
+              <StyledTableCell align="center" colSpan={8}>
+                No tiene solicitudes
               </StyledTableCell>
             </StyledTableRow>
-          ))}
+          )}
         </TableBody>
       </Table>
     </TableContainer>

@@ -25,6 +25,7 @@ import FormError from "../../components/Errors/FormError";
 import SecondaryButton from "../../components/Buttons/SecondaryButton";
 import useFilterSelect from "../../hooks/useFilterSelect";
 import { fetchData } from "../../services/services";
+import Spinner from "../../components/Spinner/Spinner";
 
 /*Declaramos los estilos que se van a usar por cada componente*/
 /*Declaramos el estilo de la letra*/
@@ -101,34 +102,33 @@ export default function EditProfile() {
   useEffect(() => {
     console.log(state);
     //Cambiar post por get cuando se arregle
-    if(!localStorage.hasOwnProperty("User_session")){
+    if (!localStorage.hasOwnProperty("User_session")) {
       history.push({
-        pathname: "/signup"
-      })
-    }
-    else{
-      token = localStorage.getItem("User_session")
-      token = token.slice(1, -1)
-      fetchData(token, "GET", "user-auth", "GET_MY_USER")
-      .then((res) => {
-        console.log(res);
-        setUser(res);
-        reset({
-          us_nombres: res.us_nombres,
-          us_celular: res.us_celular,
-        });
-      })
-      .catch((err) => {
-        console.log(err);
+        pathname: "/signup",
       });
+    } else {
+      token = localStorage.getItem("User_session");
+      token = token.slice(1, -1);
+      fetchData(token, "GET", "user-auth", "GET_MY_USER")
+        .then((res) => {
+          console.log(res);
+          setUser(res);
+          reset({
+            us_nombres: res.us_nombres,
+            us_celular: res.us_celular,
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }, [reset]);
 
   const onSubmit = async (userEdited, event) => {
     event.preventDefault();
     console.log(userEdited);
-    token = localStorage.getItem("User_session")
-    token = token.slice(1, -1)
+    token = localStorage.getItem("User_session");
+    token = token.slice(1, -1);
     fetchData(token, "POST", "user-auth", "EDIT_USER", userEdited).then(
       (res) => {
         setOpen(true);
@@ -191,7 +191,7 @@ export default function EditProfile() {
         />
       </>
     ) : (
-      <div>Cargando....</div>
+      <Spinner />
     );
   };
 
@@ -220,7 +220,7 @@ export default function EditProfile() {
         />
       </>
     ) : (
-      <div>Cargando...</div>
+      <Spinner />
     );
   };
 
@@ -400,6 +400,6 @@ export default function EditProfile() {
       </StyledContainer>
     </>
   ) : (
-    <div>Cargando...</div>
+    <Spinner />
   );
 }

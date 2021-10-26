@@ -8,6 +8,7 @@ import Rating from "@material-ui/lab/Rating";
 import theme from "../../themes/themes";
 import ContactEmployeeModal from "../Modals/ContactEmployeeModal";
 import { Divider, Grid, Box, Typography } from "@material-ui/core";
+import Spinner from "../Spinner/Spinner";
 /*Declaramos los estilos que se van a usar por cada componente*/
 /*Declaramos el estilo del card*/
 
@@ -122,7 +123,7 @@ const ServiceDetailsCard = (props) => {
       </Grid>
     </StyledCard>
   ) : (
-    <div>Cargando..</div>
+    <Spinner />
   );
 };
 export default ServiceDetailsCard;

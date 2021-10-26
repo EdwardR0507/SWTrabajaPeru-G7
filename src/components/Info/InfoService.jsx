@@ -7,8 +7,6 @@ import {
 } from "@material-ui/core/";
 import ServiceModal from "../Modals/ServiceModal";
 import DialogDelete from "../Dialog/DialogDelete";
-import { useLocation } from "react-router";
-import { fetchData } from "../../services/services";
 const useStyles = makeStyles(() => ({
   root: {
     display: "flex",
@@ -60,73 +58,61 @@ const WrapContainer = withStyles({
     marginBottom: "2em",
     overflowWrap: "break-word",
     display: "inline-block",
-    wordBreak: "break-word"
+    wordBreak: "break-word",
   },
 })(Container);
 
-const InfoService = ({ cat_id, cat_nombre, ser_descripcion, ser_imagen }) => {
+const InfoService = ({
+  cat_id,
+  cat_nombre,
+  ser_descripcion,
+  ser_imagen,
+  handleDelete,
+}) => {
   const classes = useStyles();
 
   const [descriptionService, setDescriptionService] = useState(ser_descripcion);
-  //Controlar el renderizado condicional, al ser false no se renderizará el componente InfoService
-  const [stateRender, setStateRender] = useState(true);
 
   const [modalDescription, setModalDescription] = useState(ser_descripcion);
-
-  const location = useLocation();
-  const state = location.state;
 
   const handleEdit = (e) => {
     setModalDescription(e.target.value);
   };
 
-  const handleDelete = () => {
-    const newData = { cat_id: cat_id };
-    fetchData(state?.token, "POST", "service-auth", "DELETE_SERVICE", newData);
-    setStateRender(false);
-  };
-
   return (
-    <>
-      {stateRender ? (
-        <Container className={classes.root}>
-          <StyledContainerData>
-            {/*Aquí irá la imagen del servicio, primero importamos la imagen y luego la colocamos dentro del src, no olvidar poner el alt */}
-            <StyledContainerImage>
-              <img
-                src={ser_imagen}
-                alt={"servicio"}
-                className={classes.image}
-              />
-            </StyledContainerImage>
-            <Container className={classes.description}>
-              <Typography color="primary" variant="subtitle1">
-                {cat_nombre}
-              </Typography>
-              <WrapContainer>
-                <Typography variant="body2">{descriptionService}</Typography>
-              </WrapContainer>
-            </Container>
-          </StyledContainerData>
-          <StyledContainerButtons>
-            <ServiceModal
-              cat_nombre={cat_nombre}
-              serviceDescription={descriptionService}
-              ser_imagen={ser_imagen}
-              role="edit"
-              handleEdit={handleEdit}
-              modalDescription={modalDescription}
-              setDescriptionService={setDescriptionService}
-            />
-            <DialogDelete
-              role="delete"
-              cat_nombre={cat_nombre}
-              handleDelete={handleDelete}
-            />
-          </StyledContainerButtons>
+    <Container className={classes.root}>
+      <StyledContainerData>
+        {/*Aquí irá la imagen del servicio, primero importamos la imagen y luego la colocamos dentro del src, no olvidar poner el alt */}
+        <StyledContainerImage>
+          <img src={ser_imagen} alt={"servicio"} className={classes.image} />
+        </StyledContainerImage>
+        <Container className={classes.description}>
+          <Typography color="primary" variant="subtitle1">
+            {cat_nombre}
+          </Typography>
+          <WrapContainer>
+            <Typography variant="body2">{descriptionService}</Typography>
+          </WrapContainer>
         </Container>
-      ) : null}
-    </>
+      </StyledContainerData>
+      <StyledContainerButtons>
+        <ServiceModal
+          cat_nombre={cat_nombre}
+          serviceDescription={descriptionService}
+          ser_imagen={ser_imagen}
+          role="edit"
+          handleEdit={handleEdit}
+          modalDescription={modalDescription}
+          setDescriptionService={setDescriptionService}
+        />
+        <DialogDelete
+          role="delete"
+          cat_id={cat_id}
+          cat_nombre={cat_nombre}
+          handleDelete={handleDelete}
+        />
+      </StyledContainerButtons>
+    </Container>
   );
 };
 

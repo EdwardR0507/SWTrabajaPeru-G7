@@ -12,6 +12,7 @@ import Avatar from "@material-ui/core/Avatar";
 import DialogLogin from "../Dialog/DialogLogin";
 import theme from "../../themes/themes";
 import imageWorker from "../../assets/worker.jpg";
+import Spinner from "../Spinner/Spinner";
 const StyledCard = withStyles({
   root: {
     width: "300px",
@@ -60,8 +61,8 @@ const ServiceCard = (props) => {
       <StyledButton
         role="redirect"
         onClick={() => {
-          token = localStorage.getItem("User_session")
-          token = token.slice(1, -1)
+          token = localStorage.getItem("User_session");
+          token = token.slice(1, -1);
           history.push({
             pathname: "/serviceDetails",
             search: `user=${service.us_correo.split("@")}&?service=${
@@ -96,7 +97,7 @@ const ServiceCard = (props) => {
       <StyledCardActions>{conditionalToken()}</StyledCardActions>
     </StyledCard>
   ) : (
-    <div>Cargando...</div>
+    <Spinner />
   );
 };
 

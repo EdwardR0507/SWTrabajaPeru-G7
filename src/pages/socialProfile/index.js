@@ -7,6 +7,7 @@ import ProfileCard from "../../components/Cards/ProfileCard";
 import ProfileServiceCard from "../../components/Cards/ProfileServiceCard";
 import NavBar from "../../layouts/NavBar";
 import { fetchData } from "../../services/services";
+import Spinner from "../../components/Spinner/Spinner";
 /*Declaramos los estilos que se van a usar por cada componente*/
 /*Declaramos el estilo del container*/
 const StyledContainer = withStyles({
@@ -103,6 +104,6 @@ export default function SocialProfile() {
       </StyledContainer>
     </>
   ) : (
-    <div>Cargando...</div>
+    <Spinner />
   );
 }

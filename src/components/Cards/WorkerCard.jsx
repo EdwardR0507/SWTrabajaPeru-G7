@@ -7,6 +7,7 @@ import CardActions from "@material-ui/core/CardActions";
 import Rating from "@material-ui/lab/Rating";
 import Typography from "@material-ui/core/Typography";
 import image from "../../assets/worker.jpg";
+import Spinner from "../Spinner/Spinner";
 const StyledCard = withStyles({
   root: {
     width: "300px",
@@ -51,7 +52,7 @@ const WorkerCard = (props) => {
   ) : (
     <>
       {console.log(worker)}
-      <div>Cargando... </div>
+      <Spinner />
     </>
   );
 };

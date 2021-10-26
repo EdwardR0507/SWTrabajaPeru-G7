@@ -7,6 +7,7 @@ import { Container, Typography, withStyles } from "@material-ui/core/";
 import InfoService from "../../components/Info/InfoService.jsx";
 import ServiceModal from "../../components/Modals/ServiceModal";
 import { fetchData } from "../../services/services";
+import Spinner from "../../components/Spinner/Spinner";
 
 const StyledTypography = withStyles({
   root: {
@@ -26,6 +27,17 @@ const StyledContainer = withStyles({
   },
 })(Container);
 
+const StyledInfo = withStyles({
+  root: {
+    marginTop: "1.5em",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    height: "50vh",
+  },
+})(Container);
+
 const ManageServices = () => {
   const location = useLocation();
   const state = location.state;
@@ -36,27 +48,26 @@ const ManageServices = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    if(!localStorage.hasOwnProperty("User_session")){
+    if (!localStorage.hasOwnProperty("User_session")) {
       history.push({
-        pathname: "/signup"
-      })
-    }
-    else{
-      let token = localStorage.getItem("User_session")
-      token = token.slice(1, -1)
-      fetchData(token, "GET", "user-auth", "GET_MY_USER")
-      .then((res) => {
-        setUser(res);
-      })
-      .catch((err) => {
-        console.log(err);
+        pathname: "/signup",
       });
+    } else {
+      let token = localStorage.getItem("User_session");
+      token = token.slice(1, -1);
+      fetchData(token, "GET", "user-auth", "GET_MY_USER")
+        .then((res) => {
+          setUser(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }, [state?.token]);
 
   useEffect(() => {
-    let token = localStorage.getItem("User_session")
-    token = token.slice(1, -1)
+    let token = localStorage.getItem("User_session");
+    token = token.slice(1, -1);
     fetchData(token, "GET", "service-auth", "GET_MY_SERVICES")
       .then((res) => {
         console.log("get my services: ", res);
@@ -67,6 +78,32 @@ const ManageServices = () => {
       });
   }, [state?.token]);
 
+  const handleDelete = (cat_id) => {
+    const newData = data.filter((item) => item.cat_id !== cat_id);
+    fetchData(state?.token, "POST", "service-auth", "DELETE_SERVICE", {
+      cat_id: cat_id,
+    });
+    setData(newData);
+  };
+
+  const renderServices = () => {
+    return data.length > 0 ? (
+      data.map((service) => {
+        return (
+          <InfoService
+            key={`${service.cat_id}-${service.cat_nombre}-${service.ser_descripcion}`}
+            {...service}
+            handleDelete={handleDelete}
+          />
+        );
+      })
+    ) : (
+      <StyledInfo>
+        <Typography variant="h4">No tienes servicios</Typography>
+      </StyledInfo>
+    );
+  };
+
   return user ? (
     <>
       <NavBar user={user} token={state?.token} />
@@ -75,18 +112,10 @@ const ManageServices = () => {
         <StyledTypography>Mis Servicios</StyledTypography>
         <ServiceModal data={data} setData={setData} mood="Agregar" />
       </StyledContainer>
-      {data.length !== 0 &&
-        data.map((el) => {
-          return (
-            <InfoService
-              key={`${el.cat_id}-${el.cat_nombre}-${el.ser_descripcion}`}
-              {...el}
-            />
-          );
-        })}
+      {renderServices()}
     </>
   ) : (
-    <div>Cargando...</div>
+    <Spinner />
   );
 };
 export default ManageServices;

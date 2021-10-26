@@ -9,9 +9,9 @@ import {
   makeStyles,
 } from "@material-ui/core/";
 import TableServices from "../../layouts/Tables/TableServices";
-import { useLocation } from "react-router";
-import { useHistory } from "react-router";
+import { useLocation, useHistory } from "react-router";
 import { fetchData } from "../../services/services";
+import Spinner from "../../components/Spinner/Spinner";
 
 const useStyles = makeStyles(() => ({
   typography: {
@@ -39,27 +39,26 @@ const SolicitedServices = () => {
   let token;
 
   useEffect(() => {
-    if(!localStorage.hasOwnProperty("User_session")){
+    if (!localStorage.hasOwnProperty("User_session")) {
       history.push({
-        pathname: "/signup"
-      })
-    }
-    else{
-      token = localStorage.getItem("User_session")
-      token = token.slice(1, -1)
-      fetchData(token, "GET", "user-auth", "GET_MY_USER")
-      .then((res) => {
-        setUser(res);
-      })
-      .catch((err) => {
-        console.log(err);
+        pathname: "/signup",
       });
+    } else {
+      token = localStorage.getItem("User_session");
+      token = token.slice(1, -1);
+      fetchData(token, "GET", "user-auth", "GET_MY_USER")
+        .then((res) => {
+          setUser(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }, [state?.token]);
 
   useEffect(() => {
-    token = localStorage.getItem("User_session")
-  token = token.slice(1, -1)
+    token = localStorage.getItem("User_session");
+    token = token.slice(1, -1);
     fetchData(token, "GET", "solicitud-auth", "GET_SOLICITUDES")
       .then((res) => {
         console.log("res data service:");
@@ -85,7 +84,7 @@ const SolicitedServices = () => {
       </Container>
     </>
   ) : (
-    <div>Cargando...</div>
+    <Spinner />
   );
 };
 export default SolicitedServices;

@@ -16,6 +16,7 @@ import SecondaryButton from "../Buttons/SecondaryButton";
 import theme from "../../themes/themes";
 import { fetchData } from "../../services/services";
 import RatingModal from "../Modals/RatingModal";
+import Spinner from "../Spinner/Spinner";
 const useStyles = makeStyles(() => ({
   //Estilos para la customización del modal
   modal: {
@@ -300,7 +301,7 @@ const DetailsRequestModal = ({
       </Modal>
     </>
   ) : (
-    <div>Cargando...</div>
+    <Spinner />
   );
 };
 export default DetailsRequestModal;

@@ -9,6 +9,7 @@ import ServiceCard from "../../components/Cards/ServiceCard";
 import WorkerCard from "../../components/Cards/WorkerCard";
 import theme from "../../themes/themes";
 import { fetchData, fetchUserData } from "../../services/services";
+import Spinner from "../../components/Spinner/Spinner";
 const StyledContentContainer = withStyles({
   root: {
     marginTop: "40px",
@@ -72,10 +73,10 @@ export default function Home() {
   let token;
 
   useEffect(() => {
-    console.log(localStorage.getItem("User_session"))
+    console.log(localStorage.getItem("User_session"));
     if (localStorage.hasOwnProperty("User_session")) {
-      token = localStorage.getItem("User_session")
-      token = token.slice(1, -1)
+      token = localStorage.getItem("User_session");
+      token = token.slice(1, -1);
       fetchData(token, "GET", "user-auth", "GET_MY_USER")
         .then((res) => {
           console.log(res);
@@ -115,7 +116,7 @@ export default function Home() {
 
   const conditionalNavBar = () => {
     return user ? <NavBar user={user} token={token} /> : <NavBar />;
-  }
+  };
 
   return workers && services ? (
     <>
@@ -168,6 +169,6 @@ export default function Home() {
       </Container>
     </>
   ) : (
-    <div>Cargando...</div>
+    <Spinner />
   );
 }

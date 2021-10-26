@@ -14,6 +14,7 @@ import PhoneAndroidIcon from "@material-ui/icons/PhoneAndroid";
 import MailIcon from "@material-ui/icons/Mail";
 import RoomIcon from "@material-ui/icons/Room";
 import image from "../../assets/worker.jpg";
+import Spinner from "../Spinner/Spinner";
 /*Declaramos la función principal*/
 export default function ProfileCard(props) {
   /*Declaramos lo que nos va a retornar la funcion*/
@@ -80,6 +81,6 @@ export default function ProfileCard(props) {
       </CardContent>
     </Card>
   ) : (
-    <div>Cargando...</div>
+    <Spinner />
   );
 }

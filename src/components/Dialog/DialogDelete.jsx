@@ -28,7 +28,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const DialogDelete = ({ handleDelete, cat_nombre }) => {
+const DialogDelete = ({ handleDelete, cat_nombre, cat_id }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
 
@@ -70,7 +70,11 @@ const DialogDelete = ({ handleDelete, cat_nombre }) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleDelete} variant="contained" color="primary">
+          <Button
+            onClick={() => handleDelete(cat_id)}
+            variant="contained"
+            color="primary"
+          >
             Aceptar
           </Button>
           <Button
