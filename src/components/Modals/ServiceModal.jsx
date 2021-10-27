@@ -111,7 +111,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 /*Props: objeto, setter del objeto, modo que tomará el modal que se va a renderizar (agregar o editar, basta con pasarle Agregar), nombre del servicio, descripción del servicio, función para poder editar el servicio*/
-const ServiceModal = ({ mood, ser_imagen, service, handleAdd }) => {
+const ServiceModal = ({ mood, ser_imagen, service, handleAdd, handleEdit }) => {
   // Hook useForm para almacenar los datos de los forms
   const {
     handleSubmit,
@@ -131,6 +131,8 @@ const ServiceModal = ({ mood, ser_imagen, service, handleAdd }) => {
 
   const [fileUrl, setFileUrl] = useState(ser_imagen);
 
+  const [id, setId] = useState(null);
+
   const [list, setList] = useState([
     {
       cat_id: null,
@@ -140,6 +142,7 @@ const ServiceModal = ({ mood, ser_imagen, service, handleAdd }) => {
 
   // Función para abrir el modal
   const handleOpen = () => {
+    setId(service?.cat_id);
     if (mood === "Agregar") {
       fetchData(state?.token, "GET", "service-auth", "GET_CATEGORIES")
         .then((res) => {
@@ -186,20 +189,22 @@ const ServiceModal = ({ mood, ser_imagen, service, handleAdd }) => {
     };
     console.log("datosToSend: ", dataToSend);*/
     e.preventDefault();
-    console.log("datos: ", datos);
     if (mood === "Agregar") {
-      handleAdd(datos, service?.cat_id);
+      handleAdd(id, {
+        ...datos,
+        ser_descripcion: datos.ser_descripcion.trim(),
+      });
     } else {
       let newData = {
-        cat_id: service?.cat_id,
-        ser_descripcion: datos.ser_descripcion,
+        cat_id: id,
+        cat_nombre: service?.cat_nombre,
+        ser_descripcion: datos.ser_descripcion.trim(),
         //ser_imagen: imageToB64,
       };
       if (datos.ser_descripcion === undefined) {
-        newData.ser_descripcion = service?.ser_descripcion;
+        newData.ser_descripcion = service?.ser_descripcion.trim();
       }
-      fetchData(state?.token, "POST", "service-auth", "EDIT_SERVICE", newData);
-      window.location.reload();
+      handleEdit(newData);
     }
     handleClose();
     reset();

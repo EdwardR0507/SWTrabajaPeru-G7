@@ -79,14 +79,31 @@ const ManageServices = () => {
   }, []);
 
   const handleAdd = (datos, cat_id) => {
-    fetchData(state?.token, "POST", "service-auth", "CREATE_SERVICE", datos);
-    setData([
-      ...data,
-      {
-        cat_id,
-        ...datos,
-      },
-    ]);
+    fetchData(state?.token, "POST", "service-auth", "CREATE_SERVICE", datos)
+      .then((res) => {
+        setData([
+          ...data,
+          {
+            cat_id,
+            ...datos,
+          },
+        ]);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  const handleEdit = (datos) => {
+    fetchData(state?.token, "POST", "service-auth", "EDIT_SERVICE", datos)
+      .then((res) => {
+        setData(
+          data.map((item) => (item.cat_id === datos.cat_id ? datos : item))
+        );
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   const handleDelete = (cat_id) => {
@@ -98,12 +115,14 @@ const ManageServices = () => {
   };
 
   const renderServices = () => {
-    console.log("data: ", data);
     return data.length > 0 ? (
       data.map((service) => {
         return (
           <InfoService
             key={`${service.cat_id}-${service.cat_nombre}-${service.ser_descripcion}`}
+            data={data}
+            setData={setData}
+            handleEdit={handleEdit}
             service={service}
             handleDelete={handleDelete}
           />

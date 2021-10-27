@@ -61,7 +61,7 @@ const WrapContainer = withStyles({
   },
 })(Container);
 
-const InfoService = ({ service, handleDelete }) => {
+const InfoService = ({ service, handleEdit, handleDelete }) => {
   const { cat_nombre, ser_descripcion, ser_imagen, cat_id } = service;
 
   const classes = useStyles();
@@ -83,7 +83,7 @@ const InfoService = ({ service, handleDelete }) => {
         </Container>
       </StyledContainerData>
       <StyledContainerButtons>
-        <ServiceModal role="edit" service={service} />
+        <ServiceModal role="edit" handleEdit={handleEdit} service={service} />
         <DialogDelete
           role="delete"
           cat_id={cat_id}
