@@ -7,8 +7,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import Rating from "@material-ui/lab/Rating";
-import DetailsRequestModal from "../../components/Modals/DetailsRequestModal";
+import TableServicesRow from "./TableServicesRow";
 /*Declarando los estilos de la tabla*/
 
 const StyledTableCell = withStyles((theme) => ({
@@ -49,7 +48,6 @@ const useStyles = makeStyles({
 export default function TableServices({ mood, getToken, serviceData }) {
   const classes = useStyles();
   const [dataTable, setDataTable] = useState([]);
-  console.log(serviceData);
   useEffect(() => {
     setDataTable(serviceData);
   }, [serviceData]);
@@ -82,49 +80,13 @@ export default function TableServices({ mood, getToken, serviceData }) {
         <TableBody>
           {dataTable.length !== 0 ? (
             dataTable.map((row) => (
-              <StyledTableRow key={`${row.sol_id}-${row.cat_nombre}`}>
-                <StyledTableCell align="center">
-                  <div className={classes.containerImage}>
-                    <img
-                      src={row.ser_imagen}
-                      className={classes.image}
-                      alt={"imagen"}
-                    />
-                  </div>
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  {row.cat_nombre}
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  {row.ser_descripcion}
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  {row.us_nombres}
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  <Rating
-                    name="read-only"
-                    value={parseInt(
-                      mood === "CLIENT"
-                        ? row.ser_calificacion
-                        : row.us_calificacion
-                    )}
-                    readOnly
-                  />
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  {row.sol_estado}
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  <DetailsRequestModal
-                    solEstado={row.sol_estado}
-                    getToken={getToken}
-                    serviceData={serviceData}
-                    solId={row.sol_id}
-                    mood={mood}
-                  />
-                </StyledTableCell>
-              </StyledTableRow>
+              <TableServicesRow
+                key={row.id}
+                row={row}
+                mood={mood}
+                getToken={getToken}
+                serviceData={serviceData}
+              />
             ))
           ) : (
             <StyledTableRow>

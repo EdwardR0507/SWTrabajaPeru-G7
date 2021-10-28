@@ -1,6 +1,5 @@
 import { React, useState, useEffect } from "react";
-import { useLocation } from "react-router";
-import { useHistory } from "react-router";
+import { useLocation, useHistory } from "react-router";
 import NavBar from "../../layouts/NavBar";
 import HeadingBar from "../../layouts/HeadingBar/HeadingBar";
 import { Container, Typography, withStyles } from "@material-ui/core/";
@@ -60,25 +59,24 @@ const ManageServices = () => {
           setUser(res);
         })
         .catch((err) => {
-          console.log(err);
+          console.error(err);
         });
     }
-  }, [state?.token]);
+  }, [state?.token, history]);
 
   useEffect(() => {
     let token = localStorage.getItem("User_session");
     token = token.slice(1, -1);
     fetchData(token, "GET", "service-auth", "GET_MY_SERVICES")
       .then((res) => {
-        console.log("get my services: ", res);
         setData(res);
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
   }, []);
 
-  const handleAdd = (datos, cat_id) => {
+  const handleAdd = (cat_id, datos) => {
     fetchData(state?.token, "POST", "service-auth", "CREATE_SERVICE", datos)
       .then((res) => {
         setData([

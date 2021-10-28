@@ -94,6 +94,7 @@ const DetailsRequestModal = ({
           newData
         )
           .then((res) => {
+            console.log("MI SOLICITUD: ", res);
             setDetailReq(res[0]);
             setReqState(res[0].sol_servicio_calificado);
           })

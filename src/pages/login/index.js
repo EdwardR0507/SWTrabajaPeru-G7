@@ -58,10 +58,9 @@ export default function SignIn() {
     evt.preventDefault();
     fetchUserData("POST", "user", "LOGIN_USER", getUser).then((res) => {
       console.log(res);
-      if (res.status != "SUCCESS") {
-        setErrorMessage(res.message)
-      }
-      else {
+      if (res.status !== "SUCCESS") {
+        setErrorMessage(res.message);
+      } else {
         localStorage.setItem("User_session", JSON.stringify(res.token));
         history.push({
           pathname: "/",

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useHistory } from "react-router";
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
-import InputBase from "@material-ui/core/InputBase";
 import IconButton from "@material-ui/core/IconButton";
 import SearchIcon from "@material-ui/icons/Search";
 import theme from "../../themes/themes";
@@ -30,12 +29,6 @@ const StyledSearchField = withStyles({
     padding: "0 10px",
   },
 })(Paper);
-
-const StyledInputBase = withStyles({
-  root: {
-    width: "100%",
-  },
-})(InputBase);
 
 //Estilo de componente Autocomplete
 const StyledAutocomplete = withStyles({
@@ -65,41 +58,44 @@ const SearchField = (props) => {
         }
       )
       .then((res) => {
+        console.log("res data search: ", res.data.resultado);
         setSearched(res.data.resultado);
       });
   };
 
   const redirect = (evt, value) => {
     evt.preventDefault();
-    const email = value.split("-")[1];
-    let elementFound = searched.find((el) => el.extra === email);
-    console.log(elementFound);
-    if (elementFound.type === "user") {
-      history.push({
-        pathname: "/profile",
-        search: `email=${elementFound.extra}`,
-        state: {
-          token: props.token,
-          idUser: elementFound["id user"],
-        },
-      });
-    } else if (elementFound.type === "service") {
-      const servicio = value.split("-")[0];
-      const usuario = value.split("-")[1];
-      elementFound = searched.find(
-        (el) => el.nombre === servicio && el.extra === usuario
-      );
-      history.push({
-        pathname: "/serviceDetails",
-        search: `user=${elementFound["id user"]}&?service=${elementFound["id extra"]}`,
-        state: {
-          token: props.token,
-          us_id: elementFound["id user"],
-          cat_id: elementFound["id extra"],
-        },
-      });
+    if (value) {
+      const email = value.split("-")[1];
+      console.log("value: ", value);
+      let elementFound = searched.find((el) => el.extra === email);
+      if (elementFound.type === "user") {
+        history.push({
+          pathname: "/profile",
+          search: `email=${elementFound.extra}`,
+          state: {
+            token: props.token,
+            us_id: elementFound["us_id"],
+          },
+        });
+      } else if (elementFound.type === "service") {
+        const servicio = value.split("-")[0];
+        const usuario = value.split("-")[1];
+        elementFound = searched.find(
+          (el) => el.nombre === servicio && el.extra === usuario
+        );
+        console.log("Element found: ", elementFound);
+        history.push({
+          pathname: "/serviceDetails",
+          search: `user=${elementFound["us_id"]}&?service=${elementFound["id_alt"]}`,
+          state: {
+            token: props.token,
+            us_id: elementFound["us_id"],
+            cat_id: elementFound["id_alt"],
+          },
+        });
+      }
     }
-    window.location.replace("");
   };
 
   return (

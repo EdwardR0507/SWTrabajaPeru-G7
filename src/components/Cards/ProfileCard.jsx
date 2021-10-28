@@ -22,12 +22,10 @@ export default function ProfileCard(props) {
   return props.user ? (
     <Card>
       <Box
-        style={{
-          textAlign: "center",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        textAlign="center"
       >
         <CardHeader
           avatar={

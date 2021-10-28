@@ -1,7 +1,7 @@
 /*Importamos las librerias principales*/
 import React, { useState, useEffect } from "react";
 import { useLocation, useHistory } from "react-router";
-import { Container, Grid, Box } from "@material-ui/core";
+import { Container, Grid, Box, Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import ProfileCard from "../../components/Cards/ProfileCard";
 import ProfileServiceCard from "../../components/Cards/ProfileServiceCard";
@@ -28,59 +28,77 @@ export default function SocialProfile() {
   const state = location.state;
   const history = useHistory();
 
-  let token;
+  const user_sesion = localStorage.getItem("User_session");
+  const token = user_sesion.slice(1, -1);
 
   //Información del usuario
   useEffect(() => {
-    console.log(state);
-    //Cambiar post por get cuando se arregle
     if (!localStorage.hasOwnProperty("User_session")) {
       history.push({
         pathname: "/signup",
       });
     } else {
-      token = localStorage.getItem("User_session");
-      token = token.slice(1, -1);
       fetchData(token, "GET", "user-auth", "GET_MY_USER")
-        .then((res) => {
-          console.log(res);
-          setUser(res);
-          if (location.pathname === "/myAccount") {
-            setProfile(res);
-          } else if (location.pathname === "/profile") {
-            fetchData(token, "POST", "user-auth", "OBTAIN_USER", {
-              us_id: state?.idUser,
-            }).then((res) => {
-              console.log(res);
-              setProfile(res[0]);
-            });
-          }
+        .then((myUser) => {
+          setUser(myUser);
+          location.pathname === "/myAccount"
+            ? setProfile(myUser)
+            : fetchData(token, "POST", "user-auth", "OBTAIN_USER", {
+                us_id: state?.us_id,
+              }).then((profUser) => {
+                setProfile(profUser[0]);
+              });
         })
         .catch((err) => {
-          console.log(err);
+          console.error(err);
         });
     }
-  }, [state]);
+  }, [state, history, location.pathname, token]);
 
   useEffect(() => {
-    token = localStorage.getItem("User_session");
-    token = token.slice(1, -1);
     if (location.pathname === "/myAccount") {
       fetchData(token, "GET", "service-auth", "GET_MY_SERVICES").then((res) => {
         console.log(res);
         setServices(res);
       });
-    }
-    //Falta agregar la obtención de servicios de otro usuario
-    else if (location.pathname === "/profile") {
+    } else if (location.pathname === "/profile") {
       fetchData(token, "POST", "service-auth", "GET_OTHERS_SERVICES", {
-        us_id: state?.idUser,
-      }).then((res) => {
-        console.log(res);
-        setServices(res);
-      });
+        us_id: state?.us_id,
+      })
+        .then((res) => {
+          console.log("services publico:", res);
+          console.log(res);
+          setServices(res);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     }
-  }, [state?.token]);
+  }, [state, location.pathname, token]);
+
+  const renderServices = () => {
+    return services.length > 0 ? (
+      services.map((service) => (
+        <Box>
+          <ProfileServiceCard
+            key={`${service.cat_id} - ${service.cat_nombre}`}
+            service={service}
+          ></ProfileServiceCard>
+        </Box>
+      ))
+    ) : (
+      <Box
+        height="100%"
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Typography variant="h6">
+          Este usuario no tiene servicios publicos
+        </Typography>
+      </Box>
+    );
+  };
 
   return user && profile && services ? (
     <>
@@ -91,14 +109,7 @@ export default function SocialProfile() {
             <ProfileCard user={profile}></ProfileCard>
           </Grid>
           <Grid item xs={8} spacing={3}>
-            {services.map((service) => (
-              <Box>
-                <ProfileServiceCard
-                  key={`${service.cat_id} - ${service.cat_nombre}`}
-                  service={service}
-                ></ProfileServiceCard>
-              </Box>
-            ))}
+            {renderServices()}
           </Grid>
         </Grid>
       </StyledContainer>

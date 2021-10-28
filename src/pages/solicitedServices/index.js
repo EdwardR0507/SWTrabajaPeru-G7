@@ -36,7 +36,8 @@ const SolicitedServices = () => {
   const [user, setUser] = useState({});
   const [serviceData, setServiceData] = useState([]);
 
-  let token;
+  const user_sesion = localStorage.getItem("User_session");
+  const token = user_sesion.slice(1, -1);
 
   useEffect(() => {
     if (!localStorage.hasOwnProperty("User_session")) {
@@ -44,8 +45,6 @@ const SolicitedServices = () => {
         pathname: "/signup",
       });
     } else {
-      token = localStorage.getItem("User_session");
-      token = token.slice(1, -1);
       fetchData(token, "GET", "user-auth", "GET_MY_USER")
         .then((res) => {
           setUser(res);
@@ -54,11 +53,9 @@ const SolicitedServices = () => {
           console.log(err);
         });
     }
-  }, [state?.token]);
+  }, [token, history]);
 
   useEffect(() => {
-    token = localStorage.getItem("User_session");
-    token = token.slice(1, -1);
     fetchData(token, "GET", "solicitud-auth", "GET_SOLICITUDES")
       .then((res) => {
         console.log("res data service:");
@@ -68,7 +65,7 @@ const SolicitedServices = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [state?.token]);
+  }, [token]);
 
   return user ? (
     <>

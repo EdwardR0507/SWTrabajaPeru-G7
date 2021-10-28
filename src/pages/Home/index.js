@@ -44,6 +44,10 @@ const StyledH2 = withStyles({
 })(Typography);
 
 export default function Home() {
+  //Estados de ejecución de los botones
+  const [before, setBefore] = useState(false);
+  const [after, setAfter] = useState(false);
+
   //Paginación
   const [pageServices, setPageServices] = useState(0);
   const [pageWorkers, setPageWorkers] = useState(0);
@@ -92,24 +96,28 @@ export default function Home() {
 
   const handleServiceBefore = () => {
     if (pageServices > 0) {
+      setBefore(true);
       setPageServices(pageServices - 1);
     }
   };
 
   const handleWorkerBefore = () => {
     if (pageWorkers > 0) {
+      setBefore(true);
       setPageWorkers(pageWorkers - 1);
     }
   };
 
   const handleServiceAfter = () => {
-    if (pageServices < services.length - 4) {
+    if (pageServices < services.length - 1) {
+      setAfter(true);
       setPageServices(pageServices + 1);
     }
   };
 
   const handleWorkerAfter = () => {
-    if (pageWorkers < workers.length - 4) {
+    if (pageWorkers < workers.length - 1) {
+      setAfter(true);
       setPageWorkers(pageWorkers + 1);
     }
   };
