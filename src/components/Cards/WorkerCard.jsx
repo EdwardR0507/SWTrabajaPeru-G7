@@ -51,7 +51,6 @@ const WorkerCard = (props) => {
     </StyledCard>
   ) : (
     <>
-      {console.log(worker)}
       <Spinner />
     </>
   );

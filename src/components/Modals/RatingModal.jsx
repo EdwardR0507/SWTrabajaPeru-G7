@@ -63,7 +63,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const RatingModal = ({ mood, token, solId }) => {
+const RatingModal = ({ mood, token, solId, setRatingTable, setDetails }) => {
   // Variable para customizar los componentes
   const classes = useStyles();
 
@@ -78,6 +78,7 @@ const RatingModal = ({ mood, token, solId }) => {
   // Función para cerrar el modal
   const handleClose = () => {
     setOpen(false);
+    setDetails(false);
   };
 
   const handleChange = (e, value) => {
@@ -102,9 +103,8 @@ const RatingModal = ({ mood, token, solId }) => {
           "solicitud-auth",
           "RATE_SERVICE",
           ratingSer
-        ).then(() => {
-          window.location.replace("");
-          setOpen(false);
+        ).then((res) => {
+          setRatingTable(rating);
         })
       : fetchData(
           token,
@@ -112,10 +112,10 @@ const RatingModal = ({ mood, token, solId }) => {
           "solicitud-auth",
           "RATE_CLIENT",
           ratingCli
-        ).then(() => {
-          window.location.replace("");
-          setOpen(false);
+        ).then((res) => {
+          setRatingTable(rating);
         });
+    handleClose();
   };
 
   return (

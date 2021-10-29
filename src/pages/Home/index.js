@@ -62,14 +62,12 @@ export default function Home() {
 
   useEffect(() => {
     fetchUserData("GET", "service", "GET_HOME_SERVICES").then((res) => {
-      console.log(res);
       setServices(res);
     });
   }, []);
 
   useEffect(() => {
     fetchUserData("GET", "user", "GET_HOME_USERS").then((res) => {
-      console.log(res);
       setWorkers(res);
     });
   }, []);
@@ -77,17 +75,15 @@ export default function Home() {
   let token;
 
   useEffect(() => {
-    console.log(localStorage.getItem("User_session"));
     if (localStorage.hasOwnProperty("User_session")) {
       token = localStorage.getItem("User_session");
       token = token.slice(1, -1);
       fetchData(token, "GET", "user-auth", "GET_MY_USER")
         .then((res) => {
-          console.log(res);
           setUser(res);
         })
         .catch((err) => {
-          console.log(err);
+          console.error(err);
         });
     } else {
       return;
@@ -140,22 +136,13 @@ export default function Home() {
           <StyledIconButton onClick={handleServiceBefore}>
             <NavigateBeforeIcon />
           </StyledIconButton>
-          {services
-            ?.slice(pageServices, pageServices + 3)
-            .map((service) =>
-              user ? (
-                <ServiceCard
-                  key={`${service.us_id}-${service.cat_id}`}
-                  service={service}
-                  token={token}
-                />
-              ) : (
-                <ServiceCard
-                  key={`${service.us_id}-${service.cat_id}`}
-                  service={service}
-                />
-              )
-            )}
+          {services?.slice(pageServices, pageServices + 3).map((service) => (
+            <ServiceCard
+              key={`${service.us_id}-${service.cat_id}`}
+              service={service}
+              token={user && token}
+            />
+          ))}
           <StyledIconButton onClick={handleServiceAfter}>
             <NavigateNextIcon />
           </StyledIconButton>

@@ -52,7 +52,7 @@ const HiredServices = () => {
           setUser(res);
         })
         .catch((err) => {
-          console.log(err);
+          console.error(err);
         });
     }
   }, [state?.token]);
@@ -62,12 +62,10 @@ const HiredServices = () => {
     token = token.slice(1, -1);
     fetchData(token, "GET", "solicitud-auth", "GET_MY_SOLICITUDES")
       .then((res) => {
-        console.log("res data service:");
-        console.log(res);
         setSolData(res);
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
   }, [state?.token]);
 

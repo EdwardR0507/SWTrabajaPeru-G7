@@ -57,7 +57,6 @@ export default function SignIn() {
   const onSubmit = async (getUser, evt) => {
     evt.preventDefault();
     fetchUserData("POST", "user", "LOGIN_USER", getUser).then((res) => {
-      console.log(res);
       if (res.status !== "SUCCESS") {
         setErrorMessage(res.message);
       } else {
@@ -132,7 +131,7 @@ export default function SignIn() {
               </Grid>
               <Grid>
                 <FormError
-                  condition={errorMessage != ""}
+                  condition={errorMessage !== ""}
                   content={errorMessage}
                 />
               </Grid>

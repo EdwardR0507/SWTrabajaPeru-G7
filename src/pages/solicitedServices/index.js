@@ -50,7 +50,7 @@ const SolicitedServices = () => {
           setUser(res);
         })
         .catch((err) => {
-          console.log(err);
+          console.error(err);
         });
     }
   }, [token, history]);
@@ -58,12 +58,10 @@ const SolicitedServices = () => {
   useEffect(() => {
     fetchData(token, "GET", "solicitud-auth", "GET_SOLICITUDES")
       .then((res) => {
-        console.log("res data service:");
-        console.log(res);
         setServiceData(res);
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
   }, [token]);
 

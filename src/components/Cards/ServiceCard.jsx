@@ -52,7 +52,7 @@ const ServiceCard = (props) => {
 
   useEffect(() => {
     setService(props.service);
-  }, []);
+  }, [props.service]);
 
   let token;
 

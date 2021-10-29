@@ -1,7 +1,8 @@
-import { withStyles, makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import Rating from "@material-ui/lab/Rating";
+import { useState } from "react";
 import DetailsRequestModal from "../../components/Modals/DetailsRequestModal";
 
 const useStyles = makeStyles((theme) => ({
@@ -31,6 +32,12 @@ const useStyles = makeStyles((theme) => ({
 
 const TableServicesRow = ({ row, mood, getToken, serviceData }) => {
   const classes = useStyles();
+
+  const [solEstado, setSolEstado] = useState(row.sol_estado);
+  const [rating, setRating] = useState(
+    parseInt(mood === "CLIENT" ? row.ser_calificacion : row.us_calificacion)
+  );
+
   return (
     <TableRow className={classes.row} key={`${row.sol_id}-${row.cat_nombre}`}>
       <TableCell className={classes.tableCell} align="center">
@@ -48,23 +55,19 @@ const TableServicesRow = ({ row, mood, getToken, serviceData }) => {
         {row.us_nombres}
       </TableCell>
       <TableCell className={classes.tableCell} align="center">
-        <Rating
-          name="read-only"
-          value={parseInt(
-            mood === "CLIENT" ? row.ser_calificacion : row.us_calificacion
-          )}
-          readOnly
-        />
+        <Rating name="read-only" value={rating} readOnly />
       </TableCell>
       <TableCell className={classes.tableCell} align="center">
-        {row.sol_estado}
+        {solEstado}
       </TableCell>
       <TableCell className={classes.tableCell} align="center">
         <DetailsRequestModal
-          solEstado={row.sol_estado}
+          solId={row.sol_id}
+          solEstado={solEstado}
+          setRating={setRating}
+          setSolEstado={setSolEstado}
           getToken={getToken}
           serviceData={serviceData}
-          solId={row.sol_id}
           mood={mood}
         />
       </TableCell>

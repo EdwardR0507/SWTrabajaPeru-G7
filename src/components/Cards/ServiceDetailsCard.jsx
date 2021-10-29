@@ -57,9 +57,6 @@ const ServiceDetailsCard = (props) => {
   const emailUser = props.user.us_correo;
   const emailWorker = props.worker.us_correo;
 
-  console.log("emailUser: ", emailUser);
-  console.log("emailWorker: ", emailWorker);
-
   useEffect(() => {
     setService(props.service);
   }, [props]);

@@ -65,6 +65,8 @@ const DetailsRequestModal = ({
   getToken,
   solId,
   solEstado,
+  setSolEstado,
+  setRating,
 }) => {
   // Variable para customizar los componentes
   const classes = useStyles();
@@ -94,9 +96,8 @@ const DetailsRequestModal = ({
           newData
         )
           .then((res) => {
-            console.log("MI SOLICITUD: ", res);
             setDetailReq(res[0]);
-            setReqState(res[0].sol_servicio_calificado);
+            setReqState(res[0].sol_calificado_trab);
           })
           .then(() => {
             setOpen(true);
@@ -104,7 +105,7 @@ const DetailsRequestModal = ({
       : fetchData(token, "POST", "solicitud-auth", "OBTAIN_SOLICITUD", newData)
           .then((res) => {
             setDetailReq(res[0]);
-            setReqState(res[0].sol_cliente_calificado);
+            setReqState(res[0].sol_calificado_clie);
           })
           .then(() => {
             setOpen(true);
@@ -122,14 +123,15 @@ const DetailsRequestModal = ({
   };
 
   const isRating = () => {
-    return reqState ? null : (
+    return reqState === 0 ? (
       <RatingModal
         mood={mood}
         solId={solId}
+        setRatingTable={setRating}
         token={token}
-        solEstado={solEstado}
+        setDetails={setOpen}
       />
-    );
+    ) : null;
   };
 
   const conditionalRating = () => {
@@ -191,24 +193,13 @@ const DetailsRequestModal = ({
       "solicitud-auth",
       "CHANGE_SOLICITUD_STATE",
       data
-    ).then(() => {
-      window.location.replace("");
+    ).then((res) => {
+      setSolEstado(solState);
       setOpen(false);
     });
   };
 
-  const conditionalDetails = () => {
-    return mood === "CLIENT" ? (
-      <Typography variant="subtitle1" className={classes.subtitle}>
-        DATOS DEL TRABAJADOR
-      </Typography>
-    ) : (
-      <Typography variant="subtitle1" className={classes.subtitle}>
-        DATOS DEL CLIENTE
-      </Typography>
-    );
-  };
-
+  // Pulsar boton Finalizar
   const handleEnded = () => {
     const id_sol = service.filter((el) => el.sol_id === solId)[0].sol_id;
     const data = { sol_id: id_sol, sol_estado: "Finalizado" };
@@ -219,10 +210,11 @@ const DetailsRequestModal = ({
       "CHANGE_SOLICITUD_STATE",
       data
     ).then(() => {
-      window.location.replace("");
+      setSolEstado("Finalizado");
     });
   };
 
+  // Controlar Finalizar y Ver Mas
   const btnState = () => {
     return mood === "CLIENT" && solEstado === "Aceptado" ? (
       <Container className={classes.wrapp}>
@@ -266,7 +258,12 @@ const DetailsRequestModal = ({
               <Typography className={classes.title} variant="h5">
                 DETALLE DE LA SOLICITUD
               </Typography>
-              {conditionalDetails()}
+              <Typography variant="subtitle1" className={classes.subtitle}>
+                {mood === "CLIENT"
+                  ? "DATOS DEL TRABAJADOR"
+                  : "DATOS DEL CLIENTE"}
+              </Typography>
+
               <TextField
                 type="text"
                 label="Nombre y Apellidos"

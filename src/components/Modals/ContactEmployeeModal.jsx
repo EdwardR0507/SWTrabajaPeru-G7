@@ -9,7 +9,7 @@ import {
   Fade,
   Button,
   IconButton,
-  Snackbar
+  Snackbar,
 } from "@material-ui/core/";
 import CloseIcon from "@material-ui/icons/Close";
 import { useForm } from "react-hook-form";
@@ -62,7 +62,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const ContactEmployeeModal = ({ service, token, user }) => {
-  const [openSnack, setOpenSnack] = useState(false)
+  const [openSnack, setOpenSnack] = useState(false);
   const {
     handleSubmit,
     register,
@@ -83,8 +83,6 @@ const ContactEmployeeModal = ({ service, token, user }) => {
 
   // Función para abrir el modal
   const handleOpen = () => {
-    console.log("user data nombres");
-    console.log(user.us_nombres);
     setOpen(true);
     reset();
   };
@@ -115,14 +113,12 @@ const ContactEmployeeModal = ({ service, token, user }) => {
       "CREATE_SOLICITUD",
       newData
     ).then((res) => {
-      console.log("respuesta creación de solicitud:");
-      console.log(res);
       e.preventDefault();
       reset();
-      setOpenSnack(true)
-      setTimeout(()=>{
+      setOpenSnack(true);
+      setTimeout(() => {
         handleCloseSnack();
-      }, 4000)
+      }, 4000);
     });
   };
 

@@ -1,8 +1,7 @@
-/*Importamos las librerias principales*/
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useLocation, useHistory } from "react-router";
 import { Container, Grid, Box, Typography } from "@material-ui/core";
-import { withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import ProfileCard from "../../components/Cards/ProfileCard";
 import ProfileServiceCard from "../../components/Cards/ProfileServiceCard";
 import NavBar from "../../layouts/NavBar";
@@ -10,17 +9,20 @@ import { fetchData } from "../../services/services";
 import Spinner from "../../components/Spinner/Spinner";
 /*Declaramos los estilos que se van a usar por cada componente*/
 /*Declaramos el estilo del container*/
-const StyledContainer = withStyles({
-  root: {
+
+const useStyles = makeStyles({
+  container: {
     marginTop: "0.9em",
     paddingLeft: "2.4em",
     display: "flex",
     alignItems: "center",
   },
-})(Container);
+});
 
 /*Declaramos la función principal*/
 export default function SocialProfile() {
+  const classes = useStyles();
+
   const [user, setUser] = useState({});
   const [profile, setProfile] = useState();
   const [services, setServices] = useState([]);
@@ -58,7 +60,6 @@ export default function SocialProfile() {
   useEffect(() => {
     if (location.pathname === "/myAccount") {
       fetchData(token, "GET", "service-auth", "GET_MY_SERVICES").then((res) => {
-        console.log(res);
         setServices(res);
       });
     } else if (location.pathname === "/profile") {
@@ -66,8 +67,6 @@ export default function SocialProfile() {
         us_id: state?.us_id,
       })
         .then((res) => {
-          console.log("services publico:", res);
-          console.log(res);
           setServices(res);
         })
         .catch((err) => {
@@ -103,7 +102,7 @@ export default function SocialProfile() {
   return user && profile && services ? (
     <>
       <NavBar user={user} token={state?.token} />
-      <StyledContainer>
+      <Container className={classes.container}>
         <Grid container item xs={12} spacing={3}>
           <Grid item xs={4}>
             <ProfileCard user={profile}></ProfileCard>
@@ -112,7 +111,7 @@ export default function SocialProfile() {
             {renderServices()}
           </Grid>
         </Grid>
-      </StyledContainer>
+      </Container>
     </>
   ) : (
     <Spinner />

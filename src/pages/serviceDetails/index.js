@@ -75,7 +75,6 @@ const ServiceDetails = () => {
       <NavBar user={user} token={state?.token} />
       <StyledContainer>
         {/*Usamos grid para dividir las los dos cards*/}
-        {console.log(user)}
         <Grid container xs={12} sm={8} spacing={12}>
           <ServiceDetailsCard
             service={service}

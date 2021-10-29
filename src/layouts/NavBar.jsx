@@ -87,8 +87,8 @@ const NavBar = (props) => {
 
   const history = useHistory();
 
-  let token = localStorage.getItem("User_session")
-  token = token?.slice(1, -1)
+  let token = localStorage.getItem("User_session");
+  token = token?.slice(1, -1);
 
   return (
     <StyledNavBar>
@@ -136,7 +136,7 @@ const NavBar = (props) => {
                   onClick={() => {
                     history.push({
                       pathname: "/editProfile",
-                      state: { token: token },
+                      state: { token: token, user: props.user },
                     });
                   }}
                 >
@@ -147,11 +147,10 @@ const NavBar = (props) => {
                 </MenuItem>
                 <MenuItem
                   onClick={() => {
-                    localStorage.removeItem("User_session")
-                    if (window.location.pathname === "/"){
+                    localStorage.removeItem("User_session");
+                    if (window.location.pathname === "/") {
                       window.location.reload();
-                    }
-                    else{
+                    } else {
                       history.push({
                         pathname: "/",
                       });

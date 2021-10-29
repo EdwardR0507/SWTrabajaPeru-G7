@@ -97,7 +97,6 @@ const SignUp = () => {
   const onSubmit = async (user, evt) => {
     evt.preventDefault();
     fetchUserData("POST", "user", "REGISTER_USER", user).then((res) => {
-      console.log(res);
       setOpen(true);
       setTimeout(() => {
         setOpen(false);
@@ -107,8 +106,6 @@ const SignUp = () => {
       }, 3000);
     });
   };
-
-  console.log("distrito: ", distrito);
 
   return (
     <>

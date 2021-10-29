@@ -1,8 +1,7 @@
 /*Importamos las librerias principales*/
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useLocation } from "react-router";
 import { useForm } from "react-hook-form";
-import { useHistory } from "react-router";
 import NavBar from "../../layouts/NavBar";
 import {
   Container,
@@ -65,19 +64,16 @@ const useStyles = makeStyles((theme) => ({
 export default function EditProfile() {
   /*Declaramos la función principal*/
   const classes = useStyles();
-  const [user, setUser] = useState({});
   const [open, setOpen] = useState(false);
+  const location = useLocation();
+  const state = location.state;
+
+  const { user } = state;
   const {
     register,
     formState: { errors },
     handleSubmit,
-    reset,
-  } = useForm({
-    defaultValues: user,
-  });
-  const location = useLocation();
-  const state = location.state;
-  const history = useHistory();
+  } = useForm();
 
   const locations = useLocations();
 
@@ -97,130 +93,21 @@ export default function EditProfile() {
     setOpen(false);
   };
 
-  let token;
-
-  useEffect(() => {
-    console.log(state);
-    //Cambiar post por get cuando se arregle
-    if (!localStorage.hasOwnProperty("User_session")) {
-      history.push({
-        pathname: "/signup",
-      });
-    } else {
-      token = localStorage.getItem("User_session");
-      token = token.slice(1, -1);
-      fetchData(token, "GET", "user-auth", "GET_MY_USER")
-        .then((res) => {
-          console.log(res);
-          setUser(res);
-          reset({
-            us_nombres: res.us_nombres,
-            us_celular: res.us_celular,
-          });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }, [reset]);
+  let token = localStorage.getItem("User_session");
+  token = token.slice(1, -1);
 
   const onSubmit = async (userEdited, event) => {
     event.preventDefault();
-    console.log(userEdited);
-    token = localStorage.getItem("User_session");
-    token = token.slice(1, -1);
+    if (userEdited.us_nombres === undefined) {
+      userEdited.us_nombres = user.us_nombres;
+    }
+    if (userEdited.us_celular === undefined) {
+      userEdited.us_celular = user.us_celular;
+    }
     fetchData(token, "POST", "user-auth", "EDIT_USER", userEdited).then(
       (res) => {
         setOpen(true);
-        console.log(res);
       }
-    );
-  };
-
-  console.log("distrito: ", distrito);
-
-  /*const handleSubmit = async (evt) => {
-    evt.preventDefault();
-    let profileEdit = {};
-    await axios
-      .post("http://localhost:4000/editProfile", {
-        command: "EDIT_PROFILE",
-        transaction: profileEdit,
-      })
-      .then((res) => {
-        console.log(res);
-        return res;
-      });
-  };
-
-  /*const [state, setState] = React.useState({
-    age: '',
-    name: 'hai',
-  });
-
-  const handleChange = (event) => {
-    const name = event.target.name;
-    setState({
-      ...state,
-      [name]: event.target.value,
-    });
-  };*/
-
-  const conditionalRendering = () => {
-    return user.us_nombres ? (
-      <>
-        <TextField
-          variant="filled"
-          fullWidth
-          label="Nombres y Apellidos"
-          name="us_nombres"
-          defaultValue={user.us_nombres}
-          type="text"
-          {...register("us_nombres", {
-            required: true,
-            maxLength: 40,
-          })}
-        />
-        <FormError
-          condition={errors.us_nombres?.type === "required"}
-          content="Ingrese nombres y apellidos"
-        />
-        <FormError
-          condition={errors.us_nombres?.type === "maxLength"}
-          content="Nombre no válido"
-        />
-      </>
-    ) : (
-      <Spinner />
-    );
-  };
-
-  const conditionalPhone = () => {
-    return user.us_celular ? (
-      <>
-        <TextField
-          fullWidth
-          variant="filled"
-          id="phoneNumber"
-          label="Teléfono"
-          name="us_celular"
-          defaultValue={user.us_celular}
-          {...register("us_celular", {
-            required: true,
-            pattern: /^^9\d{8}$/,
-          })}
-        />
-        <FormError
-          condition={errors.us_celular?.type === "required"}
-          content="Ingrese celular"
-        />
-        <FormError
-          condition={errors.us_correo?.type === "pattern"}
-          content="Número de celular no válido"
-        />
-      </>
-    ) : (
-      <Spinner />
     );
   };
 
@@ -238,7 +125,25 @@ export default function EditProfile() {
             </Grid>
 
             <Grid container item xs={6} spacing={3}>
-              {conditionalRendering()}
+              <TextField
+                variant="filled"
+                fullWidth
+                label="Nombres y Apellidos"
+                name="us_nombres"
+                type="text"
+                defaultValue={user.us_nombres}
+                {...register("us_nombres", {
+                  maxLength: 40,
+                })}
+              />
+              <FormError
+                condition={errors.us_nombres?.type === "required"}
+                content="Ingrese nombres y apellidos"
+              />
+              <FormError
+                condition={errors.us_nombres?.type === "maxLength"}
+                content="Nombre no válido"
+              />
             </Grid>
 
             <Grid container item xs={6} spacing={3}>
@@ -282,7 +187,25 @@ export default function EditProfile() {
             </Grid>
 
             <Grid container item xs={6} spacing={3}>
-              {conditionalPhone()}
+              <TextField
+                fullWidth
+                variant="filled"
+                id="phoneNumber"
+                label="Teléfono"
+                name="us_celular"
+                defaultValue={user?.us_celular}
+                {...register("us_celular", {
+                  pattern: /^9\d{8}$/,
+                })}
+              />
+              <FormError
+                condition={errors.us_celular?.type === "required"}
+                content="Ingrese celular"
+              />
+              <FormError
+                condition={errors.us_correo?.type === "pattern"}
+                content="Número de celular no válido"
+              />
             </Grid>
 
             <Grid container item xs={6} spacing={3}>
@@ -326,8 +249,6 @@ export default function EditProfile() {
                   Distrito
                 </InputLabel>
                 <Select
-                  /*value={state.age}
-                onChange={handleChange}*/
                   defaultValue={user.user_distrito}
                   native
                   inputProps={{

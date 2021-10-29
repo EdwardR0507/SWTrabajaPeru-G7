@@ -58,7 +58,6 @@ const SearchField = (props) => {
         }
       )
       .then((res) => {
-        console.log("res data search: ", res.data.resultado);
         setSearched(res.data.resultado);
       });
   };
@@ -67,7 +66,6 @@ const SearchField = (props) => {
     evt.preventDefault();
     if (value) {
       const email = value.split("-")[1];
-      console.log("value: ", value);
       let elementFound = searched.find((el) => el.extra === email);
       if (elementFound.type === "user") {
         history.push({
@@ -84,7 +82,6 @@ const SearchField = (props) => {
         elementFound = searched.find(
           (el) => el.nombre === servicio && el.extra === usuario
         );
-        console.log("Element found: ", elementFound);
         history.push({
           pathname: "/serviceDetails",
           search: `user=${elementFound["us_id"]}&?service=${elementFound["id_alt"]}`,

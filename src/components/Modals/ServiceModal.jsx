@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLocation } from "react-router";
 import {
@@ -69,7 +69,7 @@ const useStyles = makeStyles(() => ({
     justifyContent: "space-evenly",
   },
   container: {
-    height: "100%",
+    height: "90%",
     display: "flex",
     alignItems: "center",
   },
@@ -89,8 +89,8 @@ const useStyles = makeStyles(() => ({
     display: "flex",
     alignContent: "center",
     justifyContent: "center",
-    width: "70%",
-    height: "70%",
+    width: "60%",
+    height: "60%",
   },
   addIcon: {
     position: "absolute",
@@ -103,11 +103,11 @@ const useStyles = makeStyles(() => ({
   },
   containerButton: {
     display: "flex",
-    width: "60%",
-    justifyContent: "space-evenly",
+    width: "50%",
   },
   wrapp: {
-    width: "214px",
+    width: "13.4rem",
+    marginLeft: "5rem",
   },
 }));
 /*Props: objeto, setter del objeto, modo que tomará el modal que se va a renderizar (agregar o editar, basta con pasarle Agregar), nombre del servicio, descripción del servicio, función para poder editar el servicio*/
@@ -129,7 +129,7 @@ const ServiceModal = ({ mood, ser_imagen, service, handleAdd, handleEdit }) => {
 
   const [selectName, setSelectName] = useState("");
 
-  const [fileUrl, setFileUrl] = useState(ser_imagen);
+  const [fileUrl, setFileUrl] = useState(null);
 
   const [id, setId] = useState(null);
 
@@ -140,6 +140,10 @@ const ServiceModal = ({ mood, ser_imagen, service, handleAdd, handleEdit }) => {
     },
   ]);
 
+  const [visible, setVisibility] = useState(false);
+
+  const inputRef = useRef();
+
   // Función para abrir el modal
   const handleOpen = () => {
     setId(service?.cat_id);
@@ -149,7 +153,7 @@ const ServiceModal = ({ mood, ser_imagen, service, handleAdd, handleEdit }) => {
           setList(res);
         })
         .catch((err) => {
-          console.log(err);
+          console.error(err);
         });
       setSelectName("");
     }
@@ -160,12 +164,14 @@ const ServiceModal = ({ mood, ser_imagen, service, handleAdd, handleEdit }) => {
   const handleClose = () => {
     reset();
     setOpen(false);
+    setFileUrl(null);
   };
 
   // Función para capturar lo que se seleccione(setSelectName)
   const handleSelect = (e) => {
     setSelectName(e.target.value);
   };
+
   const toBase64 = (file) =>
     new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -175,42 +181,46 @@ const ServiceModal = ({ mood, ser_imagen, service, handleAdd, handleEdit }) => {
     });
 
   const conversion = async () => {
-    const file = document.querySelector("#image").files[0];
-    const fileTosend = await toBase64(file);
-    return fileTosend;
+    const file = inputRef.current.files[0];
+    if (file !== undefined) {
+      const base64 = await toBase64(file);
+      return base64;
+    }
   };
 
-  //Función que crea un nuevo componente InfoService y envía datos al backend
+  //Función que envía datos al backend
   const onSubmit = async (datos, e) => {
-    /*const imageB64 = await conversion();
-    const dataToSend = {
-      ...datos,
-      ser_imagen: imageB64,
-    };
-    console.log("datosToSend: ", dataToSend);*/
+    let imageB64 = await conversion();
     e.preventDefault();
     if (mood === "Agregar") {
-      handleAdd(id, {
+      const data = {
         ...datos,
         ser_descripcion: datos.ser_descripcion.trim(),
-      });
+        ser_imagen: imageB64,
+      };
+      handleAdd(id, data);
     } else {
+      if (datos.ser_descripcion === undefined) {
+        datos.ser_descripcion = service?.ser_descripcion.trim();
+      }
+      if (imageB64 === undefined) {
+        imageB64 = service?.ser_imagen;
+      }
       let newData = {
         cat_id: id,
         cat_nombre: service?.cat_nombre,
         ser_descripcion: datos.ser_descripcion.trim(),
-        //ser_imagen: imageToB64,
+        ser_imagen: imageB64,
       };
-      if (datos.ser_descripcion === undefined) {
-        newData.ser_descripcion = service?.ser_descripcion.trim();
-      }
       handleEdit(newData);
     }
+    setFileUrl(imageB64);
     handleClose();
     reset();
   };
 
   function processImage(event) {
+    setVisibility(true);
     const imageFile = event.target.files[0];
     const imageUrl = URL.createObjectURL(imageFile);
     setFileUrl(imageUrl);
@@ -357,10 +367,14 @@ const ServiceModal = ({ mood, ser_imagen, service, handleAdd, handleEdit }) => {
                       type="file"
                       hidden
                       onChange={processImage}
-                      id="image"
+                      ref={inputRef}
                     />
                   </IconButton>
-                  <img src={fileUrl} alt={"service"} />
+                  {mood === "Agregar" ? (
+                    visible && <img src={fileUrl} alt={"service"} />
+                  ) : (
+                    <img src={service?.ser_imagen} alt={"service"} />
+                  )}
                 </Container>
               </Container>
               <Container className={classes.containerButton}>
