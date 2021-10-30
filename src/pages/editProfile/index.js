@@ -68,7 +68,7 @@ export default function EditProfile() {
   const location = useLocation();
   const state = location.state;
 
-  const { user } = state;
+  const user = JSON.parse(localStorage.getItem("user-data"));
   const {
     register,
     formState: { errors },
@@ -115,7 +115,7 @@ export default function EditProfile() {
   return user ? (
     <>
       <NavBar user={user} token={state?.token} />
-      <StyledContainer role="edit-profile">
+      <StyledContainer role='edit-profile'>
         <form className={classes.form} noValidate>
           <Grid container spacing={6}>
             <Grid container item xs={12} spacing={1}></Grid>
@@ -126,11 +126,11 @@ export default function EditProfile() {
 
             <Grid container item xs={6} spacing={3}>
               <TextField
-                variant="filled"
+                variant='filled'
                 fullWidth
-                label="Nombres y Apellidos"
-                name="us_nombres"
-                type="text"
+                label='Nombres y Apellidos'
+                name='us_nombres'
+                type='text'
                 defaultValue={user.us_nombres}
                 {...register("us_nombres", {
                   maxLength: 40,
@@ -138,16 +138,16 @@ export default function EditProfile() {
               />
               <FormError
                 condition={errors.us_nombres?.type === "required"}
-                content="Ingrese nombres y apellidos"
+                content='Ingrese nombres y apellidos'
               />
               <FormError
                 condition={errors.us_nombres?.type === "maxLength"}
-                content="Nombre no válido"
+                content='Nombre no válido'
               />
             </Grid>
 
             <Grid container item xs={6} spacing={3}>
-              <FormControl variant="filled" className={classes.formControl}>
+              <FormControl variant='filled' className={classes.formControl}>
                 <InputLabel>Departamento</InputLabel>
                 <Select
                   /*value={state.age}
@@ -181,7 +181,7 @@ export default function EditProfile() {
                 </Select>
                 <FormError
                   condition={errors.us_departamento?.type === "required"}
-                  content="Ingrese departamento"
+                  content='Ingrese departamento'
                 />
               </FormControl>
             </Grid>
@@ -189,10 +189,10 @@ export default function EditProfile() {
             <Grid container item xs={6} spacing={3}>
               <TextField
                 fullWidth
-                variant="filled"
-                id="phoneNumber"
-                label="Teléfono"
-                name="us_celular"
+                variant='filled'
+                id='phoneNumber'
+                label='Teléfono'
+                name='us_celular'
                 defaultValue={user?.us_celular}
                 {...register("us_celular", {
                   pattern: /^9\d{8}$/,
@@ -200,17 +200,17 @@ export default function EditProfile() {
               />
               <FormError
                 condition={errors.us_celular?.type === "required"}
-                content="Ingrese celular"
+                content='Ingrese celular'
               />
               <FormError
                 condition={errors.us_correo?.type === "pattern"}
-                content="Número de celular no válido"
+                content='Número de celular no válido'
               />
             </Grid>
 
             <Grid container item xs={6} spacing={3}>
-              <FormControl variant="filled" className={classes.formControl}>
-                <InputLabel id="imput4" htmlFor="filled-age-native-simple">
+              <FormControl variant='filled' className={classes.formControl}>
+                <InputLabel id='imput4' htmlFor='filled-age-native-simple'>
                   Provincia
                 </InputLabel>
                 <Select
@@ -234,7 +234,7 @@ export default function EditProfile() {
                 </Select>
                 <FormError
                   condition={errors.us_provincia?.type === "required"}
-                  content="Ingrese provincia"
+                  content='Ingrese provincia'
                 />
               </FormControl>
             </Grid>
@@ -244,8 +244,8 @@ export default function EditProfile() {
             </Grid>
 
             <Grid container item xs={6} spacing={3}>
-              <FormControl variant="filled" className={classes.formControl}>
-                <InputLabel id="imput6" htmlFor="filled-age-native-simple">
+              <FormControl variant='filled' className={classes.formControl}>
+                <InputLabel id='imput6' htmlFor='filled-age-native-simple'>
                   Distrito
                 </InputLabel>
                 <Select
@@ -268,28 +268,28 @@ export default function EditProfile() {
                 </Select>
                 <FormError
                   condition={errors.us_distrito?.type === "required"}
-                  content="Ingrese distrito"
+                  content='Ingrese distrito'
                 />
               </FormControl>
             </Grid>
 
-            <Grid container justify="center" item xs={12} spacing={3}>
+            <Grid container justify='center' item xs={12} spacing={3}>
               <Grid container item xs={3} spacing={3}>
                 <SecondaryButton
-                  type="submit"
-                  variant="contained"
-                  color="secondary"
+                  type='submit'
+                  variant='contained'
+                  color='secondary'
                   className={classes.submit}
-                  name="CANCELAR"
+                  name='CANCELAR'
                 ></SecondaryButton>
               </Grid>
               <Grid container item xs={3} spacing={3}>
                 <PrimaryButton
-                  type="submit"
-                  variant="contained"
-                  color="primary"
+                  type='submit'
+                  variant='contained'
+                  color='primary'
                   className={classes.submit}
-                  name="GUARDAR PERFIL"
+                  name='GUARDAR PERFIL'
                   onClick={handleSubmit(onSubmit)}
                 ></PrimaryButton>
                 <Snackbar
@@ -300,12 +300,12 @@ export default function EditProfile() {
                     vertical: "bottom",
                     horizontal: "center",
                   }}
-                  message="Perfil editado correctamente"
+                  message='Perfil editado correctamente'
                   action={
                     <React.Fragment>
                       <IconButton
-                        aria-label="close"
-                        color="inherit"
+                        aria-label='close'
+                        color='inherit'
                         className={classes.close}
                         onClick={handleClose}
                       >

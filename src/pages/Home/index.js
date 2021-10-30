@@ -81,6 +81,8 @@ export default function Home() {
       fetchData(token, "GET", "user-auth", "GET_MY_USER")
         .then((res) => {
           setUser(res);
+          console.log(res);
+          localStorage.setItem("user-data", JSON.stringify(res));
         })
         .catch((err) => {
           console.error(err);
@@ -125,9 +127,9 @@ export default function Home() {
   return workers && services ? (
     <>
       {conditionalNavBar()}
-      <Container role="home">
+      <Container role='home'>
         <StyledContentContainer>
-          <StyledH2 variant="h2">Servicios</StyledH2>
+          <StyledH2 variant='h2'>Servicios</StyledH2>
         </StyledContentContainer>
         <StyledCardContainer>
           {/*Extensión a cantidad de servicios aleatorios
@@ -148,7 +150,7 @@ export default function Home() {
           </StyledIconButton>
         </StyledCardContainer>
         <StyledContentContainer>
-          <StyledH2 variant="h2">Trabajadores</StyledH2>
+          <StyledH2 variant='h2'>Trabajadores</StyledH2>
         </StyledContentContainer>
         <StyledCardContainer>
           <StyledIconButton onClick={handleWorkerBefore}>
