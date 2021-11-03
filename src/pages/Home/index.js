@@ -80,6 +80,7 @@ export default function Home() {
       token = token.slice(1, -1);
       fetchData(token, "GET", "user-auth", "GET_MY_USER")
         .then((res) => {
+          localStorage.setItem("user-data", JSON.stringify(res));
           setUser(res);
         })
         .catch((err) => {

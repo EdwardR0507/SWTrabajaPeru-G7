@@ -148,6 +148,7 @@ const NavBar = (props) => {
                 <MenuItem
                   onClick={() => {
                     localStorage.removeItem("User_session");
+                    localStorage.removeItem("user-data");
                     if (window.location.pathname === "/") {
                       window.location.reload();
                     } else {

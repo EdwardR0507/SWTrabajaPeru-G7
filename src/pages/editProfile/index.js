@@ -68,7 +68,7 @@ export default function EditProfile() {
   const location = useLocation();
   const state = location.state;
 
-  const { user } = state;
+  const user = JSON.parse(localStorage.getItem("user-data"));
   const {
     register,
     formState: { errors },
@@ -104,9 +104,16 @@ export default function EditProfile() {
     if (userEdited.us_celular === undefined) {
       userEdited.us_celular = user.us_celular;
     }
+
+    const dataEdit = {
+      ...user,
+      ...userEdited,
+    };
+
     fetchData(token, "POST", "user-auth", "EDIT_USER", userEdited).then(
       (res) => {
         setOpen(true);
+        localStorage.setItem("user-data", JSON.stringify(dataEdit));
       }
     );
   };
