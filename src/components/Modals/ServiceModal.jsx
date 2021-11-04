@@ -164,6 +164,7 @@ const ServiceModal = ({ mood, ser_imagen, service, handleAdd, handleEdit }) => {
   const handleClose = () => {
     reset();
     setOpen(false);
+    setVisibility(false);
     setFileUrl(null);
   };
 
@@ -373,7 +374,7 @@ const ServiceModal = ({ mood, ser_imagen, service, handleAdd, handleEdit }) => {
                   {mood === "Agregar" ? (
                     visible && <img src={fileUrl} alt={"service"} />
                   ) : (
-                    <img src={service?.ser_imagen} alt={"service"} />
+                    <img src={fileUrl || service?.ser_imagen} alt={"service"} />
                   )}
                 </Container>
               </Container>

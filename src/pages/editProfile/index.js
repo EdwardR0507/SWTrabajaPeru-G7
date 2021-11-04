@@ -86,6 +86,10 @@ export default function EditProfile() {
     provincia
   );
 
+  const handleBack = () => {
+    window.history.back();
+  };
+
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -287,6 +291,7 @@ export default function EditProfile() {
                   variant="contained"
                   color="secondary"
                   className={classes.submit}
+                  onClick={handleBack}
                   name="CANCELAR"
                 ></SecondaryButton>
               </Grid>
